@@ -53,6 +53,12 @@ pre code{background:none;padding:0;color:inherit}
 .good{color:#a9ffd0}.bad{color:#ffbac4}.hl{background:#ffe89a!important;color:#28200b!important}
 .footer{color:#617983;text-align:center;padding:32px;border-top:1px solid var(--line)}
 @media(max-width:820px){.c4,.c5,.c6,.c7,.c8{grid-column:span 12}h2{font-size:29px}}
+
+.video-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;margin:20px 0;box-shadow:0 8px 24px rgba(26,62,70,.05)}
+.video-frame{position:relative;width:100%;aspect-ratio:16/9;background:#0b1c22;border-radius:14px;overflow:hidden;border:1px solid #c8dadd}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-note{margin-top:10px;color:var(--muted);font-size:14px}
+
 </style>
 </head>
 <body>
@@ -66,10 +72,32 @@ pre code{background:none;padding:0;color:inherit}
 </header>
 
 <nav><div class="wrap">
-<a href="#theory">Теория</a><a href="#quiz1">Вопросы 1–5</a><a href="#code1">Тренажёр 1</a><a href="#code2">Тренажёр 2</a><a href="#code3">Тренажёр 3</a><a href="#code4">Тренажёр 4</a><a href="#code5">Тренажёр 5</a><a href="#independent">Самостоятельная</a><a href="#quiz2">Итоговый тест</a><a href="#interactive">Интерактивы</a>
+<a href="#recording">Запись</a><a href="#theory">Теория</a><a href="#quiz1">Вопросы 1–5</a><a href="#code1">Тренажёр 1</a><a href="#code2">Тренажёр 2</a><a href="#code3">Тренажёр 3</a><a href="#code4">Тренажёр 4</a><a href="#code5">Тренажёр 5</a><a href="#independent">Самостоятельная</a><a href="#quiz2">Итоговый тест</a><a href="#interactive">Интерактивы</a>
 </div></nav>
 
 <main class="wrap">
+
+<section id="recording">
+<span class="badge">Запись занятия</span>
+<h2>Видеозапись урока</h2>
+<p class="lead">Можно смотреть запись параллельно с конспектом и переходить к нужным блокам теории и решений ниже.</p>
+<div class="video-card">
+  <div class="video-frame">
+    <iframe
+      src="https://my.mts-link.ru/73314937/27167873442/record-new/26711418750"
+      title="Запись занятия — Код будущего"
+      loading="lazy"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <div class="video-note">
+    Если встроенный просмотр блокируется браузером или политикой MTS Link, запись можно открыть напрямую по ссылке:
+    <a href="https://my.mts-link.ru/73314937/27167873442/record-new/26711418750" target="_blank" rel="noopener">открыть запись в новой вкладке</a>.
+  </div>
+</div>
+</section>
+
 
 <section id="theory">
 <span class="badge">Теория урока</span><h2>Что нужно понимать до решения заданий</h2>
