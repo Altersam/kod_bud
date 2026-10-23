@@ -2,182 +2,126 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#07151f">
-<title>Код будущего — структуры данных Python и ИБ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Конспект урока — структуры данных Python и ИБ</title>
 <style>
 :root{
-  --bg:#07151f;--bg2:#0b2230;--panel:#0f2b3b;--panel2:#12384a;
-  --text:#eefaff;--muted:#a8c5d2;--cyan:#50e3ff;--mint:#45f2b8;
-  --amber:#ffd166;--red:#ff6b7d;--violet:#9b87ff;--line:#1d4b5f;
-  --shadow:0 20px 60px rgba(0,0,0,.35);--radius:24px
+ --bg:#eef4f5;--paper:#fff;--ink:#14212b;--muted:#5e727d;--line:#d6e3e7;
+ --teal:#196f73;--teal2:#2a8a8e;--cyan:#dff5f6;--green:#16864b;--greenbg:#e7f8ee;
+ --amber:#9b6a00;--amberbg:#fff6da;--red:#b53d4d;--redbg:#fff0f2;--code:#0f1720;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:
- radial-gradient(circle at 15% 10%,rgba(80,227,255,.12),transparent 28%),
- radial-gradient(circle at 85% 20%,rgba(155,135,255,.12),transparent 24%),
- linear-gradient(180deg,var(--bg),#061018 72%);
- color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-a{color:var(--cyan)}
-button,input,select,textarea{font:inherit}
-header{min-height:92vh;display:grid;place-items:center;padding:40px 20px;position:relative;overflow:hidden}
-.hero{width:min(1180px,100%);display:grid;grid-template-columns:1.12fr .88fr;gap:40px;align-items:center}
-.kicker{display:inline-flex;gap:9px;align-items:center;padding:8px 12px;border:1px solid #2e6074;border-radius:999px;color:#bfefff;background:#0c2635}
-h1{font-size:clamp(46px,7vw,92px);line-height:.92;margin:18px 0 20px;letter-spacing:-.055em}
-h1 .accent{color:var(--cyan)}
-.lead{font-size:clamp(18px,2vw,24px);line-height:1.55;color:var(--muted);max-width:760px}
-.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
-.btn{border:0;border-radius:14px;padding:13px 18px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.btn.primary{background:linear-gradient(135deg,var(--cyan),var(--mint));color:#00222a}
-.btn.ghost{background:#102c3a;color:var(--text);border:1px solid #295266}
-.hero-card{background:linear-gradient(180deg,rgba(15,43,59,.94),rgba(10,28,39,.96));border:1px solid #244c60;border-radius:30px;padding:24px;box-shadow:var(--shadow);position:relative}
-.hero-card svg{width:100%;height:auto}
-.float{animation:float 3.8s ease-in-out infinite}
-.pulse{animation:pulse 2.2s ease-in-out infinite}
-@keyframes float{50%{transform:translateY(-10px)}}
-@keyframes pulse{50%{opacity:.45}}
-nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(16px);background:rgba(5,17,25,.78);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid #143444}
-.navin{width:min(1180px,100%);margin:auto;display:flex;gap:8px;overflow:auto;padding:10px 16px}
-.navin a{white-space:nowrap;color:#cfe9f2;text-decoration:none;padding:9px 12px;border-radius:10px}
-.navin a:hover{background:#103346}
-main{width:min(1180px,100%);margin:auto;padding:24px 18px 80px}
-section{padding:64px 0}
-.eyebrow{color:var(--mint);font-weight:900;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
-h2{font-size:clamp(30px,4vw,52px);margin:9px 0 12px;letter-spacing:-.035em}
-.section-lead{color:var(--muted);font-size:18px;line-height:1.55;max-width:820px}
-.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:26px}
-.card{background:linear-gradient(180deg,#0d2938,#0b2230);border:1px solid #224a5d;border-radius:var(--radius);padding:20px;box-shadow:0 12px 30px rgba(0,0,0,.18)}
-.card h3{margin:0 0 10px;font-size:22px}
-.card p{color:var(--muted);line-height:1.55}
-.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
-.tag{display:inline-flex;padding:6px 9px;border-radius:999px;background:#16394a;color:#bdeaf6;font-size:12px;font-weight:800}
-.mono,code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
-pre{margin:0;background:#06151f;border:1px solid #17394a;color:#dffaff;border-radius:18px;padding:18px;overflow:auto;line-height:1.55}
-.codewrap{position:relative}.copy{position:absolute;right:10px;top:10px;border:1px solid #2b5a6d;background:#102d3c;color:white;padding:8px 10px;border-radius:10px;cursor:pointer}
-.structure{min-height:230px;position:relative;overflow:hidden;cursor:pointer;transition:.25s transform,.25s border-color}
-.structure:hover{transform:translateY(-4px);border-color:#3e7c94}
-.structure .big{font-size:46px;font-weight:950;letter-spacing:-.04em;margin:8px 0}
-.structure .ops{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
-.op{padding:6px 9px;border-radius:8px;background:#0a1d28;color:#aee9f8;font-size:12px}
-.badge{position:absolute;right:16px;top:16px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#153c4f;font-weight:900;color:var(--cyan)}
-.demo{background:#061821;border:1px solid #1a465b;border-radius:18px;padding:16px}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
-.controls input,.controls select{background:#071a24;border:1px solid #2b5667;color:white;border-radius:10px;padding:10px 12px}
-.smallbtn{border:0;background:#1a4758;color:white;border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:800}
-.smallbtn.alt{background:#3a2e69}.smallbtn.warn{background:#61303b}.smallbtn.good{background:#176148}
-.visual{min-height:150px;border-radius:16px;background:linear-gradient(180deg,#071a24,#0a202b);border:1px dashed #2b5a70;padding:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.node{min-width:54px;padding:10px 12px;border:1px solid #346d84;background:#0e3040;border-radius:12px;text-align:center;transition:.25s}
-.node.key{border-color:#53ddff}.node.value{border-color:#45f2b8}
-.node.hit{transform:scale(1.08);box-shadow:0 0 0 3px rgba(69,242,184,.18);background:#14533f}
-.node.miss{opacity:.35}
-.pair{display:flex;align-items:center;gap:5px;padding:5px;border:1px solid #24485a;border-radius:13px}
-.arrow{color:#6ecfe3}
-.explain{border-left:3px solid var(--cyan);padding-left:14px;color:#c2dce6;line-height:1.6}
-.quiz .q{padding:16px 0;border-bottom:1px solid #17384a}
-.quiz label{display:block;padding:10px 12px;margin:7px 0;border-radius:10px;background:#0a202c;border:1px solid #1b4558;cursor:pointer}
-.quiz label:hover{border-color:#3b7e96}
-.quiz-result{margin-top:14px;font-weight:900}
-.stepper-lines{display:grid;gap:7px}
-.step-line{padding:9px 11px;border-radius:10px;background:#071b26;border:1px solid #163b4e}
-.step-line.active{background:#123d4d;border-color:var(--cyan);box-shadow:inset 3px 0 var(--cyan)}
-.statebox{margin-top:10px;padding:12px;border-radius:12px;background:#0c2533;color:#c7e6f0;min-height:54px}
-.matrix{display:grid;gap:6px;max-width:420px}.cell{aspect-ratio:1;display:grid;place-items:center;border:1px solid #2c6072;border-radius:9px;background:#0a2431;font-weight:800;transition:.2s}.cell.max{background:#73492b;border-color:var(--amber)}.cell.rowhi{box-shadow:inset 0 0 0 2px var(--mint)}
-.bits{display:flex;gap:6px;flex-wrap:wrap}.bit{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:#0d2b3a;border:1px solid #275064}.bit.on{background:#175d49;border-color:#45f2b8}
-.bst{position:relative;height:300px}.bst svg{width:100%;height:100%}.bst circle{fill:#123b4e;stroke:#4cdfff;stroke-width:2}.bst text{fill:white;font-weight:800}.bst .hot{fill:#185943;stroke:#45f2b8}
-.cia{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.cia>div{padding:18px;border-radius:18px;background:#0a2230;border:1px solid #245064}.cia b{display:block;font-size:24px;margin-bottom:7px}
-.footer{padding:30px 0;color:#8db0bd;text-align:center;border-top:1px solid #173546}
-.toast{position:fixed;right:18px;bottom:18px;background:#0f3b4a;color:white;padding:12px 16px;border-radius:12px;opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s;z-index:99}
-.toast.show{opacity:1;transform:none}
-.kpi{font-size:34px;font-weight:950}
-.note{font-size:13px;color:#8fb2c1}
-details{background:#0b2230;border:1px solid #234b5e;border-radius:16px;padding:14px 16px}
-summary{cursor:pointer;font-weight:900}
-.progress{height:10px;border-radius:999px;background:#07141d;overflow:hidden;border:1px solid #17394a}.progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--mint));transition:.4s}
-@media(max-width:900px){.hero{grid-template-columns:1fr}.c3,.c4,.c5,.c6,.c7,.c8{grid-column:span 12}.cia{grid-template-columns:1fr}header{min-height:auto;padding-top:80px}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(135deg,#123e45,#17686c 58%,#27989b);color:white;padding:54px 20px}
+.wrap{width:min(1120px,calc(100% - 28px));margin:auto}
+h1{font-size:clamp(34px,5vw,62px);line-height:1.02;letter-spacing:-.04em;margin:0 0 16px}
+header p{max-width:840px;color:#d6f1f2;font-size:19px}
+.topmeta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.pill{padding:7px 11px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.08)}
+nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);overflow:auto}
+nav .wrap{display:flex;gap:6px;padding:9px 0;white-space:nowrap}
+nav a{color:#29525a;text-decoration:none;padding:8px 10px;border-radius:8px;font-weight:700;font-size:14px}
+nav a:hover{background:#e3f1f2}
+main{padding:26px 0 70px}
+section{margin:32px 0 52px}
+h2{font-size:34px;line-height:1.15;margin:0 0 12px;letter-spacing:-.025em}
+h3{font-size:23px;line-height:1.25;margin:0 0 11px}
+h4{font-size:18px;margin:18px 0 8px}
+.lead{font-size:18px;color:var(--muted);max-width:900px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px;margin:16px 0;box-shadow:0 8px 24px rgba(26,62,70,.05)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+.badge{display:inline-block;padding:4px 9px;border-radius:999px;background:#e6f4f5;color:#145e62;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.answer{display:flex;gap:12px;align-items:flex-start;background:var(--greenbg);border:1px solid #bfe7cd;border-left:5px solid var(--green);padding:14px 16px;border-radius:12px;margin:12px 0}
+.answer b{color:#0d6a3a}
+.note{background:var(--amberbg);border:1px solid #efd890;border-left:5px solid #d39b20;padding:14px 16px;border-radius:12px;margin:13px 0}
+.warn{background:var(--redbg);border:1px solid #f0c3ca;border-left:5px solid var(--red);padding:14px 16px;border-radius:12px;margin:13px 0}
+.theory{background:#f7fbfc;border:1px solid #cfe2e6;border-radius:14px;padding:16px}
+table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:white}
+th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#eaf4f5}tr:last-child td{border-bottom:0}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#edf3f5;border-radius:5px;padding:2px 5px}
+pre{margin:0;background:var(--code);color:#e7f8fa;border-radius:14px;padding:18px;overflow:auto;line-height:1.58;font-size:14px}
+pre code{background:none;padding:0;color:inherit}
+.codebox{position:relative}.copy{position:absolute;right:10px;top:10px;border:0;border-radius:9px;padding:8px 10px;background:#2c8890;color:white;font-weight:800;cursor:pointer}
+.steps{counter-reset:s}.step{position:relative;padding:12px 12px 12px 50px;border-top:1px dashed #d5e2e6}.step:first-child{border-top:0}.step:before{counter-increment:s;content:counter(s);position:absolute;left:9px;top:12px;width:27px;height:27px;border-radius:50%;background:#dff3f4;color:#17686c;display:grid;place-items:center;font-weight:900}
+.q{border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0;background:white}.q-title{font-weight:900;margin-bottom:8px}.why{color:#526873}
+.tagrow{display:flex;gap:7px;flex-wrap:wrap}.tag{background:#eef5f6;border:1px solid #d0e3e6;border-radius:8px;padding:5px 8px;font-size:13px}
+.inline-svg{width:100%;max-height:280px;background:#f8fcfc;border:1px solid #d7e7e9;border-radius:14px}
+.interactive{background:linear-gradient(180deg,#103942,#0e2f37);color:#ecffff;border-radius:18px;padding:20px}
+.interactive p{color:#c5e3e6}.controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.controls button,.controls input,.controls select{border:1px solid #47808a;border-radius:9px;padding:9px 11px}.controls button{background:#2b8d91;color:white;font-weight:800;cursor:pointer}.controls input,.controls select{background:#f7ffff;color:#17333a}
+.out{background:#08242a;border:1px solid #37636c;border-radius:12px;padding:13px;min-height:48px;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.chip{display:inline-flex;padding:8px 10px;border-radius:10px;background:#164750;border:1px solid #3e7880;margin:4px}
+.good{color:#a9ffd0}.bad{color:#ffbac4}.hl{background:#ffe89a!important;color:#28200b!important}
+.footer{color:#617983;text-align:center;padding:32px;border-top:1px solid var(--line)}
+@media(max-width:820px){.c4,.c5,.c6,.c7,.c8{grid-column:span 12}h2{font-size:29px}}
 </style>
 </head>
 <body>
-<header id="top">
-  <div class="hero">
-    <div>
-      <div class="kicker">⚡ Код будущего · Python · информационная безопасность</div>
-      <h1>Структуры данных<br><span class="accent">без зубрёжки</span></h1>
-      <p class="lead">Интерактивный разбор занятия: словари, множества, списки, кортежи, поиск, матрицы, Bloom filter, хэш‑коллизии, BST и практические задачи по журналам безопасности.</p>
-      <div class="cta">
-        <a class="btn primary" href="#structures">Начать разбор ↓</a>
-        <a class="btn ghost" href="https://my.mts-link.ru/73314937/27167873442/record-new/26711418750" target="_blank" rel="noopener">Открыть запись занятия ↗</a>
-      </div>
-    </div>
-    <div class="hero-card">
-      <svg viewBox="0 0 520 410" role="img" aria-label="Визуальная схема структур данных">
-        <defs>
-          <linearGradient id="g1" x1="0" x2="1"><stop stop-color="#50e3ff"/><stop offset="1" stop-color="#45f2b8"/></linearGradient>
-          <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <rect x="18" y="18" width="484" height="374" rx="28" fill="#081c28" stroke="#285166"/>
-        <g class="float">
-          <rect x="54" y="62" width="180" height="112" rx="20" fill="#0f3140" stroke="#50e3ff"/>
-          <text x="78" y="96" fill="#9cddec" font-size="15">DICT</text>
-          <text x="78" y="132" fill="white" font-size="28" font-weight="800">{ key: value }</text>
-        </g>
-        <g class="float" style="animation-delay:.7s">
-          <rect x="286" y="52" width="178" height="122" rx="20" fill="#0f3140" stroke="#45f2b8"/>
-          <text x="310" y="86" fill="#9cddec" font-size="15">SET</text>
-          <text x="310" y="125" fill="white" font-size="28" font-weight="800">{ unique }</text>
-        </g>
-        <g class="float" style="animation-delay:1.1s">
-          <rect x="54" y="226" width="180" height="112" rx="20" fill="#0f3140" stroke="#9b87ff"/>
-          <text x="78" y="260" fill="#c4baff" font-size="15">LIST</text>
-          <text x="78" y="300" fill="white" font-size="28" font-weight="800">[ a, b, c ]</text>
-        </g>
-        <g class="float" style="animation-delay:1.7s">
-          <rect x="286" y="226" width="178" height="112" rx="20" fill="#0f3140" stroke="#ffd166"/>
-          <text x="310" y="260" fill="#ffe2a0" font-size="15">TUPLE</text>
-          <text x="310" y="300" fill="white" font-size="28" font-weight="800">( fixed )</text>
-        </g>
-        <path d="M234 116 C260 116,260 116,286 116" stroke="url(#g1)" stroke-width="4" stroke-linecap="round" class="pulse"/>
-        <path d="M234 282 C260 282,260 282,286 282" stroke="url(#g1)" stroke-width="4" stroke-linecap="round" class="pulse"/>
-      </svg>
-    </div>
-  </div>
+<header>
+ <div class="wrap">
+  <div class="badge" style="background:rgba(255,255,255,.12);color:white">Конспект занятия</div>
+  <h1>Структуры данных Python<br>в задачах информационной безопасности</h1>
+  <p>Полноценный разбор урока для работы вместе с LMS: теория, ответы на вопросы, готовые решения тренажёров, объяснение каждой ключевой конструкции и отдельные интерактивные визуализаторы.</p>
+  <div class="topmeta"><span class="pill">Python</span><span class="pill">dict · set · list · tuple</span><span class="pill">поиск и сложность</span><span class="pill">ИБ</span></div>
+ </div>
 </header>
 
-<nav><div class="navin">
-<a href="#structures">Коллекции</a><a href="#trainer1">Словарь</a><a href="#trainer2">Множество</a>
-<a href="#textfreq">Частоты</a><a href="#matrixlab">Матрица</a><a href="#security">ИБ</a>
-<a href="#advanced">Bloom/BST</a><a href="#quiz">Проверка</a>
+<nav><div class="wrap">
+<a href="#theory">Теория</a><a href="#quiz1">Вопросы 1–5</a><a href="#code1">Тренажёр 1</a><a href="#code2">Тренажёр 2</a><a href="#code3">Тренажёр 3</a><a href="#code4">Тренажёр 4</a><a href="#code5">Тренажёр 5</a><a href="#independent">Самостоятельная</a><a href="#quiz2">Итоговый тест</a><a href="#interactive">Интерактивы</a>
 </div></nav>
 
-<main>
-<section id="structures">
-  <div class="eyebrow">01 · База</div><h2>Четыре структуры — четыре разных задачи</h2>
-  <p class="section-lead">Ключевая идея занятия: не существует «лучшей» структуры данных вообще. Есть структура, которая лучше подходит под конкретную операцию.</p>
-  <div class="grid">
-    <article class="card c3 structure" onclick="focusStructure('list')"><span class="badge">[]</span><span class="tag">упорядоченная</span><div class="big">list</div><p>Хранит последовательность. Можно менять, добавлять, удалять, обращаться по индексу.</p><div class="ops"><span class="op">append()</span><span class="op">insert()</span><span class="op">pop()</span></div></article>
-    <article class="card c3 structure" onclick="focusStructure('dict')"><span class="badge">{:}</span><span class="tag">ключ → значение</span><div class="big">dict</div><p>Быстрый доступ по ключу. Отлично подходит для счётчиков и записей по пользователю/IP.</p><div class="ops"><span class="op">get()</span><span class="op">d[key]=</span><span class="op">items()</span></div></article>
-    <article class="card c3 structure" onclick="focusStructure('set')"><span class="badge">{}</span><span class="tag">уникальные</span><div class="big">set</div><p>Автоматически устраняет повторы. Сильная сторона — быстрый оператор <b>in</b>.</p><div class="ops"><span class="op">add()</span><span class="op">discard()</span><span class="op">in</span></div></article>
-    <article class="card c3 structure" onclick="focusStructure('tuple')"><span class="badge">()</span><span class="tag">неизменяемая</span><div class="big">tuple</div><p>Фиксированная запись из нескольких полей. Удобно хранить событие как (source, severity, message).</p><div class="ops"><span class="op">index()</span><span class="op">count()</span><span class="op">unpack</span></div></article>
-    <div class="card c12">
-      <h3>Интерактив: попробуй изменить структуры</h3>
-      <div class="controls">
-        <select id="structType"><option value="list">list</option><option value="set">set</option><option value="dict">dict</option><option value="tuple">tuple</option></select>
-        <input id="structValue" value="42" aria-label="значение">
-        <button class="smallbtn good" onclick="structAdd()">Добавить</button>
-        <button class="smallbtn warn" onclick="structReset()">Сброс</button>
-      </div>
-      <div id="structVisual" class="visual"></div>
-      <div id="structHint" class="statebox"></div>
-    </div>
-  </div>
+<main class="wrap">
+
+<section id="theory">
+<span class="badge">Теория урока</span><h2>Что нужно понимать до решения заданий</h2>
+<p class="lead">Главная тема — не синтаксис сам по себе, а выбор структуры данных под задачу.</p>
+
+<div class="grid">
+<div class="card c6"><h3>Список — <code>list</code></h3><p>Упорядоченная изменяемая коллекция. Подходит, когда важны порядок, индексы и возможность добавлять элементы.</p><div class="tagrow"><span class="tag">[]</span><span class="tag">append()</span><span class="tag">индекс</span><span class="tag">повторы разрешены</span></div><div class="answer"><div>✓</div><div><b>Добавление:</b> <code>items.append(x)</code></div></div></div>
+<div class="card c6"><h3>Словарь — <code>dict</code></h3><p>Хранит пары <b>ключ → значение</b>. В уроке словарь нужен для подсчёта ошибок входа по имени пользователя.</p><div class="tagrow"><span class="tag">{key: value}</span><span class="tag">get()</span><span class="tag">O(1) в среднем</span></div><div class="answer"><div>✓</div><div><b>Счётчик:</b> <code>d[key] = d.get(key, 0) + 1</code></div></div></div>
+<div class="card c6"><h3>Множество — <code>set</code></h3><p>Хранит только уникальные элементы. Хорошо подходит для blacklist и быстрых проверок <code>x in set</code>.</p><div class="tagrow"><span class="tag">set()</span><span class="tag">add()</span><span class="tag">уникальность</span><span class="tag">O(1) в среднем</span></div></div>
+<div class="card c6"><h3>Кортеж — <code>tuple</code></h3><p>Неизменяемая последовательность. В самостоятельной работе одно событие удобно хранить как кортеж <code>(source, severity, message)</code>.</p><div class="tagrow"><span class="tag">()</span><span class="tag">неизменяемый</span><span class="tag">распаковка</span></div></div>
+</div>
+
+<div class="card">
+<h3><code>split()</code>, <code>append()</code> и <code>add()</code></h3>
+<table>
+<tr><th>Конструкция</th><th>Что делает</th><th>Пример</th></tr>
+<tr><td><code>text.split()</code></td><td>Делит строку по пробельным символам.</td><td><code>"ivan FAIL".split()</code> → <code>["ivan","FAIL"]</code></td></tr>
+<tr><td><code>split(maxsplit=2)</code></td><td>Выполняет не более двух разделений; остаток строки остаётся целиком.</td><td><code>"fw HIGH blocked external connection"</code> → 3 части</td></tr>
+<tr><td><code>list.append(x)</code></td><td>Добавляет элемент в конец списка.</td><td><code>events.append(event)</code></td></tr>
+<tr><td><code>set.add(x)</code></td><td>Добавляет элемент во множество.</td><td><code>blacklist.add(ip)</code></td></tr>
+</table>
+</div>
+
+<div class="note"><b>Уточнение по сложности.</b> Доступ к элементу списка по индексу — <b>O(1)</b>. Доступ по ключу словаря — также <b>O(1) в среднем</b>. Линейным <b>O(n)</b> является, например, последовательный поиск значения в обычном списке.</div>
 </section>
 
-<section id="trainer1">
-  <div class="eyebrow">02 · Тренажёр 1</div><h2>Словарь как счётчик неудачных входов</h2>
-  <p class="section-lead">Задача: для каждой строки вида <code>username status</code> увеличить счётчик только если статус равен <code>FAIL</code>.</p>
-  <div class="grid">
-    <div class="card c7">
-      <div class="codewrap"><button class="copy" onclick="copyCode('code1')">Копировать</button><pre id="code1">n = int(input())
+<section id="quiz1">
+<span class="badge">LMS · вопросы перед тренажёрами</span><h2>Ответы на первые 5 вопросов</h2>
+
+<div class="q"><div class="q-title">1. Какая структура данных обеспечивает O(1) среднее время поиска элемента?</div><div class="answer"><div>✓</div><div><b>Словарь (dict)</b></div></div><div class="why">Словарь реализован на основе хеш-таблицы. По ключу Python в среднем находит значение за константное время.</div></div>
+
+<div class="q"><div class="q-title">2. Для чего используется Bloom filter в задачах ИБ?</div><div class="answer"><div>✓</div><div><b>Для быстрой проверки принадлежности</b></div></div><div class="why">Bloom filter — вероятностная структура: он очень быстро отвечает, мог ли элемент встречаться ранее. Возможны ложноположительные ответы, но ложноотрицательных при корректной реализации нет.</div></div>
+
+<div class="q"><div class="q-title">3. Что такое хэш-коллизия?</div><div class="answer"><div>✓</div><div><b>Одинаковый хэш для разных данных</b></div></div><div class="why">Количество возможных входных данных больше количества возможных хэш-значений, поэтому теоретически разные данные могут дать одинаковый результат хеширования.</div></div>
+
+<div class="q"><div class="q-title">4. Какая структура наиболее эффективна для хранения IP-адресов в чёрном списке?</div><div class="answer"><div>✓</div><div><b>Множество (set)</b></div></div><div class="why">Повторы не нужны, а проверка <code>ip in blacklist</code> выполняется в среднем за O(1).</div></div>
+
+<div class="q"><div class="q-title">5. Какова средняя сложность поиска в BST и чему равно основание логарифма?</div><div class="answer"><div>✓</div><div><b>O(log N), основание — 2</b></div></div><div class="why">При сбалансированном бинарном дереве на каждом шаге отбрасывается примерно половина оставшихся вариантов. В асимптотике основание логарифма обычно не указывают, но в вопросе LMS требуется именно <b>2</b>.</div></div>
+</section>
+
+<section id="code1">
+<span class="badge">Тренажёр кода 1</span><h2>Подсчёт неуспешных попыток входа</h2>
+<div class="card">
+<h3>Идея решения</h3>
+<p>Нужно прочитать N записей <code>username status</code> и посчитать только статусы <code>FAIL</code>. Ключ словаря — имя пользователя, значение — число неудачных входов.</p>
+<div class="steps">
+<div class="step">Считать количество строк.</div><div class="step">Создать пустой словарь <code>fails = {}</code>.</div><div class="step">Разбить каждую строку на <code>username</code> и <code>status</code>.</div><div class="step">Если статус <code>FAIL</code>, увеличить счётчик пользователя.</div><div class="step">Вывести словарь.</div>
+</div>
+</div>
+<div class="card">
+<h3>Готовый код для LMS</h3>
+<div class="codebox"><button class="copy" onclick="copyCode('c1')">Копировать</button><pre id="c1"><code>n = int(input())
 
 fails = {}
 
@@ -187,34 +131,15 @@ for _ in range(n):
     if status == "FAIL":
         fails[username] = fails.get(username, 0) + 1
 
-print(fails)</pre></div>
-    </div>
-    <div class="card c5">
-      <h3>Почему здесь нужен dict?</h3>
-      <p class="explain">Имя пользователя становится <b>ключом</b>, а число ошибок — <b>значением</b>. Метод <code>get(username, 0)</code> возвращает текущий счётчик или 0, если ключ встретился впервые.</p>
-      <div class="kpi">O(1)</div><div class="note">средний доступ к ключу словаря</div>
-    </div>
-    <div class="card c12">
-      <h3>Пошаговый визуализатор</h3>
-      <div class="controls">
-        <button class="smallbtn" onclick="dictStep()">Следующий шаг ▶</button>
-        <button class="smallbtn alt" onclick="dictAuto()">Авто</button>
-        <button class="smallbtn warn" onclick="dictReset()">Сначала</button>
-      </div>
-      <div class="grid" style="margin-top:8px">
-        <div class="c6"><div class="stepper-lines" id="dictLines"></div></div>
-        <div class="c6"><div id="dictState" class="visual"></div><div id="dictExplain" class="statebox"></div></div>
-      </div>
-    </div>
-  </div>
+print(fails)</code></pre></div>
+</div>
+<div class="card"><h3>Ключевая строка</h3><pre><code>fails[username] = fails.get(username, 0) + 1</code></pre><p><code>get(username, 0)</code> означает: «возьми текущее значение, а если такого ключа ещё нет — считай, что там 0».</p></div>
 </section>
 
-<section id="trainer2">
-  <div class="eyebrow">03 · Тренажёры 2–3</div><h2>Множество: чёрный список и быстрый поиск</h2>
-  <div class="grid">
-    <div class="card c6">
-      <h3>Чёрный список IP</h3>
-      <div class="codewrap"><button class="copy" onclick="copyCode('code2')">Копировать</button><pre id="code2">n = int(input())
+<section id="code2">
+<span class="badge">Тренажёр кода 2</span><h2>Чёрный список IP-адресов</h2>
+<div class="card"><h3>Почему два множества?</h3><p><code>blacklist</code> хранит запрещённые IP. <code>found</code> хранит только уникальные IP из журнала, которые обнаружены в blacklist. Поэтому один и тот же адрес, встретившийся 10 раз, увеличит результат только на 1.</p></div>
+<div class="card"><div class="codebox"><button class="copy" onclick="copyCode('c2')">Копировать</button><pre id="c2"><code>n = int(input())
 
 blacklist = set()
 
@@ -222,6 +147,7 @@ for _ in range(n):
     blacklist.add(input())
 
 m = int(input())
+
 found = set()
 
 for _ in range(m):
@@ -230,11 +156,14 @@ for _ in range(m):
     if ip in blacklist:
         found.add(ip)
 
-print(len(found))</pre></div>
-    </div>
-    <div class="card c6">
-      <h3>Поиск числа</h3>
-      <div class="codewrap"><button class="copy" onclick="copyCode('code3')">Копировать</button><pre id="code3">n = int(input())
+print(len(found))</code></pre></div></div>
+<div class="note"><b>Важно:</b> если использовать обычный счётчик вместо <code>found = set()</code>, повторный адрес из журнала будет учитываться несколько раз, а по условию нужны именно <b>уникальные</b> IP.</div>
+</section>
+
+<section id="code3">
+<span class="badge">Тренажёр кода 3</span><h2>Есть ли число в наборе?</h2>
+<div class="card"><p>Здесь проверяется выбор структуры данных для membership test. Множество подходит лучше списка, когда основная операция — много раз спрашивать «есть ли элемент?».</p></div>
+<div class="card"><div class="codebox"><button class="copy" onclick="copyCode('c3')">Копировать</button><pre id="c3"><code>n = int(input())
 
 numbers = set()
 
@@ -246,28 +175,14 @@ x = int(input())
 if x in numbers:
     print("FOUND")
 else:
-    print("NOT FOUND")</pre></div>
-    </div>
-    <div class="card c12">
-      <h3>Симулятор blacklist</h3>
-      <div class="controls">
-        <input id="ipInput" value="10.0.0.1">
-        <button class="smallbtn" onclick="addBlacklist()">В чёрный список</button>
-        <button class="smallbtn alt" onclick="checkIp()">Проверить IP</button>
-        <button class="smallbtn warn" onclick="resetIp()">Сброс</button>
-      </div>
-      <div id="ipVisual" class="visual"></div>
-      <div id="ipResult" class="statebox">Добавьте несколько адресов, затем проверьте любой IP.</div>
-    </div>
-  </div>
+    print("NOT FOUND")</code></pre></div></div>
+<div class="answer"><div>✓</div><div><code>x in numbers</code> — ключевая операция. Для <code>set</code> она выполняется в среднем за O(1).</div></div>
 </section>
 
-<section id="textfreq">
-  <div class="eyebrow">04 · Тренажёр 4</div><h2>Частотный анализ текста</h2>
-  <p class="section-lead">Преобразуем текст к нижнему регистру, пропускаем всё кроме <code>a..z</code>, а словарь используем как набор счётчиков.</p>
-  <div class="grid">
-    <div class="card c6">
-      <div class="codewrap"><button class="copy" onclick="copyCode('code4')">Копировать</button><pre id="code4">text = input().lower()
+<section id="code4">
+<span class="badge">Тренажёр кода 4</span><h2>Частотный анализ текста журнала</h2>
+<div class="card"><h3>Что требуется</h3><p>Посчитать только английские буквы без учёта регистра, игнорировать пробелы, цифры и знаки, затем вывести найденные буквы по алфавиту.</p></div>
+<div class="card"><div class="codebox"><button class="copy" onclick="copyCode('c4')">Копировать</button><pre id="c4"><code>text = input().lower()
 
 freq = {}
 
@@ -276,23 +191,17 @@ for ch in text:
         freq[ch] = freq.get(ch, 0) + 1
 
 for ch in sorted(freq):
-    print(ch, freq[ch])</pre></div>
-      <p class="note">Сравнение <code>'a' &lt;= ch &lt;= 'z'</code> работает благодаря порядку кодовых точек символов.</p>
-    </div>
-    <div class="card c6">
-      <h3>Живой анализатор</h3>
-      <textarea id="freqText" rows="4" style="width:100%;background:#061821;color:white;border:1px solid #2d5c70;border-radius:12px;padding:12px">Hello, World! 2026</textarea>
-      <div class="controls"><button class="smallbtn good" onclick="analyzeFreq()">Анализировать</button></div>
-      <div id="freqBars" class="visual" style="align-items:flex-end"></div>
-    </div>
-  </div>
+    print(ch, freq[ch])</code></pre></div></div>
+<div class="grid">
+<div class="card c6"><h3>Почему <code>.lower()</code>?</h3><p>Чтобы <code>H</code> и <code>h</code> считались одной буквой.</p></div>
+<div class="card c6"><h3>Почему <code>sorted(freq)</code>?</h3><p>Сортируется последовательность ключей словаря, поэтому вывод идёт по алфавиту.</p></div>
+</div>
 </section>
 
-<section id="matrixlab">
-  <div class="eyebrow">05 · Тренажёр 5</div><h2>Матрица нагрузок: найти максимум и поднять строку вверх</h2>
-  <div class="grid">
-    <div class="card c7">
-      <div class="codewrap"><button class="copy" onclick="copyCode('code5')">Копировать</button><pre id="code5">n = int(input())
+<section id="code5">
+<span class="badge">Тренажёр кода 5</span><h2>Матрица нагрузок узлов</h2>
+<div class="card"><h3>Задача</h3><p>Найти максимальный элемент матрицы, определить строку его <b>первого</b> появления и поменять эту строку местами с первой.</p></div>
+<div class="card"><div class="codebox"><button class="copy" onclick="copyCode('c5')">Копировать</button><pre id="c5"><code>n = int(input())
 m = int(input())
 
 matrix = []
@@ -313,33 +222,18 @@ for i in range(n):
 matrix[0], matrix[max_row] = matrix[max_row], matrix[0]
 
 for row in matrix:
-    print(*row)</pre></div>
-    </div>
-    <div class="card c5">
-      <h3>Что важно</h3>
-      <p>1. Матрица — это список строк, где каждая строка тоже список.</p>
-      <p>2. Два вложенных цикла дают просмотр всех ячеек.</p>
-      <p>3. Обмен строк в Python можно выполнить одной операцией.</p>
-      <div class="tag">сложность O(n·m)</div>
-    </div>
-    <div class="card c12">
-      <h3>Визуализатор поиска максимума</h3>
-      <div class="controls">
-        <button class="smallbtn" onclick="matrixScan()">Сканировать ▶</button>
-        <button class="smallbtn good" onclick="matrixSwap()">Поднять строку максимума</button>
-        <button class="smallbtn warn" onclick="matrixReset()">Сброс</button>
-      </div>
-      <div id="matrix" class="matrix"></div>
-      <div id="matrixState" class="statebox"></div>
-    </div>
-  </div>
+    print(*row)</code></pre></div></div>
+<div class="note"><b>Почему именно <code>&gt;</code>, а не <code>&gt;=</code>?</b> Потому что условие требует первое вхождение максимума. При равенстве <code>max_row</code> не меняется.</div>
+<div class="card"><h3>Альтернативный рабочий вариант</h3><p>Ваш вариант с заранее созданной нулевой матрицей и временной переменной <code>c</code> также корректен. Он просто более пошаговый. Вариант выше короче и использует обмен значений средствами Python.</p></div>
 </section>
 
-<section id="security">
-  <div class="eyebrow">06 · Самостоятельная</div><h2>События безопасности: list + tuple + split(maxsplit=2)</h2>
-  <div class="grid">
-    <div class="card c7">
-      <div class="codewrap"><button class="copy" onclick="copyCode('code6')">Копировать</button><pre id="code6">n = int(input())
+<section id="independent">
+<span class="badge">Самостоятельная работа 1</span><h2>Фильтрация критичных событий</h2>
+<div class="card">
+<p>Каждое событие имеет три поля: <code>source</code>, <code>severity</code>, <code>message</code>. События собираются в список, а каждое отдельное событие хранится как кортеж.</p>
+<div class="theory"><b>Пример:</b><br><code>firewall HIGH blocked external connection</code><br>→<br><code>("firewall", "HIGH", "blocked external connection")</code></div>
+</div>
+<div class="card"><div class="codebox"><button class="copy" onclick="copyCode('c6')">Копировать</button><pre id="c6"><code>n = int(input())
 
 events = []
 
@@ -348,6 +242,7 @@ for _ in range(n):
     events.append((source, severity, message))
 
 critical_level = input()
+
 found = False
 
 for source, severity, message in events:
@@ -356,204 +251,155 @@ for source, severity, message in events:
         found = True
 
 if not found:
-    print("Нет критичных событий")</pre></div>
-    </div>
-    <div class="card c5">
-      <h3>Зачем <code>maxsplit=2</code>?</h3>
-      <p class="explain">Чтобы сообщение после второго пробела осталось целиком. Например, <code>firewall HIGH blocked external connection</code> превращается ровно в три поля.</p>
-      <div class="demo mono">("firewall", "HIGH", "blocked external connection")</div>
-    </div>
-    <div class="card c12">
-      <h3>Интерактивный фильтр событий</h3>
-      <div class="controls">
-        <select id="sev"><option>HIGH</option><option>MEDIUM</option><option>LOW</option></select>
-        <button class="smallbtn good" onclick="filterEvents()">Фильтровать</button>
-      </div>
-      <div id="eventVisual" class="visual"></div>
-      <div id="eventResult" class="statebox"></div>
-    </div>
-  </div>
+    print("Нет критичных событий")</code></pre></div></div>
+<div class="card"><h3>Что здесь тренируется</h3>
+<table><tr><th>Навык</th><th>Где в коде</th></tr>
+<tr><td>Список</td><td><code>events = []</code></td></tr>
+<tr><td>Кортеж</td><td><code>(source, severity, message)</code></td></tr>
+<tr><td>Разбиение строки</td><td><code>split(maxsplit=2)</code></td></tr>
+<tr><td>Добавление в список</td><td><code>events.append(...)</code></td></tr>
+<tr><td>Распаковка</td><td><code>for source, severity, message in events</code></td></tr>
+<tr><td>Флаг</td><td><code>found = False</code></td></tr></table>
+</div>
 </section>
 
-<section id="advanced">
-  <div class="eyebrow">07 · Продвинутый блок</div><h2>Bloom filter, хэш‑коллизии и бинарное дерево</h2>
-  <p class="section-lead">Эти темы на занятии обсуждались концептуально. Здесь они сведены в наглядные симуляции — без тяжёлой математики, но с корректной интуицией.</p>
-  <div class="grid">
-    <div class="card c6">
-      <h3>Bloom filter</h3>
-      <p>Вероятностная структура: может гарантированно сказать «элемента нет», но ответ «возможно есть» допускает ложное срабатывание.</p>
-      <div class="bits" id="bloomBits"></div>
-      <div class="controls">
-        <input id="bloomInput" value="10.0.0.1">
-        <button class="smallbtn" onclick="bloomAdd()">Добавить</button>
-        <button class="smallbtn alt" onclick="bloomCheck()">Проверить</button>
-      </div>
-      <div id="bloomState" class="statebox"></div>
-    </div>
-    <div class="card c6">
-      <h3>Хэш‑коллизия</h3>
-      <p>Разные данные могут попасть в одинаковое хэш‑значение. В демо используется намеренно слабый учебный хэш <code>sum(charCode) % 16</code>.</p>
-      <div class="controls"><input id="hashA" value="cat"><input id="hashB" value="tac"><button class="smallbtn" onclick="hashDemo()">Сравнить</button></div>
-      <div id="hashState" class="visual"></div>
-      <div class="note">В реальной криптографии используют криптографические хэш‑функции; это демо лишь показывает сам принцип коллизии.</div>
-    </div>
-    <div class="card c12">
-      <h3>BST: ищем число 13</h3>
-      <div class="bst">
-      <svg viewBox="0 0 900 300">
-        <g stroke="#2d6074" stroke-width="3">
-          <line x1="450" y1="50" x2="260" y2="130"/><line x1="450" y1="50" x2="640" y2="130"/>
-          <line x1="640" y1="130" x2="560" y2="220"/><line x1="640" y1="130" x2="730" y2="220"/>
-          <line x1="730" y1="220" x2="680" y2="280"/>
-        </g>
-        <g id="bstNodes">
-          <circle cx="450" cy="50" r="28"/><text x="450" y="56" text-anchor="middle">8</text>
-          <circle cx="260" cy="130" r="28"/><text x="260" y="136" text-anchor="middle">3</text>
-          <circle cx="640" cy="130" r="28"/><text x="640" y="136" text-anchor="middle">10</text>
-          <circle cx="560" cy="220" r="28"/><text x="560" y="226" text-anchor="middle">9</text>
-          <circle cx="730" cy="220" r="28"/><text x="730" y="226" text-anchor="middle">14</text>
-          <circle cx="680" cy="280" r="28"/><text x="680" y="286" text-anchor="middle">13</text>
-        </g>
-      </svg></div>
-      <div class="controls"><button class="smallbtn good" onclick="bstRun()">Показать путь поиска 13</button></div>
-      <div id="bstState" class="statebox">8 → ?</div>
-    </div>
-  </div>
+<section id="quiz2">
+<span class="badge">LMS · итоговый тест</span><h2>Все ответы с пояснениями</h2>
+
+<div class="q"><div class="q-title">1. Какой тип коллекции позволяет хранить пары ключ-значение?</div><div class="answer"><div>✓</div><div><b>dict</b></div></div></div>
+<div class="q"><div class="q-title">2. Какой тип коллекции гарантирует уникальность элементов?</div><div class="answer"><div>✓</div><div><b>set</b></div></div></div>
+<div class="q"><div class="q-title">3. Какой тип удобен для хранения отсортированного списка попыток входа?</div><div class="answer"><div>✓</div><div><b>list</b></div></div><div class="why">Список сохраняет порядок элементов и позволяет сортировку.</div></div>
+<div class="q"><div class="q-title">4. Какое свойство словаря важно при хранении журналов по ключу IP-адреса?</div><div class="answer"><div>✓</div><div><b>Быстрый доступ по ключу</b></div></div></div>
+<div class="q"><div class="q-title">5. Какова асимптотическая сложность доступа к элементу по индексу в списке?</div><div class="answer"><div>✓</div><div><b>O(1)</b></div></div></div>
+<div class="q"><div class="q-title">6. Какая сложность ожидается для доступа по ключу в словаре?</div><div class="answer"><div>✓</div><div><b>O(1) в среднем</b></div></div></div>
+<div class="q"><div class="q-title">7. Что из перечисленного может сделать систему более устойчивой к атакам перебора?</div><div class="answer"><div>✓</div><div><b>Использование множества для быстрых проверок принадлежности</b></div></div><div class="why">Это ответ, заложенный в LMS. На практике устойчивость к brute force обеспечивают прежде всего rate limiting, блокировки, MFA и другие механизмы; множество лишь помогает быстро проверять принадлежность к спискам.</div></div>
+<div class="q"><div class="q-title">8. Какой тип коллекции удобно использовать для хранения чёрного списка IP-адресов?</div><div class="answer"><div>✓</div><div><b>set</b></div></div></div>
+<div class="q"><div class="q-title">9. Сколько основных свойств включает триада CIA?</div><div class="answer"><div>✓</div><div><b>3</b></div></div><div class="why">Confidentiality, Integrity, Availability — конфиденциальность, целостность, доступность.</div></div>
+<div class="q"><div class="q-title">10. Какой символ в Python обозначает оператор принадлежности?</div><div class="answer"><div>✓</div><div><b>in</b></div></div></div>
 </section>
 
 <section>
-  <div class="eyebrow">08 · Информационная безопасность</div><h2>CIA triad</h2>
-  <div class="cia">
-    <div><b>Confidentiality</b><span>Конфиденциальность: шифрование, 2FA, разграничение доступа, VPN.</span></div>
-    <div><b>Integrity</b><span>Целостность: электронная подпись, хэш‑суммы, контроль изменений.</span></div>
-    <div><b>Availability</b><span>Доступность: резервирование, отказоустойчивость, защита от DDoS.</span></div>
-  </div>
+<span class="badge">ИБ</span><h2>Триада CIA</h2>
+<div class="grid">
+<div class="card c4"><h3>Confidentiality</h3><p><b>Конфиденциальность.</b> Данные доступны только тем, кому разрешено.</p><p>Примеры: 2FA, шифрование, разграничение доступа, VPN.</p></div>
+<div class="card c4"><h3>Integrity</h3><p><b>Целостность.</b> Данные не должны быть незаметно подменены.</p><p>Примеры: электронная подпись, хэш-суммы, контроль изменений.</p></div>
+<div class="card c4"><h3>Availability</h3><p><b>Доступность.</b> Система и данные должны оставаться доступными.</p><p>Примеры: резервирование, отказоустойчивость, защита от DDoS.</p></div>
+</div>
 </section>
 
-<section id="quiz">
-  <div class="eyebrow">09 · Проверка понимания</div><h2>Мини‑экзамен</h2>
-  <div class="card quiz">
-    <div class="progress"><i id="quizProgress"></i></div>
-    <div class="q"><b>1. Какая структура даёт средний O(1) доступ по ключу?</b>
-      <label><input type="radio" name="q1" value="0"> list</label><label><input type="radio" name="q1" value="1"> dict</label><label><input type="radio" name="q1" value="0"> tuple</label></div>
-    <div class="q"><b>2. Где гарантируется уникальность элементов?</b>
-      <label><input type="radio" name="q2" value="1"> set</label><label><input type="radio" name="q2" value="0"> list</label><label><input type="radio" name="q2" value="0"> str</label></div>
-    <div class="q"><b>3. Чем добавляют элемент в множество?</b>
-      <label><input type="radio" name="q3" value="0"> append()</label><label><input type="radio" name="q3" value="1"> add()</label><label><input type="radio" name="q3" value="0"> push()</label></div>
-    <div class="q"><b>4. Что означает хэш‑коллизия?</b>
-      <label><input type="radio" name="q4" value="1"> одинаковый хэш у разных данных</label><label><input type="radio" name="q4" value="0"> повреждение памяти</label></div>
-    <div class="q"><b>5. Почему <code>split(maxsplit=2)</code> полезен для логов?</b>
-      <label><input type="radio" name="q5" value="1"> сохраняет остаток сообщения третьим полем</label><label><input type="radio" name="q5" value="0"> сортирует слова</label></div>
-    <div class="controls"><button class="btn primary" onclick="gradeQuiz()">Проверить</button></div>
-    <div id="quizResult" class="quiz-result"></div>
-  </div>
+<section id="interactive">
+<span class="badge">Отдельный интерактивный блок</span><h2>Визуализаторы для повторения</h2>
+<p class="lead">Они не заменяют конспект, а помогают увидеть, что происходит «внутри» решений.</p>
+
+<div class="grid">
+<div class="interactive c6">
+<h3>1. dict-счётчик</h3><p>Нажимайте шаг — смотрите, как меняется словарь.</p>
+<div class="controls"><button onclick="dictStep()">Следующий шаг</button><button onclick="dictReset()">Сброс</button></div>
+<div id="dictInput" class="out"></div><div id="dictOut" class="out" style="margin-top:8px"></div>
+</div>
+
+<div class="interactive c6">
+<h3>2. set и blacklist</h3><p>Проверка принадлежности через <code>in</code>.</p>
+<div class="controls"><input id="ip" value="8.8.8.8"><button onclick="checkIP()">Проверить</button></div>
+<div id="ipSet" class="out"></div><div id="ipOut" class="out" style="margin-top:8px"></div>
+</div>
+
+<div class="interactive c6">
+<h3>3. split(maxsplit=2)</h3>
+<div class="controls"><input id="splitText" style="min-width:80%" value="firewall HIGH blocked external connection"><button onclick="doSplit()">Разбить</button></div>
+<div id="splitOut" class="out"></div>
+</div>
+
+<div class="interactive c6">
+<h3>4. Частотный словарь</h3>
+<div class="controls"><input id="freqText" value="Hello, World! 2026"><button onclick="freq()">Посчитать</button></div>
+<div id="freqOut" class="out"></div>
+</div>
+
+<div class="interactive c12">
+<h3>5. Поиск максимума в матрице</h3>
+<svg class="inline-svg" viewBox="0 0 800 250" id="matrixSvg">
+<text x="28" y="30" fill="#56747c" font-size="16">Нажмите «Сканировать» — ячейки будут проверяться по порядку.</text>
+</svg>
+<div class="controls"><button onclick="matrixScan()">Сканировать</button><button onclick="matrixSwap()">Переставить строку</button><button onclick="matrixReset()">Сброс</button></div>
+<div id="matrixOut" class="out"></div>
+</div>
+
+<div class="interactive c6">
+<h3>6. Bloom filter — модель</h3><p>Учебная визуализация: два простых хэша включают биты.</p>
+<div class="controls"><input id="bloomVal" value="10.0.0.1"><button onclick="bloomAdd()">Добавить</button><button onclick="bloomCheck()">Проверить</button></div>
+<div id="bloomBits" class="out"></div><div id="bloomOut" class="out" style="margin-top:8px"></div>
+</div>
+
+<div class="interactive c6">
+<h3>7. Быстрая самопроверка</h3>
+<div class="controls"><select id="selfQ"><option value="dict">Пары ключ-значение</option><option value="set">Уникальные элементы</option><option value="list">Упорядоченная изменяемая коллекция</option><option value="tuple">Неизменяемая запись</option></select><input id="selfA" placeholder="Ваш ответ"><button onclick="selfCheck()">Проверить</button></div>
+<div id="selfOut" class="out"></div>
+</div>
+</div>
 </section>
 
 <section>
 <div class="card">
-<h3>Короткая шпаргалка</h3>
-<div class="grid">
-<div class="c3"><span class="tag">list</span><p><code>[]</code><br><code>.append(x)</code><br>порядок важен</p></div>
-<div class="c3"><span class="tag">dict</span><p><code>{key: value}</code><br><code>.get(key, 0)</code><br>быстро по ключу</p></div>
-<div class="c3"><span class="tag">set</span><p><code>set()</code><br><code>.add(x)</code><br>уникальность + <code>in</code></p></div>
-<div class="c3"><span class="tag">tuple</span><p><code>(a, b, c)</code><br>неизменяемый<br>удобен для записей</p></div>
-</div>
-<details><summary>Что выбрать?</summary><p>Нужен порядок и изменение → <b>list</b>. Нужен быстрый доступ по имени/ID → <b>dict</b>. Нужны уникальные значения и проверка принадлежности → <b>set</b>. Нужна фиксированная запись из полей → <b>tuple</b>.</p></details>
+<h2 style="font-size:28px">Шпаргалка перед отправкой в LMS</h2>
+<table>
+<tr><th>Если в условии...</th><th>Скорее всего нужен...</th></tr>
+<tr><td>«ключ → значение», счётчик по имени/IP</td><td><code>dict</code></td></tr>
+<tr><td>«уникальные», «чёрный список», «есть ли элемент?»</td><td><code>set</code></td></tr>
+<tr><td>важен порядок, нужны индексы, добавление в конец</td><td><code>list</code></td></tr>
+<tr><td>фиксированная запись из полей</td><td><code>tuple</code></td></tr>
+<tr><td>разделить строку на слова</td><td><code>split()</code></td></tr>
+<tr><td>сообщение после первых двух полей оставить целиком</td><td><code>split(maxsplit=2)</code></td></tr>
+<tr><td>добавить в список</td><td><code>append()</code></td></tr>
+<tr><td>добавить во множество</td><td><code>add()</code></td></tr>
+</table>
 </div>
 </section>
-</main>
 
-<div class="footer">Код будущего · интерактивный конспект занятия · 2026</div>
-<div class="toast" id="toast">Скопировано</div>
+</main>
+<div class="footer">Конспект занятия «Код будущего» · структуры данных Python и информационная безопасность</div>
 
 <script>
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1200)}
-function copyCode(id){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>toast('Код скопирован'))}
-function focusStructure(t){$('#structType').value=t;renderStruct()}
-let structData={list:[1,2,2],set:new Set([1,2]),dict:{user:2},tuple:[1,2,3]};
-function renderStruct(){
- const t=$('#structType').value,v=$('#structVisual'),h=$('#structHint');v.innerHTML='';
- let arr=t==='set'?[...structData.set]:t==='dict'?Object.entries(structData.dict):structData[t];
- if(t==='dict'){arr.forEach(([k,val])=>v.innerHTML+=`<div class="pair"><span class="node key">${k}</span><span class="arrow">→</span><span class="node value">${val}</span></div>`)}
- else arr.forEach(x=>v.innerHTML+=`<span class="node">${x}</span>`);
- h.innerHTML=t==='list'?'list: порядок сохраняется, повторы допустимы.'
- :t==='set'?'set: повторы исчезают автоматически.'
- :t==='dict'?'dict: доступ идёт по ключу.'
- :'tuple: в Python такой объект нельзя изменить после создания.';
+function copyCode(id){
+ const text=document.getElementById(id).innerText;
+ navigator.clipboard.writeText(text);
+ const b=document.activeElement;if(b&&b.classList.contains('copy')){const t=b.textContent;b.textContent='Скопировано ✓';setTimeout(()=>b.textContent=t,1000)}
 }
-function structAdd(){
- let t=$('#structType').value,x=$('#structValue').value;
- if(t==='list')structData.list.push(x);
- if(t==='set')structData.set.add(x);
- if(t==='dict'){let [k,v]=x.includes(':')?x.split(':'):[x,'1'];structData.dict[k]=v}
- if(t==='tuple'){toast('tuple неизменяем — создаём новый');structData.tuple=[...structData.tuple,x]}
- renderStruct()
-}
-function structReset(){structData={list:[1,2,2],set:new Set([1,2]),dict:{user:2},tuple:[1,2,3]};renderStruct()}
-$('#structType').addEventListener('change',renderStruct);renderStruct();
-
-const dictInput=[['ivan','FAIL'],['anna','SUCCESS'],['ivan','FAIL'],['oleg','FAIL'],['anna','FAIL']];
+const rows=[['ivan','FAIL'],['anna','SUCCESS'],['ivan','FAIL'],['oleg','FAIL'],['anna','FAIL']];
 let di=0,dd={};
-function drawDictLines(){let html='';dictInput.forEach((r,i)=>html+=`<div class="step-line ${i===di?'active':''}">${i+1}. ${r[0]} ${r[1]}</div>`);$('#dictLines').innerHTML=html}
-function dictStep(){
- if(di>=dictInput.length){$('#dictExplain').textContent='Готово: '+JSON.stringify(dd);return}
- const [u,s]=dictInput[di];
- if(s==='FAIL')dd[u]=(dd[u]||0)+1;
- di++; drawDictLines(); renderDD();
- $('#dictExplain').innerHTML=s==='FAIL'?`Статус <b>FAIL</b>: увеличиваем fails["${u}"] на 1.`:`Статус ${s}: условие не сработало, словарь не меняется.`;
+function renderDict(){
+ document.getElementById('dictInput').textContent=di<rows.length?`Следующая строка: ${rows[di][0]} ${rows[di][1]}`:'Все строки обработаны';
+ document.getElementById('dictOut').textContent=JSON.stringify(dd);
 }
-function renderDD(){let h='';Object.entries(dd).forEach(([k,v])=>h+=`<div class="pair"><span class="node key">${k}</span><span class="arrow">→</span><span class="node value">${v}</span></div>`);$('#dictState').innerHTML=h||'<span class="note">пустой словарь {}</span>'}
-function dictReset(){di=0;dd={};drawDictLines();renderDD();$('#dictExplain').textContent='Нажмите «Следующий шаг».'}
-function dictAuto(){dictReset();let timer=setInterval(()=>{dictStep();if(di>=dictInput.length)clearInterval(timer)},650)}
-dictReset();
+function dictStep(){if(di>=rows.length)return;let [u,s]=rows[di++];if(s==='FAIL')dd[u]=(dd[u]||0)+1;renderDict()}
+function dictReset(){di=0;dd={};renderDict()}dictReset();
 
-let bl=new Set(['8.8.8.8','10.0.0.1']);
-function drawIPs(hit){$('#ipVisual').innerHTML=[...bl].map(x=>`<span class="node ${x===hit?'hit':''}">${x}</span>`).join('')}
-function addBlacklist(){bl.add($('#ipInput').value.trim());drawIPs();toast('Добавлено')}
-function checkIp(){let x=$('#ipInput').value.trim(),ok=bl.has(x);drawIPs(ok?x:null);$('#ipResult').innerHTML=ok?`<b>${x}</b> найден в blacklist → доступ блокируем.`:`<b>${x}</b> отсутствует в blacklist.`}
-function resetIp(){bl=new Set(['8.8.8.8','10.0.0.1']);drawIPs();$('#ipResult').textContent='Список сброшен.'} drawIPs();
+const blacklist=new Set(['10.0.0.1','8.8.8.8','1.1.1.1']);
+document.getElementById('ipSet').textContent='blacklist = '+JSON.stringify([...blacklist]);
+function checkIP(){let x=document.getElementById('ip').value.trim();document.getElementById('ipOut').innerHTML=blacklist.has(x)?'<span class="good">FOUND: IP есть в blacklist</span>':'<span class="bad">NOT FOUND: IP нет в blacklist</span>'}
 
-function analyzeFreq(){
- let txt=$('#freqText').value.toLowerCase(),f={};
- for(const ch of txt) if(ch>='a'&&ch<='z')f[ch]=(f[ch]||0)+1;
- let max=Math.max(1,...Object.values(f));
- $('#freqBars').innerHTML=Object.keys(f).sort().map(ch=>`<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:28px;height:${30+f[ch]/max*90}px;background:linear-gradient(#50e3ff,#45f2b8);border-radius:8px 8px 3px 3px"></div><b>${ch}</b><small>${f[ch]}</small></div>`).join('');
-} analyzeFreq();
+function doSplit(){let s=document.getElementById('splitText').value.trim();let p=s.split(/\s+/);let a=[p[0]||'',p[1]||'',p.slice(2).join(' ')];document.getElementById('splitOut').textContent=JSON.stringify(a,null,2)}
+doSplit();
 
-let matrixOrig=[[1,2,3],[4,9,6],[7,8,5]],matrixData=matrixOrig.map(r=>[...r]),scanPos=0,maxPos=[0,0],maxVal=matrixData[0][0];
-function drawMatrix(){
- let m=$('#matrix');m.style.gridTemplateColumns=`repeat(${matrixData[0].length},1fr)`;
- m.innerHTML='';matrixData.forEach((r,i)=>r.forEach((v,j)=>m.innerHTML+=`<div class="cell ${i===maxPos[0]&&j===maxPos[1]?'max':''}">${v}</div>`))
+function freq(){let f={};for(const ch of document.getElementById('freqText').value.toLowerCase()){if(ch>='a'&&ch<='z')f[ch]=(f[ch]||0)+1}document.getElementById('freqOut').textContent=Object.keys(f).sort().map(k=>`${k} ${f[k]}`).join('\n')}freq();
+
+let m0=[[1,2,3],[4,9,6],[7,8,5]],m=m0.map(r=>[...r]),mi=0,max={v:1,r:0,c:0};
+function drawM(){
+ const svg=document.getElementById('matrixSvg');let s='<text x="28" y="30" fill="#56747c" font-size="16">Матрица нагрузок</text>';
+ m.forEach((r,i)=>r.forEach((v,j)=>{let x=80+j*150,y=65+i*55,hot=(i===max.r&&j===max.c);s+=`<rect x="${x}" y="${y}" width="110" height="42" rx="9" fill="${hot?'#ffe89a':'#e7f3f4'}" stroke="#61929a"/><text x="${x+55}" y="${y+27}" text-anchor="middle" fill="#17353a" font-size="18" font-weight="700">${v}</text>`}));svg.innerHTML=s
 }
-function matrixScan(){
- const cols=matrixData[0].length,total=matrixData.length*cols;
- if(scanPos>=total){$('#matrixState').textContent=`Сканирование завершено. Максимум ${maxVal} в строке ${maxPos[0]+1}.`;return}
- let i=Math.floor(scanPos/cols),j=scanPos%cols,v=matrixData[i][j];
- if(v>maxVal){maxVal=v;maxPos=[i,j]}
- scanPos++;drawMatrix();$('#matrixState').textContent=`Проверяем [${i}][${j}] = ${v}. Текущий максимум: ${maxVal}.`;
-}
-function matrixSwap(){let r=maxPos[0];[matrixData[0],matrixData[r]]=[matrixData[r],matrixData[0]];maxPos=[0,maxPos[1]];drawMatrix();$('#matrixState').textContent='Строка с первым глобальным максимумом поднята наверх.'}
-function matrixReset(){matrixData=matrixOrig.map(r=>[...r]);scanPos=0;maxPos=[0,0];maxVal=matrixData[0][0];drawMatrix();$('#matrixState').textContent='Нажмите «Сканировать».'} matrixReset();
+function matrixScan(){let cols=m[0].length,total=m.length*cols;if(mi>=total){document.getElementById('matrixOut').textContent=`Готово. max=${max.v}, строка=${max.r+1}`;return}let r=Math.floor(mi/cols),c=mi%cols,v=m[r][c];if(v>max.v)max={v,r,c};mi++;drawM();document.getElementById('matrixOut').textContent=`Проверили [${r}][${c}] = ${v}; текущий максимум = ${max.v}`}
+function matrixSwap(){let r=max.r;[m[0],m[r]]=[m[r],m[0]];max.r=0;drawM();document.getElementById('matrixOut').textContent='Строка с максимумом поднята на первое место.'}
+function matrixReset(){m=m0.map(r=>[...r]);mi=0;max={v:m[0][0],r:0,c:0};drawM();document.getElementById('matrixOut').textContent='Готово к сканированию.'}matrixReset();
 
-const ev=[['firewall','HIGH','blocked external connection'],['auth','LOW','user login'],['db','MEDIUM','slow query detected'],['vpn','HIGH','suspicious tunnel']];
-function drawEvents(){ $('#eventVisual').innerHTML=ev.map(e=>`<div class="pair"><span class="node key">${e[0]}</span><span class="node">${e[1]}</span><span class="node value">${e[2]}</span></div>`).join('')}
-function filterEvents(){let s=$('#sev').value,r=ev.filter(e=>e[1]===s);$('#eventResult').innerHTML=r.length?r.map(e=>`[CRITICAL] ${e[0]}: ${e[2]}`).join('<br>'):'Нет критичных событий';} drawEvents();
+let bits=new Array(16).fill(0),added=new Set();
+function h1(s){return [...s].reduce((a,c)=>a+c.charCodeAt(0),0)%16} function h2(s){return [...s].reduce((a,c,i)=>a+c.charCodeAt(0)*(i+1),7)%16}
+function drawBits(){document.getElementById('bloomBits').innerHTML=bits.map((b,i)=>`<span class="chip ${b?'good':''}">${i}:${b}</span>`).join('')}
+function bloomAdd(){let s=document.getElementById('bloomVal').value;bits[h1(s)]=bits[h2(s)]=1;added.add(s);drawBits();document.getElementById('bloomOut').textContent=`Установлены биты ${h1(s)} и ${h2(s)}`}
+function bloomCheck(){let s=document.getElementById('bloomVal').value,ok=bits[h1(s)]&&bits[h2(s)];document.getElementById('bloomOut').textContent=ok?(added.has(s)?'Возможно есть → в этой демонстрации действительно добавлялся':'Возможно есть → потенциальное ложноположительное срабатывание'):'Точно нет'}
+drawBits();
 
-let bloom=new Array(18).fill(0),bloomAdded=new Set();
-function h1(s){return [...s].reduce((a,c)=>a+c.charCodeAt(0),0)%bloom.length}
-function h2(s){return [...s].reduce((a,c,i)=>a+c.charCodeAt(0)*(i+3),7)%bloom.length}
-function drawBloom(){ $('#bloomBits').innerHTML=bloom.map((b,i)=>`<span class="bit ${b?'on':''}">${b}</span>`).join('')}
-function bloomAdd(){let s=$('#bloomInput').value;bloom[h1(s)]=1;bloom[h2(s)]=1;bloomAdded.add(s);drawBloom();$('#bloomState').textContent=`Установлены биты ${h1(s)} и ${h2(s)}.`}
-function bloomCheck(){let s=$('#bloomInput').value,ok=bloom[h1(s)]&&bloom[h2(s)];$('#bloomState').innerHTML=ok?`Ответ фильтра: <b>возможно есть</b>. ${bloomAdded.has(s)?'В демо элемент действительно добавлялся.':'Это может быть ложное срабатывание.'}`:`Ответ фильтра: <b>точно нет</b>.`;} drawBloom();
-
-function weakHash(s){return [...s].reduce((a,c)=>a+c.charCodeAt(0),0)%16}
-function hashDemo(){let a=$('#hashA').value,b=$('#hashB').value,ha=weakHash(a),hb=weakHash(b);$('#hashState').innerHTML=`<div class="pair"><span class="node key">${a}</span><span class="arrow">→</span><span class="node value">${ha}</span></div><div class="pair"><span class="node key">${b}</span><span class="arrow">→</span><span class="node value">${hb}</span></div><b>${ha===hb&&a!==b?'Коллизия! Разные данные, одинаковый хэш.':'Коллизии нет.'}</b>`}
-
-function bstRun(){const circles=$$('#bstNodes circle');circles.forEach(c=>c.classList.remove('hot'));let seq=[0,2,4,5],labels=['8','10','14','13'],k=0;$('#bstState').textContent='';let t=setInterval(()=>{if(k>=seq.length){clearInterval(t);$('#bstState').textContent+=' → FOUND';return}circles[seq[k]].classList.add('hot');$('#bstState').textContent+=(k?' → ':'')+labels[k];k++},550)}
-
-function gradeQuiz(){let score=0,total=5;for(let i=1;i<=total;i++){let x=document.querySelector(`input[name=q${i}]:checked`);if(x)score+=Number(x.value)}$('#quizProgress').style.width=(score/total*100)+'%';$('#quizResult').textContent=`Результат: ${score}/${total}. `+(score===5?'Отлично — тема усвоена.':score>=3?'Хорошо. Пересмотри блоки, где были ошибки.':'Стоит ещё раз пройти интерактивные примеры.')}
-
+function selfCheck(){let q=document.getElementById('selfQ').value,a=document.getElementById('selfA').value.trim().toLowerCase();let ok=a===q;document.getElementById('selfOut').innerHTML=ok?'<span class="good">Верно ✓</span>':`<span class="bad">Не совсем. Правильный ответ: ${q}</span>`}
 </script>
 </body>
 </html>
