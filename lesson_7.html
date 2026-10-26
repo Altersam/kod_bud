@@ -1,6 +1,6 @@
 <!doctype html><html lang="ru"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Занятие 7 — ООП, классы и инкапсуляция в кибербезопасности</title>
+<title>Занятие 7 — ООП, инкапсуляция и защита данных · интерактивная лекция</title>
 <style>
 :root{--b:#123f82;--c:#39adbb;--i:#111827;--m:#5d6b78;--l:#d9e6e9;--g:#178b52;--r:#b9364b}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(#fbfdfe,#eff6f8);color:var(--i);font:16px/1.58 system-ui,Segoe UI,Arial,sans-serif}a{color:var(--b)}button,input,select,textarea{font:inherit}.w{width:min(1160px,calc(100% - 28px));margin:auto}
@@ -36,11 +36,169 @@ code,pre{font-family:ui-monospace,Consolas,monospace}code{background:#edf2f5;pad
 .explain-step{background:#f8fcfd;border:1px solid #dce9ec;border-radius:16px;padding:16px}
 .explain-step b{color:var(--b)}
 
+
+/* ===== Lesson 7 v2: execution visualizers ===== */
+.recording-box{background:#fff;border:1px solid var(--l);border-radius:22px;padding:18px;box-shadow:0 12px 32px #153f5510}
+.video-ratio{position:relative;aspect-ratio:16/9;background:#081c27;border-radius:16px;overflow:hidden}
+.video-ratio iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.correction{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start;background:#fff;border:1px solid var(--l);border-radius:16px;padding:15px}
+.correction .ico{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;background:#eaf7f8;color:var(--b);font-weight:950}
+.correction del{color:#9b5260;text-decoration-thickness:2px}
+.correction .right{color:#126b48;font-weight:800}
+.analogy{background:linear-gradient(135deg,#f8fcfd,#eef9fa);border:1px solid #cfe8eb;border-radius:18px;padding:18px}
+.analogy h3{color:var(--b)}
+.lab-shell{background:#071b24;border:1px solid #214b59;border-radius:22px;padding:18px;color:#eefcff;box-shadow:0 20px 55px #071b2428}
+.lab-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 16px}
+.lab-tabs button{border:1px solid #376879;background:#103743;color:#daf7fa;padding:8px 11px;border-radius:10px;font-weight:850;cursor:pointer}
+.lab-tabs button.active{background:var(--c);border-color:var(--c);color:white}
+.lab-grid{display:grid;grid-template-columns:1.1fr .72fr 1fr;gap:14px;align-items:stretch}
+.lab-code,.lab-stage,.lab-memory{background:#0a2630;border:1px solid #244d5b;border-radius:16px;min-height:360px;overflow:hidden}
+.lab-head{padding:10px 12px;border-bottom:1px solid #244d5b;color:#9fdde3;font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}
+.code-lines{padding:10px 0;font:13px/1.55 ui-monospace,Consolas,monospace;overflow:auto}
+.code-line{padding:3px 11px 3px 44px;position:relative;white-space:pre;min-height:26px;color:#cfe7ed;transition:.25s}
+.code-line:before{content:attr(data-n);position:absolute;left:10px;width:24px;text-align:right;color:#557a86}
+.code-line.current{background:#123f4b;color:#fff;box-shadow:inset 4px 0 #4de0e6}
+.code-line.current:after{content:"▶";position:absolute;left:3px;color:#58e5eb;animation:cursorPulse .8s ease-in-out infinite alternate}
+@keyframes cursorPulse{to{opacity:.3}}
+.lab-stage{position:relative;display:flex;flex-direction:column}
+.stage-zone{position:relative;flex:1;min-height:260px;padding:16px;display:grid;place-items:center}
+.processor{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#1d6570,#0e3944 65%);border:2px solid #54d8df;display:grid;place-items:center;text-align:center;font-weight:950;box-shadow:0 0 0 10px #49dce50c}
+.processor.processing{animation:processorPulse .6s ease-in-out}
+@keyframes processorPulse{50%{transform:scale(1.06);box-shadow:0 0 0 18px #49dce51c}}
+.flow-track{position:absolute;left:8%;right:8%;top:50%;height:3px;background:#285361;z-index:0}
+.value-chip{position:absolute;z-index:4;left:8%;top:calc(50% - 18px);background:#ffd96a;color:#29220c;padding:7px 10px;border-radius:9px;font:800 12px ui-monospace,Consolas,monospace;box-shadow:0 5px 18px #0007}
+.value-chip.fly{animation:valueFly .72s ease-in-out forwards}
+@keyframes valueFly{0%{left:8%;transform:scale(.82)}50%{transform:scale(1.08)}100%{left:72%;transform:scale(.9)}}
+.stack{padding:12px;display:grid;gap:7px}
+.stack-frame{background:#103541;border:1px solid #2a6170;border-radius:10px;padding:9px}
+.stack-frame b{color:#7ce4e7}
+.mem-list{padding:12px;display:grid;gap:9px}
+.mem-row{display:grid;grid-template-columns:1fr auto;gap:10px;background:#0f313c;border:1px solid #2b5865;border-radius:10px;padding:9px 10px;transition:.3s}
+.mem-row.changed{background:#14594f;border-color:#51dfba;transform:translateX(4px)}
+.mem-row .name{color:#a9dfe5}.mem-row .val{color:#fff;font:800 13px ui-monospace,Consolas,monospace}
+.lab-desc{margin-top:14px;background:#0d2d37;border:1px solid #285562;border-radius:13px;padding:13px;color:#d7eef1;min-height:68px}
+.lab-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.lab-actions button{border:0;border-radius:10px;padding:9px 13px;font-weight:900;cursor:pointer;background:var(--c);color:#fff}
+.lab-actions .alt{background:#315d75}.lab-actions .warn{background:#78414d}
+.lab-progress{height:7px;background:#0b2c36;border-radius:999px;overflow:hidden;margin-top:12px}.lab-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#46e0e5,#66efbd);transition:.3s}
+.truth-table{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.truth{border-radius:14px;padding:14px;border:1px solid var(--l);background:#fff}
+.truth.badside{border-top:4px solid var(--r)}.truth.goodside{border-top:4px solid var(--g)}
+.micro-flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}.micro-step{padding:9px 10px;border-radius:10px;background:#edf7f8;border:1px solid #cfe3e7;font-weight:800}.micro-arr{color:var(--c);font-size:21px;font-weight:950}
+.annotation{display:inline-block;background:#fff2b9;color:#584500;border-radius:7px;padding:2px 6px;font-weight:850}
+@media(max-width:1000px){.lab-grid{grid-template-columns:1fr}.lab-code,.lab-stage,.lab-memory{min-height:auto}.stage-zone{min-height:230px}}
+
 </style></head><body>
 <header class="hero"><div class="w hg"><div><div class="mod">Занятие 7 · Модуль 1</div><h1>Python как инструмент для <span>кибербезопасности</span></h1><div class="sub">Тема 1.5. Объектно‑ориентированная логика защиты: классы и инкапсуляция</div><p>Интерактивная версия презентации: теория, код, схемы, анимации, визуализаторы и задания.</p></div><div class="hc"><svg viewBox="0 0 520 390"><defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#7cd9df"/></marker></defs><rect x="25" y="25" width="470" height="340" rx="25" fill="#0e3775" stroke="#67ced7"/><g class="float"><rect x="64" y="75" width="160" height="98" rx="18" fill="#fff"/><text x="88" y="108" fill="#39adbb" font-size="18" font-weight="800">КЛАСС</text><text x="88" y="141" fill="#0d1117" font-size="22" font-weight="900">BankAccount</text></g><g class="float" style="animation-delay:.7s"><rect x="294" y="75" width="160" height="98" rx="18" fill="#fff"/><text x="318" y="108" fill="#39adbb" font-size="18" font-weight="800">ОБЪЕКТ</text><text x="318" y="141" fill="#0d1117" font-size="22" font-weight="900">account</text></g><line x1="224" y1="124" x2="292" y2="124" stroke="#7cd9df" stroke-width="4" marker-end="url(#a)" class="dash"/><rect x="150" y="230" width="220" height="70" rx="18" fill="#39adbb"/><text x="260" y="260" text-anchor="middle" fill="white" font-size="20" font-weight="900">ИНКАПСУЛЯЦИЯ</text><text x="260" y="283" text-anchor="middle" fill="white" font-size="14">контроль доступа к состоянию</text></svg></div></div></header>
-<nav><div class="w"><a href="#oop">ООП</a><a href="#class">Класс и объект</a><a href="#how-oop">Как работает ООП</a><a href="#principles">4 принципа</a><a href="#encap">Инкапсуляция</a><a href="#inherit">Наследование</a><a href="#poly">Полиморфизм</a><a href="#access">Доступ</a><a href="#mangle">Name mangling</a><a href="#pass">Пароли</a><a href="#prop">@property</a><a href="#token">Token</a><a href="#practice">Практика</a></div></nav>
+<nav><div class="w"><a href="#recording">Запись</a><a href="#clarifications">Уточнения</a><a href="#execution-lab">Как исполняется код</a><a href="#oop">ООП</a><a href="#class">Класс и объект</a><a href="#how-oop">Как работает ООП</a><a href="#principles">4 принципа</a><a href="#encap">Инкапсуляция</a><a href="#inherit">Наследование</a><a href="#poly">Полиморфизм</a><a href="#access">Доступ</a><a href="#mangle">Name mangling</a><a href="#pass">Пароли</a><a href="#decorators">Декораторы</a><a href="#prop">@property</a><a href="#token">Token</a><a href="#practice">Практика</a></div></nav>
 <main class="w">
+
+<section id="recording">
+<span class="eye">Занятие 7 · запись</span>
+<h2>Запись занятия + исправленный интерактивный конспект</h2>
+<p class="lead">Запись оставлена прямо на странице. Конспект ниже специально уточняет те места, которые на занятии вызвали вопросы или были объяснены неточно.</p>
+<div class="recording-box">
+  <div class="video-ratio">
+    <iframe
+      src="https://my.mts-link.ru/73314937/27167873442/record-new/26751887060"
+      title="Занятие 7 — Код будущего"
+      loading="lazy"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+  <p style="margin:10px 2px 0;color:#647782">Если MTS Link запрещает встраивание в конкретном браузере:
+    <a href="https://my.mts-link.ru/73314937/27167873442/record-new/26751887060" target="_blank" rel="noopener">открыть запись отдельно ↗</a>.
+  </p>
+</div>
+</section>
+
+<section id="clarifications">
+<span class="eye">Перед началом</span>
+<h2>Семь важных уточнений к объяснению</h2>
+<p class="lead">Это не дополнительные сложности. Наоборот: правильная модель делает тему значительно проще.</p>
+
+<div class="grid">
+  <div class="correction c6"><div class="ico">1</div><div><h3><code>self</code></h3><p><del>«переменная внутри класса»</del></p><p class="right">Это ссылка на конкретный экземпляр, с которым сейчас работает метод.</p><p><code>ivan.deposit(500)</code> → Python связывает вызов так, что внутри метода <code>self is ivan</code>.</p></div></div>
+  <div class="correction c6"><div class="ico">2</div><div><h3>Инкапсуляция</h3><p><del>«двойное подчёркивание делает переменную защищённой»</del></p><p class="right">Смысл — контролировать способы изменения состояния и сохранять инварианты.</p><p><code>__name</code> лишь включает name mangling; это не шифрование и не настоящая граница безопасности.</p></div></div>
+  <div class="correction c6"><div class="ico">3</div><div><h3>Наследование</h3><p><del>«класс внутри класса», «страна → город → улица»</del></p><p class="right">Это отношение специализации <b>IS‑A</b>: SecurityAnalyst <b>является</b> Employee.</p><p><code>super()</code> вызывает реализацию родительского класса, а не «переназначает класс».</p></div></div>
+  <div class="correction c6"><div class="ico">4</div><div><h3>Полиморфизм</h3><p><del>«нужно объединить классы в массив»</del></p><p class="right">Список не обязателен. Главное — одинаковый интерфейс у объектов разных типов.</p><p><code>auth.authenticate()</code> может работать для пароля, токена или сертификата.</p></div></div>
+  <div class="correction c6"><div class="ico">5</div><div><h3>Хэш пароля</h3><p><del>«пароль разблокирует хэш», «тип шифрования»</del></p><p class="right">Хэш/KDF не расшифровывается. При входе результат вычисляют заново и сравнивают.</p><p>Одинаковый пароль + разные соли → разные сохранённые производные значения.</p></div></div>
+  <div class="correction c6"><div class="ico">6</div><div><h3>Декоратор</h3><p><del>«перехватывает переменные»</del></p><p class="right"><code>@decorator</code> означает примерно <code>func = decorator(func)</code>.</p><p><code>@cache</code> запоминает результат функции для уже встречавшегося набора аргументов.</p></div></div>
+  <div class="correction c12"><div class="ico">7</div><div><h3>TTL и revoke</h3><p><del>«revoke — отправить заново / пересоздать»</del></p><p class="right"><b>TTL = Time To Live</b> — срок жизни. <code>revoke()</code> — немедленно отозвать уже выданный токен. Повторная выдача — отдельная операция.</p></div></div>
+</div>
+</section>
+
+
+<section id="mental-models">
+<span class="eye">Модели без «кубиков»</span>
+<h2>Три рабочие аналогии, которые не ломают смысл ООП</h2>
+<div class="grid">
+  <div class="analogy c4">
+    <h3>Объект = запись состояния + допустимые операции</h3>
+    <p>Не «кубик», а скорее <b>банковский счёт в системе</b>: у него есть состояние (<code>owner</code>, <code>balance</code>) и набор разрешённых операций (<code>deposit</code>, <code>withdraw</code>).</p>
+    <p>Метод не просто «функция рядом»: он работает с состоянием <b>конкретного</b> экземпляра через <code>self</code>.</p>
+  </div>
+  <div class="analogy c4">
+    <h3>Инкапсуляция = транзакционный шлюз</h3>
+    <p>Клиент банка не имеет SQL-доступа и не пишет <code>balance = 1_000_000</code>. Он отправляет команду «перевести 500».</p>
+    <p>Шлюз проверяет права, сумму, лимиты, журналирует операцию — и только затем изменяет состояние.</p>
+  </div>
+  <div class="analogy c4">
+    <h3>Полиморфизм = единая точка аутентификации</h3>
+    <p>Система вызывает <code>authenticate()</code>, не зная деталей:</p>
+    <div class="micro-flow"><span class="micro-step">PasswordAuth</span><span class="micro-step">TokenAuth</span><span class="micro-step">CertificateAuth</span></div>
+    <p>Интерфейс одинаковый, реализация проверки различается.</p>
+  </div>
+</div>
+</section>
 <section id="oop"><span class="eye">Что изучаем</span><h2>Что проверяется и зачем это нужно</h2><p class="lead">Тема связывает классическое ООП с проектированием безопасных программных компонентов.</p><div class="grid"><div class="card c6"><h3>Ключевые понятия</h3><ol><li>Класс и объект</li><li>Атрибуты и методы</li><li>Уровни доступа</li><li>Инкапсуляция, наследование, полиморфизм, абстракция</li></ol></div><div class="card c6"><h3>ИБ-смысл</h3><p>Критичное состояние не должно меняться произвольным внешним кодом. Методы становятся контролируемыми точками доступа.</p><div class="call"><b>Главная идея:</b> безопасность создают минимальный API, валидация и аудит.</div></div></div></section>
+
+<section id="execution-lab">
+<span class="eye">Главный интерактив</span>
+<h2>Микроскоп исполнения: смотри, как код двигает значения</h2>
+<p class="lead">Выберите механизм и запускайте по шагам. Подсвечивается выполняемая строка, показывается стек вызовов и реальное состояние объектов.</p>
+
+<div class="lab-shell">
+  <div class="lab-tabs" id="labTabs">
+    <button data-s="self" class="active">self и метод</button>
+    <button data-s="encap">Инкапсуляция</button>
+    <button data-s="inherit">super()</button>
+    <button data-s="property">@property</button>
+    <button data-s="hash">Пароль → KDF</button>
+    <button data-s="decorator">@decorator</button>
+    <button data-s="token">TTL / revoke</button>
+  </div>
+
+  <div class="lab-grid">
+    <div class="lab-code">
+      <div class="lab-head">Python-код</div>
+      <div class="code-lines" id="labCode"></div>
+    </div>
+
+    <div class="lab-stage">
+      <div class="lab-head">Обработка значения</div>
+      <div class="stage-zone" id="labStage">
+        <div class="flow-track"></div>
+        <div class="processor" id="labProcessor">Python<br>runtime</div>
+      </div>
+      <div class="stack" id="labStack"></div>
+    </div>
+
+    <div class="lab-memory">
+      <div class="lab-head">Память / состояние</div>
+      <div class="mem-list" id="labMemory"></div>
+    </div>
+  </div>
+
+  <div class="lab-desc" id="labDesc"></div>
+  <div class="lab-progress"><i id="labProgress"></i></div>
+  <div class="lab-actions">
+    <button onclick="labNext()">Следующий шаг ▶</button>
+    <button class="alt" onclick="labAuto()">Автопроигрывание</button>
+    <button class="warn" onclick="labReset()">Сначала</button>
+  </div>
+</div>
+</section>
 <section id="class"><span class="eye">База</span><h2>Класс, объект, атрибуты и методы</h2><div class="grid"><div class="card c3"><h3>Класс</h3><p>Шаблон объекта.</p></div><div class="card c3"><h3>Объект</h3><p>Конкретный экземпляр.</p></div><div class="card c3"><h3>Атрибуты</h3><p>Данные объекта.</p></div><div class="card c3"><h3>Методы</h3><p>Поведение объекта.</p></div></div>
 <div class="grid"><div class="card c7"><div class="cb"><button class="copy" onclick="copyCode('bank')">Копировать</button><pre id="bank">class BankAccount:
     def __init__(self, owner, balance=0):
@@ -177,9 +335,9 @@ code,pre{font-family:ui-monospace,Consolas,monospace}code{background:#edf2f5;pad
 </div>
 </section>
 <section id="principles"><span class="eye">4 принципа ООП</span><h2>Их роль в безопасности</h2><div class="grid"><div class="card c3"><h3>Инкапсуляция</h3><p>Контроль внутреннего состояния.</p></div><div class="card c3"><h3>Наследование</h3><p>Расширение классов.</p></div><div class="card c3"><h3>Полиморфизм</h3><p>Единый интерфейс.</p></div><div class="card c3"><h3>Абстракция</h3><p>Скрытие деталей.</p></div></div><div class="call"><b>Связь с ИБ:</b> скрываем внутренности, ограничиваем интерфейс, централизуем проверки и аудит.</div></section>
-<section id="encap"><span class="eye">Инкапсуляция</span><h2>Контролируем изменение, а не просто «прячем» данные</h2><div class="grid"><div class="card c6"><h3>Открытый атрибут</h3><pre>self.balance = balance</pre><p><code>account.balance = -999999</code> проходит без проверки.</p></div><div class="card c6"><h3>Внутренний атрибут</h3><pre>self.__balance = balance</pre><p>Изменение переводится в методы с проверкой.</p></div></div><div class="visual"><h3>Попробуй «сломать» объект</h3><div class="controls"><input id="hack" type="number" value="-5000"><button onclick="hack()">Изменить напрямую</button><button class="alt" onclick="toggleEnc()">Вкл/выкл инкапсуляцию</button></div><div class="out" id="encOut"></div></div></section>
+<section id="encap"><span class="eye">Инкапсуляция</span><h2>Контролируем изменение, а не просто «прячем» данные</h2><div class="good"><b>Точная формулировка:</b> объект поддерживает свои инварианты — условия, которые всегда должны оставаться истинными. Например, баланс нельзя сделать отрицательным произвольным присваиванием. Внешний код просит объект выполнить операцию, а объект сам решает, допустима ли она.</div><div class="grid"><div class="card c6"><h3>Открытый атрибут</h3><pre>self.balance = balance</pre><p><code>account.balance = -999999</code> проходит без проверки.</p></div><div class="card c6"><h3>Внутренний атрибут</h3><pre>self.__balance = balance</pre><p>Изменение переводится в методы с проверкой.</p></div></div><div class="visual"><h3>Попробуй «сломать» объект</h3><div class="controls"><input id="hack" type="number" value="-5000"><button onclick="hack()">Изменить напрямую</button><button class="alt" onclick="toggleEnc()">Вкл/выкл инкапсуляцию</button></div><div class="out" id="encOut"></div></div></section>
 
-<section id="inherit"><span class="eye">Наследование</span><h2>Расширяем базовый класс</h2><div class="grid"><div class="card c7"><div class="cb"><button class="copy" onclick="copyCode('inh')">Копировать</button><pre id="inh">class Employee:
+<section id="inherit"><span class="eye">Наследование</span><h2>Специализация: наследник «является» родителем</h2><div class="call"><b>Проверка IS‑A:</b> SecurityAnalyst <i>является</i> Employee — хорошее наследование. «Квартира является домом» — нет, это уже отношение HAS‑A/часть‑целое, а не наследование.</div><div class="grid"><div class="card c7"><div class="cb"><button class="copy" onclick="copyCode('inh')">Копировать</button><pre id="inh">class Employee:
     def __init__(self, name, position):
         self.name = name
         self.position = position
@@ -226,7 +384,26 @@ class Plane:
 
 vehicles = [Car(), Boat(), Plane()]
 for vehicle in vehicles:
-    print(vehicle.move())</pre></div></div><div class="visual c5"><h3>Живой вызов move()</h3><div class="controls"><select id="veh"><option value="car">Car</option><option value="boat">Boat</option><option value="plane">Plane</option></select><button onclick="move()">move()</button></div><div class="out" id="polyOut"></div></div></div></section>
+    print(vehicle.move())</pre></div></div><div class="visual c5"><h3>Живой вызов move()</h3><div class="controls"><select id="veh"><option value="car">Car</option><option value="boat">Boat</option><option value="plane">Plane</option></select><button onclick="move()">move()</button></div><div class="out" id="polyOut"></div></div></div>
+<div class="card" style="margin-top:18px">
+<h3>Полиморфизм в ИБ: три разных способа аутентификации</h3>
+<div class="cb"><button class="copy" onclick="copyCode('cyberPoly')">Копировать</button><pre id="cyberPoly">class PasswordAuth:
+    def authenticate(self, credential):
+        return verify_password(credential)
+
+class TokenAuth:
+    def authenticate(self, credential):
+        return verify_token(credential)
+
+class CertificateAuth:
+    def authenticate(self, credential):
+        return verify_certificate(credential)
+
+def login(auth_provider, credential):
+    return auth_provider.authenticate(credential)</pre></div>
+<div class="call"><b>Вот полиморфизм:</b> функция <code>login()</code> не содержит три <code>if</code> для трёх типов. Она работает с общим контрактом <code>authenticate()</code>.</div>
+</div>
+</section>
 
 <div class="scheme-card" style="margin-top:18px">
   <div class="scheme-title"><span class="num">5</span><h3>Схема полиморфизма</h3></div>
@@ -254,7 +431,7 @@ for vehicle in vehicles:
   </svg>
   <div class="scheme-note">Внешний код не обязан знать точный класс объекта. Он знает контракт: «у объекта есть метод <code>move()</code>».</div>
 </div>
-<section id="access"><span class="eye">Уровни доступа</span><h2>Python: соглашения, а не строгие модификаторы</h2><div class="levels"><div class="level"><b>public_attr</b><span>Обычный атрибут, доступен всем.</span></div><div class="level"><b>_protected_attr</b><span>Соглашение: «внутренний, не трогать без необходимости».</span></div><div class="level"><b>__private_attr</b><span>Включает name mangling.</span></div></div><div class="note"><b>Важно:</b> двойное подчёркивание не шифрует данные и не создаёт абсолютную приватность.</div></section>
+<section id="access"><span class="eye">Уровни доступа</span><h2>Python: соглашения, а не строгие модификаторы</h2><div class="note"><b>Не Java/C++:</b> в Python нет настоящего ключевого слова <code>private</code>. <code>_name</code> — соглашение, <code>__name</code> — name mangling. Код, который уже выполняется внутри процесса Python, технически может добраться до этих данных.</div><div class="levels"><div class="level"><b>public_attr</b><span>Обычный атрибут, доступен всем.</span></div><div class="level"><b>_protected_attr</b><span>Соглашение: «внутренний, не трогать без необходимости».</span></div><div class="level"><b>__private_attr</b><span>Включает name mangling.</span></div></div><div class="note"><b>Важно:</b> двойное подчёркивание не шифрует данные и не создаёт абсолютную приватность.</div></section>
 
 <div class="scheme-card" style="margin-top:18px">
   <div class="scheme-title"><span class="num">6</span><h3>Как Python хранит «приватное» имя</h3></div>
@@ -291,11 +468,16 @@ print(account.get_balance())
 
 # account.__balance -> AttributeError
 # account._BankAccount__balance -> технически возможно,
-# но нарушает контракт класса</pre></div></div><div class="visual c6"><h3>Визуализатор имени</h3><div class="controls"><input id="cn" value="BankAccount"><input id="an" value="balance"><button onclick="mangle()">Преобразовать</button></div><div class="out" id="mOut"></div></div></div></section>
-<section id="pass"><span class="eye">Менеджер паролей</span><h2>Небезопасная и улучшенная реализация</h2><div class="grid"><div class="card c6"><h3 style="color:var(--r)">Небезопасно</h3><ul><li>Публичный хэш.</li><li>Фиксированная соль.</li><li>MD5 — слишком быстрый и устаревший для паролей.</li><li>Хэш можно заменить напрямую.</li></ul><pre>password_hash = ""
+# но нарушает контракт класса</pre></div></div><div class="visual c6"><h3>Визуализатор имени</h3><div class="controls"><input id="cn" value="BankAccount"><input id="an" value="balance"><button onclick="mangle()">Преобразовать</button></div><div class="out" id="mOut"></div></div></div>
+<div class="truth-table" style="margin-top:16px">
+  <div class="truth badside"><h3><code>account.__balance = 5000</code></h3><p>Снаружи это <b>не изменяет</b> внутренний <code>_BankAccount__balance</code>. Обычно создаётся <b>другой</b> атрибут с буквальным именем <code>__balance</code>.</p></div>
+  <div class="truth goodside"><h3><code>account._BankAccount__balance</code></h3><p>Так технически можно обратиться к mangled-имени. Поэтому двойное подчёркивание — не секретность, а защита от случайного конфликта и сигнал «не трогать».</p></div>
+</div>
+</section>
+<section id="pass"><span class="eye">Менеджер паролей</span><h2>Пароль не шифруем и не «разблокируем» — проверяем производное значение</h2><div class="good"><b>Правильная модель:</b> пароль + соль + параметры KDF → производное значение. При входе вычисление повторяется. Если результаты совпали — пароль верный. Обратной операции «получить пароль из хэша» в нормальной схеме нет.</div><div class="grid"><div class="card c6"><h3 style="color:var(--r)">Небезопасно</h3><ul><li>Публичный хэш.</li><li>Фиксированная соль.</li><li>MD5 — слишком быстрый и устаревший для паролей.</li><li>Хэш можно заменить напрямую.</li></ul><pre>password_hash = ""
 salt = "fixed_salt"
 hashlib.md5(...)
-mgr.password_hash = "..."</pre></div><div class="card c6"><h3 style="color:var(--g)">Лучше</h3><ul><li><code>__password_hash</code> и <code>__salt</code> скрыты от обычного API.</li><li>Соль случайная.</li><li>Используется KDF для паролей.</li><li>Проверка через <code>verify()</code>.</li><li><code>__repr__</code> не раскрывает секреты.</li></ul></div></div>
+mgr.password_hash = "..."</pre></div><div class="card c6"><h3 style="color:var(--g)">Лучше</h3><ul><li><code>__password_hash</code> и <code>__salt</code> скрыты от обычного API.</li><li>Соль случайная: <code>os.urandom(32)</code> возвращает <b>32 случайных байта</b>, а не число от 0 до 31.</li><li>Используется KDF для паролей.</li><li>Проверка через <code>verify()</code>.</li><li><code>__repr__</code> не раскрывает секреты.</li></ul></div></div>
 <div class="grid"><div class="card c8"><div class="cb"><button class="copy" onclick="copyCode('pcode')">Копировать</button><pre id="pcode">import os
 import hashlib
 import hmac
@@ -352,6 +534,33 @@ class PasswordManager:
   </svg>
   <div class="scheme-note">При проверке введённый пароль проходит тот же KDF с той же солью, а затем сравниваются результаты. Сам пароль не требуется хранить.</div>
 </div>
+
+<section id="decorators">
+<span class="eye">Декораторы — отдельно от @property</span>
+<h2>Что реально делает <code>@decorator</code></h2>
+<div class="grid">
+  <div class="card c6">
+    <h3>Синтаксический сахар</h3>
+    <pre>@audit
+def transfer(amount):
+    ...
+
+# примерно эквивалентно:
+transfer = audit(transfer)</pre>
+    <p>Декоратор получает функцию как объект и возвращает функцию/объект, который будет использоваться вместо исходной ссылки.</p>
+  </div>
+  <div class="card c6">
+    <h3>Модель middleware</h3>
+    <div class="micro-flow"><span class="micro-step">вызов</span><span class="micro-arr">→</span><span class="micro-step">до: лог</span><span class="micro-arr">→</span><span class="micro-step">исходная функция</span><span class="micro-arr">→</span><span class="micro-step">после: аудит</span></div>
+    <p><code>functools.cache</code> — частный случай: ключом кэша служат аргументы вызова, значением — уже вычисленный результат.</p>
+  </div>
+</div>
+<div class="visual">
+<h3>Интерактив: cache hit / cache miss</h3>
+<div class="controls"><input id="cacheArg" type="number" value="8"><button onclick="cacheCall()">Вызвать expensive(n)</button><button class="warn" onclick="cacheReset()">Очистить cache</button></div>
+<div class="out" id="cacheOut">Кэш пуст.</div>
+</div>
+</section>
 <section id="prop"><span class="eye">@property</span><h2>Управляемый атрибут: выглядит как поле, работает как метод</h2><div class="grid"><div class="card c7"><div class="cb"><button class="copy" onclick="copyCode('propcode')">Копировать</button><pre id="propcode">class Profile:
     def __init__(self):
         self.__privilege_level = 0
@@ -393,7 +602,7 @@ class PasswordManager:
   </svg>
   <div class="scheme-note">Для пользователя API выглядит просто, но внутри можно вставить проверки, аудит, преобразование значения и запрет удаления.</div>
 </div>
-<section id="token"><span class="eye">SecureToken</span><h2>Токен с TTL и управлением жизненным циклом</h2><div class="grid"><div class="card c6"><h3>Что должно быть</h3><ul><li>Криптостойкая генерация.</li><li>Срок жизни TTL.</li><li>Явный отзыв.</li><li><code>is_valid()</code> проверяет TTL и отзыв.</li><li><code>repr</code> не раскрывает значение.</li></ul></div><div class="card c6"><pre>secrets.token_hex(32)
+<section id="token"><span class="eye">SecureToken</span><h2>TTL, истечение и отзыв — три разных понятия</h2><div class="call"><b>TTL = Time To Live.</b> Токен валиден, пока не истёк и не отозван. <code>revoke()</code> помечает текущий токен недействительным немедленно; «отправить новый код» означает создать <b>новый</b> токен/OTP.</div><div class="grid"><div class="card c6"><h3>Что должно быть</h3><ul><li>Криптостойкая генерация.</li><li>Срок жизни TTL.</li><li>Явный отзыв.</li><li><code>is_valid()</code> проверяет TTL и отзыв.</li><li><code>repr</code> не раскрывает значение.</li></ul></div><div class="card c6"><pre>secrets.token_hex(32)
 __expires_at
 revoke()
 is_valid()
@@ -439,7 +648,7 @@ hash = hashlib.md5(...)</pre><label class="opt"><input type="checkbox" class="ex
 </div></section>
 <section><span class="eye">Самопроверка</span><h2>Итоговый мини-тест</h2><div class="card"><div class="progress"><i id="qp"></i></div><h3>1. Что такое объект?</h3><label class="opt"><input type="radio" name="q1" value="0"> Функция</label><label class="opt"><input type="radio" name="q1" value="1"> Экземпляр класса</label><h3>2. Что делает <code>__attr</code>?</h3><label class="opt"><input type="radio" name="q2" value="1"> Включает name mangling</label><label class="opt"><input type="radio" name="q2" value="0"> Шифрует данные</label><h3>3. Зачем <code>@property</code>?</h3><label class="opt"><input type="radio" name="q3" value="1"> Контролируемый доступ с валидацией</label><label class="opt"><input type="radio" name="q3" value="0"> Автоматическое шифрование</label><h3>4. Что должен учитывать <code>is_valid()</code>?</h3><label class="opt"><input type="radio" name="q4" value="1"> TTL и отзыв</label><label class="opt"><input type="radio" name="q4" value="0"> Только длину строки</label><h3>5. Общий <code>move()</code> у разных классов — это...</h3><label class="opt"><input type="radio" name="q5" value="1"> Полиморфизм</label><label class="opt"><input type="radio" name="q5" value="0"> Инкапсуляция</label><div class="controls"><button onclick="quiz()">Проверить</button></div><div id="qout" class="fb"></div></div></section>
 <section><span class="eye">Итог</span><h2>Что нужно унести с занятия</h2><div class="card blue"><ul><li>Класс — шаблон, объект — конкретный экземпляр.</li><li>Объект объединяет атрибуты и методы.</li><li>Инкапсуляция переносит критичные изменения в контролируемые точки.</li><li><code>_attr</code> и <code>__attr</code> — соглашения и name mangling, а не абсолютная защита.</li><li><code>@property</code> позволяет валидировать и журналировать запись.</li><li>Токены требуют TTL и отзыва.</li><li>Пароли требуют специализированного KDF и уникальной соли.</li></ul></div></section>
-</main><div class="footer">Интерактивный конспект · Занятие 7 · Модуль 1 · Тема 1.5</div>
+</main><div class="footer">Занятие 7 · ООП, инкапсуляция и защита данных · интерактивная лекция по записи занятия</div>
 
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -476,5 +685,236 @@ function check4(){let ok=$('#ex4').value==='Полиморфизм';$('#ex4f').c
 function model(){$('#ex5f').className='fb ok';$('#ex5f').innerHTML='<code>__token</code>, <code>__expires_at</code>, <code>__revoked</code> — внутренние поля. Публичные методы: <code>is_valid()</code>, <code>revoke()</code>; токен — read-only property.'}
 
 function quiz(){let s=0,t=5;for(let i=1;i<=t;i++){let x=document.querySelector(`input[name=q${i}]:checked`);if(x)s+=Number(x.value)}$('#qp').style.width=(s/t*100)+'%';$('#qout').className='fb '+(s>=4?'ok':'no');$('#qout').textContent=`Результат: ${s}/${t}. `+(s===5?'Отлично — основные идеи усвоены.':s>=4?'Хорошо. Повтори один спорный блок.':'Вернись к инкапсуляции, доступу и @property.')}
+
+
+
+/* Explicit DOM references for execution lab */
+const labCode=document.getElementById('labCode');
+const labDesc=document.getElementById('labDesc');
+const labStack=document.getElementById('labStack');
+const labMemory=document.getElementById('labMemory');
+const labProgress=document.getElementById('labProgress');
+const labProcessor=document.getElementById('labProcessor');
+const labStage=document.getElementById('labStage');
+const cacheOut=document.getElementById('cacheOut');
+
+/* ===== Lesson 7 v2 execution microscope ===== */
+const LABS = {
+self:{
+title:"self: какой объект меняется",
+code:[
+'ivan = BankAccount("Иван", 1000)',
+'anna = BankAccount("Анна", 3000)',
+'ivan.deposit(500)',
+'',
+'class BankAccount:',
+'    def deposit(self, amount):',
+'        if amount > 0:',
+'            self.balance += amount',
+'            return "OK"'
+],
+steps:[
+{line:0,chip:'"Иван", 1000',desc:'Создаётся первый объект. Его собственное состояние сохраняется отдельно.',stack:['module'],mem:{'ivan.balance':'1000'},change:'ivan.balance'},
+{line:1,chip:'"Анна", 3000',desc:'Создаётся второй экземпляр того же класса. У него другой balance.',stack:['module'],mem:{'ivan.balance':'1000','anna.balance':'3000'},change:'anna.balance'},
+{line:2,chip:'500',desc:'Вызов ivan.deposit(500). Python находит метод deposit у класса BankAccount.',stack:['module','deposit(self=ivan, amount=500)'],mem:{'ivan.balance':'1000','anna.balance':'3000'},change:''},
+{line:5,chip:'self = ivan',desc:'Ключевой момент: self ссылается на объект ivan, а не на класс и не на «внутреннюю переменную».',stack:['module','deposit(self=ivan, amount=500)'],mem:{'self':'ivan','amount':'500','ivan.balance':'1000','anna.balance':'3000'},change:'self'},
+{line:6,chip:'500 > 0 → True',desc:'Проверяется аргумент amount.',stack:['module','deposit(self=ivan, amount=500)'],mem:{'self':'ivan','amount':'500','ivan.balance':'1000','anna.balance':'3000'},change:'amount'},
+{line:7,chip:'1000 + 500',desc:'self.balance означает ivan.balance. Баланс Анны вообще не затрагивается.',stack:['module','deposit(self=ivan, amount=500)'],mem:{'self':'ivan','ivan.balance':'1500','anna.balance':'3000'},change:'ivan.balance'},
+{line:8,chip:'"OK"',desc:'Метод возвращает результат, кадр deposit снимается со стека.',stack:['module'],mem:{'ivan.balance':'1500','anna.balance':'3000'},change:''}
+]},
+encap:{
+title:"инкапсуляция: команда вместо прямой записи",
+code:[
+'class Account:',
+'    def __init__(self, balance):',
+'        self.__balance = balance',
+'',
+'    def withdraw(self, amount):',
+'        if amount <= 0:',
+'            raise ValueError()',
+'        if amount > self.__balance:',
+'            return False',
+'        self.__balance -= amount',
+'        return True',
+'',
+'account.withdraw(1200)'
+],
+steps:[
+{line:2,chip:'balance=1000',desc:'Внутреннее состояние инициализировано. __balance будет mangled в _Account__balance.',stack:['__init__'],mem:{'_Account__balance':'1000'},change:'_Account__balance'},
+{line:12,chip:'1200',desc:'Внешний код не задаёт новый баланс. Он просит объект выполнить операцию.',stack:['module','withdraw(self=account, amount=1200)'],mem:{'_Account__balance':'1000','amount':'1200'},change:'amount'},
+{line:5,chip:'1200 <= 0 → False',desc:'Первая часть инварианта: сумма должна быть положительной.',stack:['module','withdraw(...)'],mem:{'_Account__balance':'1000','amount':'1200'},change:''},
+{line:7,chip:'1200 > 1000 → True',desc:'Вторая проверка не позволяет уйти в минус.',stack:['module','withdraw(...)'],mem:{'_Account__balance':'1000','amount':'1200'},change:'_Account__balance'},
+{line:8,chip:'False',desc:'Операция отвергнута. Внутреннее состояние осталось неизменным — это и есть сохранение инварианта.',stack:['module'],mem:{'_Account__balance':'1000'},change:'_Account__balance'}
+]},
+inherit:{
+title:"наследование и super()",
+code:[
+'class Employee:',
+'    def __init__(self, name, position):',
+'        self.name = name',
+'        self.position = position',
+'',
+'class SecurityAnalyst(Employee):',
+'    def __init__(self, name, level):',
+'        super().__init__(name, "Аналитик ИБ")',
+'        self.level = level',
+'',
+'analyst = SecurityAnalyst("Мария", "Senior")'
+],
+steps:[
+{line:10,chip:'"Мария","Senior"',desc:'Создаём объект именно типа SecurityAnalyst. Он одновременно удовлетворяет отношению IS-A Employee.',stack:['SecurityAnalyst.__init__'],mem:{'type':'SecurityAnalyst'},change:'type'},
+{line:6,chip:'self=analyst',desc:'self — создаваемый SecurityAnalyst.',stack:['SecurityAnalyst.__init__(self=analyst)'],mem:{'self':'analyst','name':'Мария','level':'Senior'},change:'self'},
+{line:7,chip:'super().__init__',desc:'super() не «перезаписывает класс». Он вызывает реализацию __init__ родителя для того же объекта self.',stack:['SecurityAnalyst.__init__','Employee.__init__(self=analyst)'],mem:{'self':'analyst'},change:''},
+{line:2,chip:'name="Мария"',desc:'Родитель добавляет общую часть состояния Employee.',stack:['SecurityAnalyst.__init__','Employee.__init__'],mem:{'analyst.name':'Мария'},change:'analyst.name'},
+{line:3,chip:'position="Аналитик ИБ"',desc:'Ещё один атрибут родительской части объекта.',stack:['SecurityAnalyst.__init__','Employee.__init__'],mem:{'analyst.name':'Мария','analyst.position':'Аналитик ИБ'},change:'analyst.position'},
+{line:8,chip:'level="Senior"',desc:'Возвращаемся в конструктор наследника и добавляем специализированный атрибут.',stack:['SecurityAnalyst.__init__'],mem:{'analyst.name':'Мария','analyst.position':'Аналитик ИБ','analyst.level':'Senior'},change:'analyst.level'}
+]},
+property:{
+title:"@property: присваивание проходит через setter",
+code:[
+'class Profile:',
+'    def __init__(self):',
+'        self.__level = 0',
+'',
+'    @property',
+'    def level(self):',
+'        return self.__level',
+'',
+'    @level.setter',
+'    def level(self, value):',
+'        if value not in range(4):',
+'            raise ValueError("0..3")',
+'        audit(value)',
+'        self.__level = value',
+'',
+'profile.level = 2'
+],
+steps:[
+{line:15,chip:'2',desc:'Снаружи это выглядит как обычное присваивание атрибута.',stack:['module'],mem:{'_Profile__level':'0'},change:''},
+{line:8,chip:'property setter',desc:'Но descriptor property перенаправляет запись в метод-setter.',stack:['level.setter(self=profile,value=2)'],mem:{'_Profile__level':'0','value':'2'},change:'value'},
+{line:10,chip:'2 in range(4)',desc:'Setter валидирует значение прежде, чем трогать внутреннее состояние.',stack:['level.setter(...)'],mem:{'_Profile__level':'0','value':'2'},change:''},
+{line:12,chip:'AUDIT: 2',desc:'В единой точке доступа удобно записать аудит-событие.',stack:['level.setter(...)'],mem:{'audit':'privilege → 2','_Profile__level':'0'},change:'audit'},
+{line:13,chip:'0 → 2',desc:'Только после проверки внутренний атрибут реально изменяется.',stack:['level.setter(...)'],mem:{'_Profile__level':'2'},change:'_Profile__level'}
+]},
+hash:{
+title:"пароль: KDF вместо «расшифровки хэша»",
+code:[
+'password = input()',
+'salt = os.urandom(32)',
+'derived = pbkdf2_hmac(',
+'    "sha256", password.encode(),',
+'    salt, 100_000',
+')',
+'store(salt, derived)',
+'',
+'# login:',
+'candidate = pbkdf2_hmac(...same salt...)',
+'hmac.compare_digest(candidate, derived)'
+],
+steps:[
+{line:0,chip:'"qwerty123"',desc:'Пароль существует в памяти во время обработки. В базу в открытом виде его не записываем.',stack:['registration'],mem:{'password':'qwerty123'},change:'password'},
+{line:1,chip:'32 random bytes',desc:'os.urandom(32) создаёт 32 случайных байта соли — не число 0..31.',stack:['registration'],mem:{'salt':'8f 2a … 32 bytes'},change:'salt'},
+{line:2,chip:'password + salt',desc:'KDF получает пароль, соль и параметр стоимости. Соль не является секретом.',stack:['PBKDF2 × 100000'],mem:{'salt':'8f 2a …','iterations':'100000'},change:'iterations'},
+{line:5,chip:'derived key',desc:'Получаем необратимо производное значение. Это не «зашифрованный пароль».',stack:['registration'],mem:{'derived':'5b71…9ac2','salt':'8f 2a …'},change:'derived'},
+{line:6,chip:'store',desc:'Храним соль + derived + параметры алгоритма. Пароль выбрасываем.',stack:['database write'],mem:{'DB.salt':'8f 2a …','DB.derived':'5b71…9ac2'},change:'DB.derived'},
+{line:9,chip:'login password',desc:'При входе кандидат вычисляется заново с сохранённой солью.',stack:['login','PBKDF2 × 100000'],mem:{'candidate':'5b71…9ac2','stored':'5b71…9ac2'},change:'candidate'},
+{line:10,chip:'compare → True',desc:'Сравниваем два производных значения. Никакого «разблокирования» или расшифровки нет.',stack:['login'],mem:{'authenticated':'True'},change:'authenticated'}
+]},
+decorator:{
+title:"декоратор: функцию заменяют обёрткой",
+code:[
+'def audit(func):',
+'    def wrapper(*args, **kwargs):',
+'        print("before")',
+'        result = func(*args, **kwargs)',
+'        print("after")',
+'        return result',
+'    return wrapper',
+'',
+'@audit',
+'def transfer(amount):',
+'    return f"transfer {amount}"',
+'',
+'transfer(500)'
+],
+steps:[
+{line:8,chip:'@audit',desc:'На этапе определения Python применяет audit к объекту функции transfer.',stack:['module'],mem:{'transfer':'<original function>'},change:'transfer'},
+{line:0,chip:'audit(transfer)',desc:'Практически это означает: transfer = audit(transfer).',stack:['audit(func=transfer)'],mem:{'func':'<original transfer>'},change:'func'},
+{line:6,chip:'return wrapper',desc:'Имя transfer теперь указывает на wrapper, который всё ещё замыкает исходную func.',stack:['module'],mem:{'transfer':'<wrapper>','wrapper.func':'<original transfer>'},change:'transfer'},
+{line:12,chip:'500',desc:'При обычном вызове transfer(500) реально вызывается wrapper(500).',stack:['wrapper(500)'],mem:{'args':'(500,)'},change:'args'},
+{line:2,chip:'before',desc:'Обёртка выполняет дополнительную логику до исходной функции.',stack:['wrapper(500)'],mem:{'log':'before'},change:'log'},
+{line:3,chip:'func(500)',desc:'Теперь wrapper вызывает исходный transfer.',stack:['wrapper(500)','original transfer(500)'],mem:{'result':'transfer 500'},change:'result'},
+{line:4,chip:'after',desc:'После возврата wrapper может выполнить ещё одну операцию.',stack:['wrapper(500)'],mem:{'log':'after','result':'transfer 500'},change:'log'}
+]},
+token:{
+title:"TTL и revoke: независимые причины невалидности",
+code:[
+'token = SecureToken(ttl=5)',
+'',
+'def is_valid(self):',
+'    return (',
+'        not self.__revoked',
+'        and now() < self.__expires_at',
+'    )',
+'',
+'token.revoke()'
+],
+steps:[
+{line:0,chip:'ttl=5s',desc:'При создании фиксируется expires_at = now + 5 секунд.',stack:['SecureToken.__init__'],mem:{'revoked':'False','expires_in':'5.0s','valid':'True'},change:'expires_in'},
+{line:2,chip:'is_valid()',desc:'Проверка валидности объединяет два независимых условия.',stack:['is_valid'],mem:{'revoked':'False','not_expired':'True'},change:''},
+{line:4,chip:'not revoked → True',desc:'Токен пока не отзывался.',stack:['is_valid'],mem:{'revoked':'False'},change:'revoked'},
+{line:5,chip:'now < expires → True',desc:'TTL ещё не истёк.',stack:['is_valid'],mem:{'not_expired':'True','valid':'True'},change:'valid'},
+{line:8,chip:'revoke()',desc:'Отзыв не создаёт новый токен. Он делает текущий токен недействительным немедленно.',stack:['revoke'],mem:{'revoked':'True','not_expired':'True','valid':'False'},change:'revoked'}
+]}
+};
+
+let labScenario='self', labIndex=0, labTimer=null;
+
+function renderLabCode(){
+  const L=LABS[labScenario];
+  labCode.innerHTML=L.code.map((x,i)=>`<div class="code-line ${i===L.steps[Math.min(labIndex,L.steps.length-1)]?.line?'current':''}" data-n="${i+1}">${esc(x)||' '}</div>`).join('');
+}
+function esc(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')}
+function labRender(animate=false){
+  const L=LABS[labScenario], idx=Math.min(labIndex,L.steps.length-1), st=L.steps[idx];
+  renderLabCode();
+  labDesc.innerHTML=`<b>${L.title}</b><br>${st.desc}`;
+  labStack.innerHTML=st.stack.map((x,i)=>`<div class="stack-frame"><b>${i===st.stack.length-1?'TOP':'FRAME'}</b><br>${esc(x)}</div>`).reverse().join('');
+  labMemory.innerHTML=Object.entries(st.mem).map(([k,v])=>`<div class="mem-row ${k===st.change?'changed':''}"><span class="name">${esc(k)}</span><span class="val">${esc(v)}</span></div>`).join('');
+  labProgress.style.width=((idx+1)/L.steps.length*100)+'%';
+  if(animate){
+    labProcessor.classList.remove('processing'); void labProcessor.offsetWidth; labProcessor.classList.add('processing');
+    const old=labStage.querySelector('.value-chip'); if(old)old.remove();
+    const chip=document.createElement('div'); chip.className='value-chip'; chip.textContent=st.chip; labStage.appendChild(chip);
+    requestAnimationFrame(()=>chip.classList.add('fly'));
+    setTimeout(()=>chip.remove(),850);
+  }
+}
+function labNext(){
+  const L=LABS[labScenario];
+  if(labIndex<L.steps.length-1){labIndex++;labRender(true)}
+  else{labDesc.innerHTML='<b>Готово.</b><br>Сценарий завершён. Запустите сначала или выберите другой механизм.'}
+}
+function labReset(){clearInterval(labTimer);labIndex=0;labRender(false)}
+function labAuto(){clearInterval(labTimer);labIndex=0;labRender(true);labTimer=setInterval(()=>{if(labIndex>=LABS[labScenario].steps.length-1){clearInterval(labTimer);return}labIndex++;labRender(true)},1050)}
+document.querySelectorAll('#labTabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#labTabs button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  labScenario=b.dataset.s;labReset();
+}));
+labRender(false);
+
+/* decorator cache mini-simulator */
+let demoCache=new Map();
+function cacheCall(){
+  const n=Number(document.getElementById('cacheArg').value);
+  if(demoCache.has(n)){
+    cacheOut.textContent=`expensive(${n}) → ${demoCache.get(n)}\nCACHE HIT: тело функции не вычислялось повторно.`;
+  }else{
+    const result=n*n;
+    demoCache.set(n,result);
+    cacheOut.textContent=`expensive(${n}) вычислено → ${result}\nCACHE MISS: результат сохранён по ключу args=(${n},).`;
+  }
+}
+function cacheReset(){demoCache.clear();cacheOut.textContent='Кэш очищен.'}
 
 </script></body></html>
