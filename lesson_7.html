@@ -1,0 +1,480 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Занятие 7 — ООП, классы и инкапсуляция в кибербезопасности</title>
+<style>
+:root{--b:#123f82;--c:#39adbb;--i:#111827;--m:#5d6b78;--l:#d9e6e9;--g:#178b52;--r:#b9364b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(#fbfdfe,#eff6f8);color:var(--i);font:16px/1.58 system-ui,Segoe UI,Arial,sans-serif}a{color:var(--b)}button,input,select,textarea{font:inherit}.w{width:min(1160px,calc(100% - 28px));margin:auto}
+.hero{min-height:84vh;background:#fff;display:grid;align-items:center;overflow:hidden;border-bottom:1px solid var(--l)}.hg{display:grid;grid-template-columns:1.08fr .92fr;gap:32px;align-items:center;padding:56px 0}.mod{display:inline-block;background:var(--c);color:#fff;padding:7px 14px;border-radius:14px;font-size:20px;font-weight:900}.hero h1{font-size:clamp(42px,6vw,75px);line-height:1.02;letter-spacing:-.045em;color:var(--b);margin:18px 0}.hero h1 span{color:var(--c)}.sub{font-size:clamp(20px,2.2vw,29px);font-weight:850}.hero p{font-size:18px;color:#465f6b}.hc{background:var(--b);border-radius:32px 32px 32px 8px;padding:26px;box-shadow:0 22px 60px #14375029}.hc svg{width:100%}.float{animation:fl 3.4s ease-in-out infinite}@keyframes fl{50%{transform:translateY(-8px)}}.dash{stroke-dasharray:8 8;animation:ds 1.3s linear infinite}@keyframes ds{to{stroke-dashoffset:-32}}
+nav{position:sticky;top:0;z-index:30;background:#fffffff2;backdrop-filter:blur(12px);border-bottom:1px solid var(--l)}nav .w{display:flex;gap:5px;overflow:auto;padding:9px 0}nav a{white-space:nowrap;text-decoration:none;color:#284554;font-size:13px;font-weight:850;padding:8px 10px;border-radius:9px}nav a:hover{background:#e9f4f5}
+main{padding:24px 0 80px}section{margin:40px 0 65px}.eye{color:var(--c);font-size:12px;font-weight:950;letter-spacing:.12em;text-transform:uppercase}h2{font-size:clamp(30px,4vw,47px);line-height:1.08;letter-spacing:-.035em;margin:8px 0 12px}h3{font-size:22px;margin:0 0 10px}.lead{font-size:18px;color:var(--m)}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:20px}.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+.card{background:#fff;border:1px solid var(--l);border-radius:20px;padding:20px;box-shadow:0 10px 28px #153f5510}.blue{background:var(--b);color:#fff}.card p{color:#51616e}.blue p{color:#d9e7f5}.call,.note,.good,.bad{padding:14px 16px;border-radius:12px;margin:12px 0}.call{border-left:5px solid var(--c);background:#f1fafb}.note{border-left:5px solid #d19d28;background:#fff6d9}.good{border-left:5px solid var(--g);background:#eaf8ef}.bad{border-left:5px solid var(--r);background:#fff0f3}
+code,pre{font-family:ui-monospace,Consolas,monospace}code{background:#edf2f5;padding:2px 5px;border-radius:5px}pre{margin:0;background:#0d1822;color:#e9f6ff;border-radius:16px;padding:18px;overflow:auto;line-height:1.5;font-size:14px}.cb{position:relative}.copy{position:absolute;right:10px;top:10px;background:#18394a;color:#fff;border:1px solid #3d6073;border-radius:9px;padding:7px 9px;font-weight:850;cursor:pointer}
+.visual{background:linear-gradient(#103c46,#0a2a33);color:white;border-radius:20px;padding:20px}.visual p{color:#cae4e8}.controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.controls button{border:0;border-radius:9px;background:var(--c);color:#fff;padding:9px 12px;font-weight:900;cursor:pointer}.controls .alt{background:#315e77}.controls .warn{background:#8a4351}.controls input,.controls select{border:1px solid #abcbd1;border-radius:9px;padding:9px 10px;background:#fff}.out{background:#07232a;border:1px solid #335d68;border-radius:12px;padding:12px;min-height:48px;white-space:pre-wrap;font-family:ui-monospace,Consolas,monospace}.memory{display:flex;gap:10px;flex-wrap:wrap}.mem{min-width:115px;background:#153e49;border:1px solid #4d818d;border-radius:12px;padding:10px}.private{border-style:dashed;border-color:#f3ca65}
+.levels{display:grid;gap:8px}.level{display:grid;grid-template-columns:190px 1fr;background:#fff;border:1px solid var(--l);border-radius:12px;overflow:hidden}.level b{padding:12px;background:#eaf5f6;color:#176d74}.level span{padding:12px}.exercise{background:#fff;border:1px solid var(--l);border-radius:18px;padding:18px}.exercise textarea,.exercise select{width:100%;border:1px solid #bfd1d6;border-radius:9px;padding:10px}.opt{display:block;background:#f7fbfc;border:1px solid #dce9ec;border-radius:10px;padding:10px;margin:7px 0}.fb{margin-top:10px;font-weight:850}.ok{color:var(--g)}.no{color:var(--r)}.progress{height:9px;background:#e3ecef;border-radius:999px;overflow:hidden}.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--b),var(--c));transition:.4s}.tokenbar{height:18px;background:#102e38;border:1px solid #386773;border-radius:999px;overflow:hidden}.tokenbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#78dfe2,var(--c));transition:width .2s}.footer{text-align:center;color:#6c7d85;padding:34px;border-top:1px solid var(--l)}
+@media(max-width:900px){.hg{grid-template-columns:1fr}.c3,.c4,.c5,.c6,.c7,.c8{grid-column:span 12}.level{grid-template-columns:1fr}}
+
+.scheme-card{background:#fff;border:1px solid var(--l);border-radius:20px;padding:18px;box-shadow:0 10px 28px #153f5510}
+.scheme-title{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.scheme-title .num{width:34px;height:34px;border-radius:10px;background:var(--c);color:#fff;display:grid;place-items:center;font-weight:950}
+.scheme-note{font-size:14px;color:#58707b;margin-top:10px}
+.scheme-svg{width:100%;height:auto;display:block;background:linear-gradient(180deg,#fbfeff,#f4fafb);border:1px solid #dce9ec;border-radius:16px}
+.scheme-svg text{font-family:system-ui,Segoe UI,Arial,sans-serif}
+.scheme-node{fill:#fff;stroke:#39adbb;stroke-width:2}
+.scheme-node-blue{fill:#123f82;stroke:#123f82}
+.scheme-node-soft{fill:#eaf7f8;stroke:#78cbd3;stroke-width:2}
+.scheme-text{fill:#15212b;font-size:15px;font-weight:800}
+.scheme-text-light{fill:#fff;font-size:15px;font-weight:800}
+.scheme-sub{fill:#58707b;font-size:12px;font-weight:600}
+.arrow-line{stroke:#39adbb;stroke-width:3;fill:none}
+.arrow-line-blue{stroke:#123f82;stroke-width:3;fill:none}
+.arrow-dash{stroke-dasharray:8 8;animation:ds 1.3s linear infinite}
+.scan-dot{animation:dotmove 3s ease-in-out infinite}
+@keyframes dotmove{0%,100%{transform:translateX(0)}50%{transform:translateX(210px)}}
+.pop{animation:pop 2.7s ease-in-out infinite}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.explain-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:20px}
+.explain-step{background:#f8fcfd;border:1px solid #dce9ec;border-radius:16px;padding:16px}
+.explain-step b{color:var(--b)}
+
+</style></head><body>
+<header class="hero"><div class="w hg"><div><div class="mod">Занятие 7 · Модуль 1</div><h1>Python как инструмент для <span>кибербезопасности</span></h1><div class="sub">Тема 1.5. Объектно‑ориентированная логика защиты: классы и инкапсуляция</div><p>Интерактивная версия презентации: теория, код, схемы, анимации, визуализаторы и задания.</p></div><div class="hc"><svg viewBox="0 0 520 390"><defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#7cd9df"/></marker></defs><rect x="25" y="25" width="470" height="340" rx="25" fill="#0e3775" stroke="#67ced7"/><g class="float"><rect x="64" y="75" width="160" height="98" rx="18" fill="#fff"/><text x="88" y="108" fill="#39adbb" font-size="18" font-weight="800">КЛАСС</text><text x="88" y="141" fill="#0d1117" font-size="22" font-weight="900">BankAccount</text></g><g class="float" style="animation-delay:.7s"><rect x="294" y="75" width="160" height="98" rx="18" fill="#fff"/><text x="318" y="108" fill="#39adbb" font-size="18" font-weight="800">ОБЪЕКТ</text><text x="318" y="141" fill="#0d1117" font-size="22" font-weight="900">account</text></g><line x1="224" y1="124" x2="292" y2="124" stroke="#7cd9df" stroke-width="4" marker-end="url(#a)" class="dash"/><rect x="150" y="230" width="220" height="70" rx="18" fill="#39adbb"/><text x="260" y="260" text-anchor="middle" fill="white" font-size="20" font-weight="900">ИНКАПСУЛЯЦИЯ</text><text x="260" y="283" text-anchor="middle" fill="white" font-size="14">контроль доступа к состоянию</text></svg></div></div></header>
+<nav><div class="w"><a href="#oop">ООП</a><a href="#class">Класс и объект</a><a href="#how-oop">Как работает ООП</a><a href="#principles">4 принципа</a><a href="#encap">Инкапсуляция</a><a href="#inherit">Наследование</a><a href="#poly">Полиморфизм</a><a href="#access">Доступ</a><a href="#mangle">Name mangling</a><a href="#pass">Пароли</a><a href="#prop">@property</a><a href="#token">Token</a><a href="#practice">Практика</a></div></nav>
+<main class="w">
+<section id="oop"><span class="eye">Что изучаем</span><h2>Что проверяется и зачем это нужно</h2><p class="lead">Тема связывает классическое ООП с проектированием безопасных программных компонентов.</p><div class="grid"><div class="card c6"><h3>Ключевые понятия</h3><ol><li>Класс и объект</li><li>Атрибуты и методы</li><li>Уровни доступа</li><li>Инкапсуляция, наследование, полиморфизм, абстракция</li></ol></div><div class="card c6"><h3>ИБ-смысл</h3><p>Критичное состояние не должно меняться произвольным внешним кодом. Методы становятся контролируемыми точками доступа.</p><div class="call"><b>Главная идея:</b> безопасность создают минимальный API, валидация и аудит.</div></div></div></section>
+<section id="class"><span class="eye">База</span><h2>Класс, объект, атрибуты и методы</h2><div class="grid"><div class="card c3"><h3>Класс</h3><p>Шаблон объекта.</p></div><div class="card c3"><h3>Объект</h3><p>Конкретный экземпляр.</p></div><div class="card c3"><h3>Атрибуты</h3><p>Данные объекта.</p></div><div class="card c3"><h3>Методы</h3><p>Поведение объекта.</p></div></div>
+<div class="grid"><div class="card c7"><div class="cb"><button class="copy" onclick="copyCode('bank')">Копировать</button><pre id="bank">class BankAccount:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def deposit(self, amount):
+        if amount > 0:
+            self.balance += amount
+            return "Деньги зачислены"
+        return "Сумма должна быть больше нуля"
+
+    def withdraw(self, amount):
+        if amount &lt;= 0:
+            return "Сумма должна быть больше нуля"
+        if amount > self.balance:
+            return "Недостаточно средств"
+        self.balance -= amount
+        return "Деньги сняты"</pre></div></div>
+<div class="visual c5"><h3>Визуализатор BankAccount</h3><div class="memory" id="bankMem"></div><div class="controls"><input id="amt" type="number" value="500"><button onclick="dep()">deposit()</button><button class="alt" onclick="wd()">withdraw()</button><button class="warn" onclick="resetBank()">Сброс</button></div><div class="out" id="bankOut"></div></div></div></section>
+
+<section id="how-oop">
+<span class="eye">Как это работает</span>
+<h2>ООП в голове: от класса к безопасному объекту</h2>
+<p class="lead">Ниже — не просто определения, а причинно-следственная схема: от шаблона класса до изменения состояния через контролируемый метод.</p>
+
+<div class="grid">
+  <div class="scheme-card c6">
+    <div class="scheme-title"><span class="num">1</span><h3>Класс → объект → состояние → метод</h3></div>
+    <svg class="scheme-svg" viewBox="0 0 760 300">
+      <defs>
+        <marker id="oopArr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#39adbb"/>
+        </marker>
+      </defs>
+      <rect x="35" y="90" width="150" height="95" rx="18" class="scheme-node-blue"/>
+      <text x="110" y="125" text-anchor="middle" class="scheme-text-light">КЛАСС</text>
+      <text x="110" y="150" text-anchor="middle" class="scheme-text-light">BankAccount</text>
+      <text x="110" y="172" text-anchor="middle" fill="#bfe7eb" font-size="12">шаблон</text>
+
+      <line x1="185" y1="137" x2="280" y2="137" class="arrow-line arrow-dash" marker-end="url(#oopArr)"/>
+      <text x="232" y="118" text-anchor="middle" class="scheme-sub">создание</text>
+
+      <rect x="280" y="70" width="170" height="135" rx="18" class="scheme-node"/>
+      <text x="365" y="105" text-anchor="middle" class="scheme-text">ОБЪЕКТ</text>
+      <text x="365" y="130" text-anchor="middle" class="scheme-text">account</text>
+      <text x="365" y="158" text-anchor="middle" class="scheme-sub">owner = "Иван"</text>
+      <text x="365" y="178" text-anchor="middle" class="scheme-sub">balance = 1000</text>
+
+      <line x1="450" y1="137" x2="545" y2="137" class="arrow-line arrow-dash" marker-end="url(#oopArr)"/>
+      <text x="498" y="118" text-anchor="middle" class="scheme-sub">вызов</text>
+
+      <rect x="545" y="90" width="175" height="95" rx="18" class="scheme-node-soft"/>
+      <text x="632" y="125" text-anchor="middle" class="scheme-text">МЕТОД</text>
+      <text x="632" y="150" text-anchor="middle" class="scheme-text">deposit(500)</text>
+      <text x="632" y="172" text-anchor="middle" class="scheme-sub">меняет состояние</text>
+    </svg>
+    <div class="scheme-note">Класс сам по себе ничего «не хранит» про конкретного Ивана. Состояние появляется у экземпляра. Метод работает уже с состоянием конкретного объекта через <code>self</code>.</div>
+  </div>
+
+  <div class="scheme-card c6">
+    <div class="scheme-title"><span class="num">2</span><h3>Что делает self</h3></div>
+    <svg class="scheme-svg" viewBox="0 0 760 300">
+      <defs>
+        <marker id="selfArr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#123f82"/>
+        </marker>
+      </defs>
+      <rect x="35" y="40" width="250" height="90" rx="18" class="scheme-node"/>
+      <text x="160" y="75" text-anchor="middle" class="scheme-text">account.deposit(500)</text>
+      <text x="160" y="102" text-anchor="middle" class="scheme-sub">внешний вызов</text>
+
+      <path d="M285 85 C360 85,360 85,430 85" class="arrow-line-blue arrow-dash" marker-end="url(#selfArr)"/>
+      <text x="355" y="67" text-anchor="middle" class="scheme-sub">Python передаёт account как self</text>
+
+      <rect x="430" y="35" width="290" height="100" rx="18" class="scheme-node-blue"/>
+      <text x="575" y="72" text-anchor="middle" class="scheme-text-light">deposit(self, 500)</text>
+      <text x="575" y="100" text-anchor="middle" fill="#cbeaf0" font-size="12">self → именно account</text>
+
+      <rect x="250" y="190" width="260" height="72" rx="18" class="scheme-node-soft"/>
+      <text x="380" y="218" text-anchor="middle" class="scheme-text">self.balance += 500</text>
+      <text x="380" y="243" text-anchor="middle" class="scheme-sub">меняется balance только этого объекта</text>
+
+      <path d="M575 135 C575 170,490 175,455 190" class="arrow-line arrow-dash" marker-end="url(#selfArr)"/>
+    </svg>
+    <div class="scheme-note"><code>self</code> — ссылка на конкретный объект. Поэтому один и тот же метод класса работает с разными экземплярами независимо.</div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="scheme-card c12">
+    <div class="scheme-title"><span class="num">3</span><h3>Главная схема инкапсуляции: прямой доступ vs контролируемый доступ</h3></div>
+    <svg class="scheme-svg" viewBox="0 0 1100 360">
+      <defs>
+        <marker id="encArr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#39adbb"/>
+        </marker>
+        <marker id="badArr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#b9364b"/>
+        </marker>
+      </defs>
+
+      <text x="275" y="35" text-anchor="middle" fill="#b9364b" font-size="20" font-weight="900">БЕЗ ИНКАПСУЛЯЦИИ</text>
+      <rect x="40" y="75" width="200" height="80" rx="18" class="scheme-node"/>
+      <text x="140" y="108" text-anchor="middle" class="scheme-text">Внешний код</text>
+      <text x="140" y="132" text-anchor="middle" class="scheme-sub">account.balance = -5000</text>
+      <line x1="240" y1="115" x2="430" y2="115" stroke="#b9364b" stroke-width="4" marker-end="url(#badArr)"/>
+      <rect x="430" y="75" width="180" height="80" rx="18" fill="#fff0f3" stroke="#b9364b" stroke-width="2"/>
+      <text x="520" y="108" text-anchor="middle" fill="#7f2132" font-size="15" font-weight="900">balance = -5000</text>
+      <text x="520" y="132" text-anchor="middle" fill="#7f2132" font-size="12">проверки нет</text>
+
+      <text x="820" y="35" text-anchor="middle" fill="#178b52" font-size="20" font-weight="900">С ИНКАПСУЛЯЦИЕЙ</text>
+      <rect x="665" y="75" width="170" height="80" rx="18" class="scheme-node"/>
+      <text x="750" y="108" text-anchor="middle" class="scheme-text">Внешний код</text>
+      <text x="750" y="132" text-anchor="middle" class="scheme-sub">withdraw(5000)</text>
+
+      <line x1="835" y1="115" x2="915" y2="115" class="arrow-line arrow-dash" marker-end="url(#encArr)"/>
+      <rect x="915" y="65" width="150" height="100" rx="18" class="scheme-node-blue"/>
+      <text x="990" y="100" text-anchor="middle" class="scheme-text-light">МЕТОД</text>
+      <text x="990" y="124" text-anchor="middle" class="scheme-text-light">валидация</text>
+      <text x="990" y="146" text-anchor="middle" fill="#cbeaf0" font-size="12">правило доступа</text>
+
+      <path d="M990 165 C990 220,870 220,820 250" class="arrow-line arrow-dash" marker-end="url(#encArr)"/>
+      <rect x="695" y="245" width="250" height="75" rx="18" class="scheme-node-soft"/>
+      <text x="820" y="275" text-anchor="middle" class="scheme-text">__balance</text>
+      <text x="820" y="299" text-anchor="middle" class="scheme-sub">меняется только после проверки</text>
+
+      <rect x="60" y="240" width="520" height="80" rx="18" fill="#fff7e0" stroke="#d4a032"/>
+      <text x="320" y="270" text-anchor="middle" fill="#72500a" font-size="15" font-weight="900">Проблема прямого доступа</text>
+      <text x="320" y="295" text-anchor="middle" fill="#72500a" font-size="13">обход валидации → нарушение инвариантов → сложнее аудит</text>
+    </svg>
+    <div class="scheme-note">Инкапсуляция — это прежде всего перенос критичных изменений в одну контролируемую точку. Там можно проверить значение, права пользователя и записать событие в аудит.</div>
+  </div>
+</div>
+</section>
+<section id="principles"><span class="eye">4 принципа ООП</span><h2>Их роль в безопасности</h2><div class="grid"><div class="card c3"><h3>Инкапсуляция</h3><p>Контроль внутреннего состояния.</p></div><div class="card c3"><h3>Наследование</h3><p>Расширение классов.</p></div><div class="card c3"><h3>Полиморфизм</h3><p>Единый интерфейс.</p></div><div class="card c3"><h3>Абстракция</h3><p>Скрытие деталей.</p></div></div><div class="call"><b>Связь с ИБ:</b> скрываем внутренности, ограничиваем интерфейс, централизуем проверки и аудит.</div></section>
+<section id="encap"><span class="eye">Инкапсуляция</span><h2>Контролируем изменение, а не просто «прячем» данные</h2><div class="grid"><div class="card c6"><h3>Открытый атрибут</h3><pre>self.balance = balance</pre><p><code>account.balance = -999999</code> проходит без проверки.</p></div><div class="card c6"><h3>Внутренний атрибут</h3><pre>self.__balance = balance</pre><p>Изменение переводится в методы с проверкой.</p></div></div><div class="visual"><h3>Попробуй «сломать» объект</h3><div class="controls"><input id="hack" type="number" value="-5000"><button onclick="hack()">Изменить напрямую</button><button class="alt" onclick="toggleEnc()">Вкл/выкл инкапсуляцию</button></div><div class="out" id="encOut"></div></div></section>
+
+<section id="inherit"><span class="eye">Наследование</span><h2>Расширяем базовый класс</h2><div class="grid"><div class="card c7"><div class="cb"><button class="copy" onclick="copyCode('inh')">Копировать</button><pre id="inh">class Employee:
+    def __init__(self, name, position):
+        self.name = name
+        self.position = position
+
+    def describe(self):
+        return f"{self.name}: {self.position}"
+
+class SecurityAnalyst(Employee):
+    def __init__(self, name, level):
+        super().__init__(name, "Аналитик ИБ")
+        self.level = level
+
+    def analyze_incident(self):
+        return f"{self.name} анализирует инцидент уровня {self.level}"
+
+analyst = SecurityAnalyst("Мария", "High")</pre></div></div><div class="card c5"><h3>Что происходит</h3><p><code>SecurityAnalyst(Employee)</code> получает поведение базового класса и добавляет своё.</p><div class="note"><b>ИБ-нюанс:</b> наследник может нарушить инварианты родителя. Чувствительные правила лучше контролировать методами.</div></div></div></section>
+
+<div class="scheme-card" style="margin-top:18px">
+  <div class="scheme-title"><span class="num">4</span><h3>Схема наследования</h3></div>
+  <svg class="scheme-svg" viewBox="0 0 900 310">
+    <defs><marker id="inhArr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#39adbb"/></marker></defs>
+    <rect x="325" y="25" width="250" height="95" rx="18" class="scheme-node-blue"/>
+    <text x="450" y="62" text-anchor="middle" class="scheme-text-light">Employee</text>
+    <text x="450" y="87" text-anchor="middle" fill="#cceaf0" font-size="12">name · position · describe()</text>
+    <line x1="450" y1="120" x2="450" y2="185" class="arrow-line arrow-dash" marker-end="url(#inhArr)"/>
+    <rect x="290" y="190" width="320" height="95" rx="18" class="scheme-node"/>
+    <text x="450" y="225" text-anchor="middle" class="scheme-text">SecurityAnalyst</text>
+    <text x="450" y="250" text-anchor="middle" class="scheme-sub">получает всё от Employee</text>
+    <text x="450" y="272" text-anchor="middle" class="scheme-sub">+ level · analyze_incident()</text>
+  </svg>
+  <div class="scheme-note">Наследник не копирует код вручную: он расширяет базовый класс. Вызов <code>super().__init__()</code> запускает инициализацию родителя.</div>
+</div>
+<section id="poly"><span class="eye">Полиморфизм</span><h2>Один интерфейс — разные реализации</h2><div class="grid"><div class="card c7"><div class="cb"><button class="copy" onclick="copyCode('polycode')">Копировать</button><pre id="polycode">class Car:
+    def move(self):
+        return "Автомобиль едет по дороге"
+
+class Boat:
+    def move(self):
+        return "Лодка плывёт по воде"
+
+class Plane:
+    def move(self):
+        return "Самолёт летит в небе"
+
+vehicles = [Car(), Boat(), Plane()]
+for vehicle in vehicles:
+    print(vehicle.move())</pre></div></div><div class="visual c5"><h3>Живой вызов move()</h3><div class="controls"><select id="veh"><option value="car">Car</option><option value="boat">Boat</option><option value="plane">Plane</option></select><button onclick="move()">move()</button></div><div class="out" id="polyOut"></div></div></div></section>
+
+<div class="scheme-card" style="margin-top:18px">
+  <div class="scheme-title"><span class="num">5</span><h3>Схема полиморфизма</h3></div>
+  <svg class="scheme-svg" viewBox="0 0 1000 330">
+    <defs><marker id="polyArr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#39adbb"/></marker></defs>
+    <rect x="390" y="25" width="220" height="75" rx="18" class="scheme-node-blue"/>
+    <text x="500" y="56" text-anchor="middle" class="scheme-text-light">vehicle.move()</text>
+    <text x="500" y="80" text-anchor="middle" fill="#cae9ef" font-size="12">одинаковый вызов</text>
+
+    <path d="M500 100 C500 145,205 135,180 190" class="arrow-line arrow-dash" marker-end="url(#polyArr)"/>
+    <path d="M500 100 C500 150,500 150,500 190" class="arrow-line arrow-dash" marker-end="url(#polyArr)"/>
+    <path d="M500 100 C500 145,795 135,820 190" class="arrow-line arrow-dash" marker-end="url(#polyArr)"/>
+
+    <rect x="65" y="195" width="230" height="90" rx="18" class="scheme-node"/>
+    <text x="180" y="228" text-anchor="middle" class="scheme-text">Car.move()</text>
+    <text x="180" y="254" text-anchor="middle" class="scheme-sub">едет по дороге</text>
+
+    <rect x="385" y="195" width="230" height="90" rx="18" class="scheme-node"/>
+    <text x="500" y="228" text-anchor="middle" class="scheme-text">Boat.move()</text>
+    <text x="500" y="254" text-anchor="middle" class="scheme-sub">плывёт по воде</text>
+
+    <rect x="705" y="195" width="230" height="90" rx="18" class="scheme-node"/>
+    <text x="820" y="228" text-anchor="middle" class="scheme-text">Plane.move()</text>
+    <text x="820" y="254" text-anchor="middle" class="scheme-sub">летит в небе</text>
+  </svg>
+  <div class="scheme-note">Внешний код не обязан знать точный класс объекта. Он знает контракт: «у объекта есть метод <code>move()</code>».</div>
+</div>
+<section id="access"><span class="eye">Уровни доступа</span><h2>Python: соглашения, а не строгие модификаторы</h2><div class="levels"><div class="level"><b>public_attr</b><span>Обычный атрибут, доступен всем.</span></div><div class="level"><b>_protected_attr</b><span>Соглашение: «внутренний, не трогать без необходимости».</span></div><div class="level"><b>__private_attr</b><span>Включает name mangling.</span></div></div><div class="note"><b>Важно:</b> двойное подчёркивание не шифрует данные и не создаёт абсолютную приватность.</div></section>
+
+<div class="scheme-card" style="margin-top:18px">
+  <div class="scheme-title"><span class="num">6</span><h3>Как Python хранит «приватное» имя</h3></div>
+  <svg class="scheme-svg" viewBox="0 0 980 300">
+    <defs><marker id="mArr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#39adbb"/></marker></defs>
+    <rect x="45" y="105" width="230" height="80" rx="18" class="scheme-node"/>
+    <text x="160" y="137" text-anchor="middle" class="scheme-text">self.__balance</text>
+    <text x="160" y="162" text-anchor="middle" class="scheme-sub">как написано в классе</text>
+
+    <line x1="275" y1="145" x2="440" y2="145" class="arrow-line arrow-dash" marker-end="url(#mArr)"/>
+    <text x="358" y="126" text-anchor="middle" class="scheme-sub">name mangling</text>
+
+    <rect x="440" y="95" width="280" height="100" rx="18" class="scheme-node-blue"/>
+    <text x="580" y="132" text-anchor="middle" class="scheme-text-light">_BankAccount__balance</text>
+    <text x="580" y="158" text-anchor="middle" fill="#cceaf0" font-size="12">реальное внутреннее имя</text>
+
+    <line x1="720" y1="145" x2="875" y2="145" class="arrow-line arrow-dash" marker-end="url(#mArr)"/>
+    <rect x="820" y="105" width="120" height="80" rx="18" fill="#fff6d9" stroke="#d19d28"/>
+    <text x="880" y="137" text-anchor="middle" fill="#72500a" font-size="14" font-weight="900">не секрет</text>
+    <text x="880" y="160" text-anchor="middle" fill="#72500a" font-size="11">можно обойти</text>
+  </svg>
+  <div class="scheme-note">Поэтому <code>__attr</code> — это механизм дисциплины и защиты от случайного доступа, а не средство шифрования.</div>
+</div>
+<section id="mangle"><span class="eye">Name mangling</span><h2><code>__attr</code> → <code>_ClassName__attr</code></h2><div class="grid"><div class="card c6"><div class="cb"><button class="copy" onclick="copyCode('mcode')">Копировать</button><pre id="mcode">class BankAccount:
+    def __init__(self, balance):
+        self.__balance = balance
+
+    def get_balance(self):
+        return self.__balance
+
+account = BankAccount(1000.0)
+
+print(account.get_balance())
+
+# account.__balance -> AttributeError
+# account._BankAccount__balance -> технически возможно,
+# но нарушает контракт класса</pre></div></div><div class="visual c6"><h3>Визуализатор имени</h3><div class="controls"><input id="cn" value="BankAccount"><input id="an" value="balance"><button onclick="mangle()">Преобразовать</button></div><div class="out" id="mOut"></div></div></div></section>
+<section id="pass"><span class="eye">Менеджер паролей</span><h2>Небезопасная и улучшенная реализация</h2><div class="grid"><div class="card c6"><h3 style="color:var(--r)">Небезопасно</h3><ul><li>Публичный хэш.</li><li>Фиксированная соль.</li><li>MD5 — слишком быстрый и устаревший для паролей.</li><li>Хэш можно заменить напрямую.</li></ul><pre>password_hash = ""
+salt = "fixed_salt"
+hashlib.md5(...)
+mgr.password_hash = "..."</pre></div><div class="card c6"><h3 style="color:var(--g)">Лучше</h3><ul><li><code>__password_hash</code> и <code>__salt</code> скрыты от обычного API.</li><li>Соль случайная.</li><li>Используется KDF для паролей.</li><li>Проверка через <code>verify()</code>.</li><li><code>__repr__</code> не раскрывает секреты.</li></ul></div></div>
+<div class="grid"><div class="card c8"><div class="cb"><button class="copy" onclick="copyCode('pcode')">Копировать</button><pre id="pcode">import os
+import hashlib
+import hmac
+
+class PasswordManager:
+    def __init__(self, password):
+        self.__salt = os.urandom(32)
+        self.__password_hash = self.__hash(password)
+
+    def __hash(self, password):
+        return hashlib.pbkdf2_hmac(
+            "sha256",
+            password.encode(),
+            self.__salt,
+            100_000
+        )
+
+    def verify(self, password):
+        candidate = self.__hash(password)
+        return hmac.compare_digest(
+            candidate,
+            self.__password_hash
+        )
+
+    def __repr__(self):
+        return "PasswordManager(&lt;protected&gt;)"</pre></div></div>
+<div class="visual c4"><h3>Симулятор verify()</h3><div class="controls"><input id="ps" type="password" placeholder="Пароль"><button onclick="setPass()">Установить</button><input id="pc" type="password" placeholder="Проверить"><button class="alt" onclick="verifyPass()">verify()</button></div><div class="out" id="passOut"></div></div></div><div class="note"><b>Практика:</b> в реальных проектах используют специализированные библиотеки и современные схемы вроде Argon2id/bcrypt/scrypt либо корректно настроенный PBKDF2.</div></section>
+
+
+<div class="scheme-card" style="margin-top:18px">
+  <div class="scheme-title"><span class="num">7</span><h3>Как должен идти пароль через систему</h3></div>
+  <svg class="scheme-svg" viewBox="0 0 1100 300">
+    <defs><marker id="pArr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#39adbb"/></marker></defs>
+    <rect x="30" y="105" width="160" height="80" rx="18" class="scheme-node"/>
+    <text x="110" y="137" text-anchor="middle" class="scheme-text">Пароль</text>
+    <text x="110" y="161" text-anchor="middle" class="scheme-sub">ввод пользователя</text>
+
+    <line x1="190" y1="145" x2="300" y2="145" class="arrow-line arrow-dash" marker-end="url(#pArr)"/>
+    <rect x="300" y="95" width="180" height="100" rx="18" class="scheme-node-soft"/>
+    <text x="390" y="129" text-anchor="middle" class="scheme-text">случайная соль</text>
+    <text x="390" y="154" text-anchor="middle" class="scheme-sub">уникальна для записи</text>
+
+    <line x1="480" y1="145" x2="590" y2="145" class="arrow-line arrow-dash" marker-end="url(#pArr)"/>
+    <rect x="590" y="85" width="200" height="120" rx="18" class="scheme-node-blue"/>
+    <text x="690" y="124" text-anchor="middle" class="scheme-text-light">Password KDF</text>
+    <text x="690" y="149" text-anchor="middle" fill="#cceaf0" font-size="12">PBKDF2 / Argon2id / bcrypt</text>
+    <text x="690" y="174" text-anchor="middle" fill="#cceaf0" font-size="12">делает перебор дорогим</text>
+
+    <line x1="790" y1="145" x2="900" y2="145" class="arrow-line arrow-dash" marker-end="url(#pArr)"/>
+    <rect x="900" y="95" width="165" height="100" rx="18" class="scheme-node"/>
+    <text x="982" y="129" text-anchor="middle" class="scheme-text">Хэш + соль</text>
+    <text x="982" y="154" text-anchor="middle" class="scheme-sub">хранятся</text>
+    <text x="982" y="176" text-anchor="middle" class="scheme-sub">пароль не хранится</text>
+  </svg>
+  <div class="scheme-note">При проверке введённый пароль проходит тот же KDF с той же солью, а затем сравниваются результаты. Сам пароль не требуется хранить.</div>
+</div>
+<section id="prop"><span class="eye">@property</span><h2>Управляемый атрибут: выглядит как поле, работает как метод</h2><div class="grid"><div class="card c7"><div class="cb"><button class="copy" onclick="copyCode('propcode')">Копировать</button><pre id="propcode">class Profile:
+    def __init__(self):
+        self.__privilege_level = 0
+
+    @property
+    def privilege_level(self):
+        return self.__privilege_level
+
+    @privilege_level.setter
+    def privilege_level(self, value):
+        if not 0 &lt;= value &lt;= 3:
+            raise ValueError("Диапазон: 0..3")
+
+        print(f"[AUDIT] privilege_level -> {value}")
+        self.__privilege_level = value
+
+    @privilege_level.deleter
+    def privilege_level(self):
+        raise AttributeError("Удаление запрещено")</pre></div></div><div class="visual c5"><h3>Проверь setter</h3><div class="controls"><input id="lvl" type="number" value="2"><button onclick="setLevel()">Записать уровень</button></div><div class="out" id="lvlOut"></div></div></div></section>
+
+<div class="scheme-card" style="margin-top:18px">
+  <div class="scheme-title"><span class="num">8</span><h3>@property как шлюз между внешним кодом и внутренним полем</h3></div>
+  <svg class="scheme-svg" viewBox="0 0 1050 300">
+    <defs><marker id="prArr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#39adbb"/></marker></defs>
+    <rect x="40" y="105" width="220" height="80" rx="18" class="scheme-node"/>
+    <text x="150" y="136" text-anchor="middle" class="scheme-text">profile.privilege_level = 2</text>
+    <text x="150" y="160" text-anchor="middle" class="scheme-sub">выглядит как присваивание</text>
+
+    <line x1="260" y1="145" x2="395" y2="145" class="arrow-line arrow-dash" marker-end="url(#prArr)"/>
+    <rect x="395" y="85" width="250" height="120" rx="18" class="scheme-node-blue"/>
+    <text x="520" y="120" text-anchor="middle" class="scheme-text-light">@setter</text>
+    <text x="520" y="147" text-anchor="middle" fill="#cceaf0" font-size="12">валидация 0..3</text>
+    <text x="520" y="169" text-anchor="middle" fill="#cceaf0" font-size="12">AUDIT log</text>
+
+    <line x1="645" y1="145" x2="785" y2="145" class="arrow-line arrow-dash" marker-end="url(#prArr)"/>
+    <rect x="785" y="105" width="225" height="80" rx="18" class="scheme-node-soft"/>
+    <text x="897" y="137" text-anchor="middle" class="scheme-text">__privilege_level</text>
+    <text x="897" y="160" text-anchor="middle" class="scheme-sub">внутреннее состояние</text>
+  </svg>
+  <div class="scheme-note">Для пользователя API выглядит просто, но внутри можно вставить проверки, аудит, преобразование значения и запрет удаления.</div>
+</div>
+<section id="token"><span class="eye">SecureToken</span><h2>Токен с TTL и управлением жизненным циклом</h2><div class="grid"><div class="card c6"><h3>Что должно быть</h3><ul><li>Криптостойкая генерация.</li><li>Срок жизни TTL.</li><li>Явный отзыв.</li><li><code>is_valid()</code> проверяет TTL и отзыв.</li><li><code>repr</code> не раскрывает значение.</li></ul></div><div class="card c6"><pre>secrets.token_hex(32)
+__expires_at
+revoke()
+is_valid()
+@property token
+__repr__ -> &lt;hidden&gt;</pre></div></div><div class="visual"><h3>Интерактив: жизненный цикл токена</h3><div class="controls"><select id="ttl"><option value="5">5 секунд</option><option value="10">10 секунд</option><option value="20">20 секунд</option></select><button onclick="newToken()">Создать токен</button><button class="warn" onclick="revoke()">revoke()</button></div><div class="tokenbar"><i id="tp"></i></div><div class="out" id="tokOut" style="margin-top:10px"></div></div></section>
+
+<div class="scheme-card" style="margin-top:18px">
+  <div class="scheme-title"><span class="num">9</span><h3>Жизненный цикл SecureToken</h3></div>
+  <svg class="scheme-svg" viewBox="0 0 1100 320">
+    <defs><marker id="tArr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#39adbb"/></marker></defs>
+    <rect x="40" y="115" width="180" height="85" rx="18" class="scheme-node"/>
+    <text x="130" y="147" text-anchor="middle" class="scheme-text">Создание</text>
+    <text x="130" y="173" text-anchor="middle" class="scheme-sub">secrets.token_hex()</text>
+
+    <line x1="220" y1="157" x2="340" y2="157" class="arrow-line arrow-dash" marker-end="url(#tArr)"/>
+    <rect x="340" y="105" width="190" height="105" rx="18" class="scheme-node-blue"/>
+    <text x="435" y="142" text-anchor="middle" class="scheme-text-light">ACTIVE</text>
+    <text x="435" y="168" text-anchor="middle" fill="#cceaf0" font-size="12">TTL отсчитывается</text>
+    <text x="435" y="189" text-anchor="middle" fill="#cceaf0" font-size="12">is_valid() = True</text>
+
+    <path d="M530 140 C650 80,720 80,820 115" class="arrow-line arrow-dash" marker-end="url(#tArr)"/>
+    <text x="675" y="82" text-anchor="middle" class="scheme-sub">TTL истёк</text>
+
+    <path d="M530 175 C650 240,720 240,820 200" class="arrow-line arrow-dash" marker-end="url(#tArr)"/>
+    <text x="675" y="255" text-anchor="middle" class="scheme-sub">revoke()</text>
+
+    <rect x="820" y="105" width="220" height="105" rx="18" fill="#fff0f3" stroke="#b9364b" stroke-width="2"/>
+    <text x="930" y="142" text-anchor="middle" fill="#8b2638" font-size="15" font-weight="900">INVALID</text>
+    <text x="930" y="168" text-anchor="middle" fill="#8b2638" font-size="12">истёк или отозван</text>
+    <text x="930" y="189" text-anchor="middle" fill="#8b2638" font-size="12">is_valid() = False</text>
+  </svg>
+  <div class="scheme-note">Два независимых основания недействительности: срок жизни закончился или токен отозван вручную.</div>
+</div>
+<section><span class="eye">Связь с ИБ</span><h2>Что даёт инкапсуляция на практике</h2><div class="grid"><div class="card c4"><h3>Контроль изменений</h3><p>Роли, пароли и токены меняются только через разрешённые операции.</p></div><div class="card c4"><h3>Валидация</h3><p>Значения проверяются до записи.</p></div><div class="card c4"><h3>Меньше поверхности атаки</h3><p>Наружу выставляется минимальный API.</p></div><div class="card c6"><h3>Аудируемость</h3><p>Через метод можно записывать лог каждой критичной операции.</p></div><div class="card c6"><h3>Наименьшие привилегии</h3><p>Компонент предоставляет только реально нужные действия.</p></div></div></section>
+<section id="practice"><span class="eye">Дополнительные задания</span><h2>Проверь, понял ли ты лекцию</h2><div class="grid">
+<div class="exercise c6"><h3>1. Найди нарушение инкапсуляции</h3><pre>user = User("bob", "guest")
+user.role = "admin"</pre><textarea id="ex1" rows="3" placeholder="Почему это опасно?"></textarea><div class="controls"><button onclick="check1()">Проверить идею</button></div><div id="ex1f" class="fb"></div></div>
+<div class="exercise c6"><h3>2. Выбери безопаснее</h3><label class="opt"><input type="radio" name="ex2" value="bad"> <code>profile.__dict__['role']='admin'</code></label><label class="opt"><input type="radio" name="ex2" value="bad"> <code>profile.role='admin'</code> без проверки</label><label class="opt"><input type="radio" name="ex2" value="good"> setter/метод с валидацией и аудитом</label><div class="controls"><button onclick="check2()">Проверить</button></div><div id="ex2f" class="fb"></div></div>
+<div class="exercise c6"><h3>3. Что не так с паролями?</h3><pre>salt = "fixed_salt"
+hash = hashlib.md5(...)</pre><label class="opt"><input type="checkbox" class="ex3" value="fixed"> фиксированная соль</label><label class="opt"><input type="checkbox" class="ex3" value="md5"> MD5 неподходящ для хранения паролей</label><label class="opt"><input type="checkbox" class="ex3" value="method"> проблема в том, что код внутри метода</label><div class="controls"><button onclick="check3()">Проверить</button></div><div id="ex3f" class="fb"></div></div>
+<div class="exercise c6"><h3>4. Какой принцип ООП?</h3><p>Разные классы реализуют <code>authenticate()</code>, а внешний код вызывает его одинаково.</p><select id="ex4"><option>Инкапсуляция</option><option>Полиморфизм</option><option>Наследование</option><option>Абстракция</option></select><div class="controls"><button onclick="check4()">Проверить</button></div><div id="ex4f" class="fb"></div></div>
+<div class="exercise c12"><h3>5. Спроектируй Session</h3><p>Какие поля сделать внутренними и какие методы оставить публичными?</p><textarea id="ex5" rows="5" placeholder="__token, __expires_at..."></textarea><div class="controls"><button onclick="model()">Показать модельный вариант</button></div><div id="ex5f" class="fb"></div></div>
+</div></section>
+<section><span class="eye">Самопроверка</span><h2>Итоговый мини-тест</h2><div class="card"><div class="progress"><i id="qp"></i></div><h3>1. Что такое объект?</h3><label class="opt"><input type="radio" name="q1" value="0"> Функция</label><label class="opt"><input type="radio" name="q1" value="1"> Экземпляр класса</label><h3>2. Что делает <code>__attr</code>?</h3><label class="opt"><input type="radio" name="q2" value="1"> Включает name mangling</label><label class="opt"><input type="radio" name="q2" value="0"> Шифрует данные</label><h3>3. Зачем <code>@property</code>?</h3><label class="opt"><input type="radio" name="q3" value="1"> Контролируемый доступ с валидацией</label><label class="opt"><input type="radio" name="q3" value="0"> Автоматическое шифрование</label><h3>4. Что должен учитывать <code>is_valid()</code>?</h3><label class="opt"><input type="radio" name="q4" value="1"> TTL и отзыв</label><label class="opt"><input type="radio" name="q4" value="0"> Только длину строки</label><h3>5. Общий <code>move()</code> у разных классов — это...</h3><label class="opt"><input type="radio" name="q5" value="1"> Полиморфизм</label><label class="opt"><input type="radio" name="q5" value="0"> Инкапсуляция</label><div class="controls"><button onclick="quiz()">Проверить</button></div><div id="qout" class="fb"></div></div></section>
+<section><span class="eye">Итог</span><h2>Что нужно унести с занятия</h2><div class="card blue"><ul><li>Класс — шаблон, объект — конкретный экземпляр.</li><li>Объект объединяет атрибуты и методы.</li><li>Инкапсуляция переносит критичные изменения в контролируемые точки.</li><li><code>_attr</code> и <code>__attr</code> — соглашения и name mangling, а не абсолютная защита.</li><li><code>@property</code> позволяет валидировать и журналировать запись.</li><li>Токены требуют TTL и отзыва.</li><li>Пароли требуют специализированного KDF и уникальной соли.</li></ul></div></section>
+</main><div class="footer">Интерактивный конспект · Занятие 7 · Модуль 1 · Тема 1.5</div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function copyCode(id){navigator.clipboard.writeText(document.getElementById(id).innerText);let b=document.activeElement;if(b&&b.classList.contains('copy')){let t=b.textContent;b.textContent='Скопировано ✓';setTimeout(()=>b.textContent=t,900)}}
+
+let bank={owner:'Иван',balance:1000,enc:false};
+function drawBank(){$('#bankMem').innerHTML=`<div class="mem"><b>owner</b><br>${bank.owner}</div><div class="mem ${bank.enc?'private':''}"><b>${bank.enc?'__balance':'balance'}</b><br>${bank.balance}</div>`}
+function dep(){let a=Number($('#amt').value);if(a>0){bank.balance+=a;$('#bankOut').textContent=`deposit(${a}) → Деньги зачислены\nБаланс: ${bank.balance}`}else $('#bankOut').textContent='Сумма должна быть больше нуля';drawBank()}
+function wd(){let a=Number($('#amt').value);if(a<=0)$('#bankOut').textContent='Сумма должна быть больше нуля';else if(a>bank.balance)$('#bankOut').textContent='Недостаточно средств';else{bank.balance-=a;$('#bankOut').textContent=`withdraw(${a}) → Деньги сняты\nБаланс: ${bank.balance}`};drawBank()}
+function resetBank(){bank={owner:'Иван',balance:1000,enc:false};drawBank();$('#bankOut').textContent='BankAccount("Иван", 1000) создан.'}resetBank();
+
+function hack(){let x=Number($('#hack').value);if(bank.enc)$('#encOut').textContent='Прямого публичного balance нет. Используйте методы класса.';else{bank.balance=x;drawBank();$('#encOut').textContent=`account.balance = ${x}\nИзменение прошло без проверки!`}}
+function toggleEnc(){bank.enc=!bank.enc;drawBank();$('#encOut').textContent=bank.enc?'Инкапсуляция включена: __balance.':'Инкапсуляция выключена: balance открыт.'}
+
+function move(){let m={car:'Автомобиль едет по дороге',boat:'Лодка плывёт по воде',plane:'Самолёт летит в небе'};$('#polyOut').textContent='vehicle.move() → '+m[$('#veh').value]}
+function mangle(){let c=$('#cn').value.trim(),a=$('#an').value.trim().replace(/^_+/,'');$('#mOut').textContent=`self.__${a}\n↓ name mangling\n_${c}__${a}`}
+
+let secret='';
+function setPass(){secret=$('#ps').value;$('#passOut').textContent=secret?'Пароль принят.\nСоль: <скрыта>\nХэш: <скрыт>\nrepr: PasswordManager(<protected>)':'Введите пароль.'}
+function verifyPass(){if(!secret){$('#passOut').textContent='Сначала установите пароль.';return}$('#passOut').textContent=$('#pc').value===secret?'verify() → True ✓':'verify() → False'}
+
+function setLevel(){let v=Number($('#lvl').value);if(v<0||v>3||!Number.isInteger(v)){$('#lvlOut').textContent='ValueError: диапазон 0..3';return}$('#lvlOut').textContent=`[AUDIT] privilege_level -> ${v}\nЗапись выполнена.`}
+
+let timer=null,tok={on:false,rev:false,ttl:0,start:0,val:''};
+function rand(){let a=new Uint8Array(16);crypto.getRandomValues(a);return [...a].map(x=>x.toString(16).padStart(2,'0')).join('')}
+function renderTok(){if(!tok.on){$('#tokOut').textContent='Токен не создан.';return}let e=(Date.now()-tok.start)/1000,left=Math.max(0,tok.ttl-e),pct=Math.max(0,left/tok.ttl*100),valid=!tok.rev&&left>0;$('#tp').style.width=pct+'%';$('#tokOut').textContent=`token: ${tok.val.slice(0,10)}… <скрыт>\nTTL осталось: ${left.toFixed(1)} с\nrevoked: ${tok.rev}\nis_valid(): ${valid}`;if(left<=0)clearInterval(timer)}
+function newToken(){clearInterval(timer);tok={on:true,rev:false,ttl:Number($('#ttl').value),start:Date.now(),val:rand()};renderTok();timer=setInterval(renderTok,200)}
+function revoke(){if(tok.on){tok.rev=true;renderTok()}}
+
+function check1(){let t=$('#ex1').value.toLowerCase(),ok=t.includes('провер')||t.includes('валида')||t.includes('напрям')||t.includes('аудит');$('#ex1f').className='fb '+(ok?'ok':'no');$('#ex1f').textContent=ok?'Верно: прямое изменение роли обходит проверку прав и аудит.':'Идея: присваивание роли напрямую обходит контроль.'}
+function check2(){let x=document.querySelector('input[name=ex2]:checked'),ok=x&&x.value==='good';$('#ex2f').className='fb '+(ok?'ok':'no');$('#ex2f').textContent=ok?'Верно ✓':'Лучше использовать setter/метод с проверкой и аудитом.'}
+function check3(){let v=$$('.ex3:checked').map(x=>x.value),ok=v.includes('fixed')&&v.includes('md5')&&!v.includes('method');$('#ex3f').className='fb '+(ok?'ok':'no');$('#ex3f').textContent=ok?'Верно: фиксированная соль и MD5 — две проблемы.':'Нужно выбрать фиксированную соль и MD5.'}
+function check4(){let ok=$('#ex4').value==='Полиморфизм';$('#ex4f').className='fb '+(ok?'ok':'no');$('#ex4f').textContent=ok?'Верно ✓':'Это полиморфизм.'}
+function model(){$('#ex5f').className='fb ok';$('#ex5f').innerHTML='<code>__token</code>, <code>__expires_at</code>, <code>__revoked</code> — внутренние поля. Публичные методы: <code>is_valid()</code>, <code>revoke()</code>; токен — read-only property.'}
+
+function quiz(){let s=0,t=5;for(let i=1;i<=t;i++){let x=document.querySelector(`input[name=q${i}]:checked`);if(x)s+=Number(x.value)}$('#qp').style.width=(s/t*100)+'%';$('#qout').className='fb '+(s>=4?'ok':'no');$('#qout').textContent=`Результат: ${s}/${t}. `+(s===5?'Отлично — основные идеи усвоены.':s>=4?'Хорошо. Повтори один спорный блок.':'Вернись к инкапсуляции, доступу и @property.')}
+
+</script></body></html>
