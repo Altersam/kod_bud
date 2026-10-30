@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ООП в контексте информационной безопасности — интерактивный урок v4</title>
+<title>ООП в контексте информационной безопасности — интерактивный урок v6</title>
 <style>
 :root{
   --navy:#0d3f7f;
@@ -293,6 +293,100 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
   .cube-arrow{transform:rotate(90deg)}
 }
 
+
+/* v5: устойчивое отображение урока */
+main, section, .card, .task, .details-body, .record-card { min-width: 0; }
+pre, code, .record-url { overflow-wrap: normal; }
+pre { max-width: 100%; }
+.codebox { max-width: 100%; overflow: hidden; }
+.codebox pre { overflow-x: auto; }
+.editor { display:block; max-width:100%; resize:vertical; }
+details { max-width:100%; }
+img, video, iframe { max-width:100%; }
+
+.record-card{
+  padding:0;
+  overflow:hidden;
+  background:#fff;
+}
+.record-head{
+  padding:20px 22px 15px;
+  background:linear-gradient(135deg,#eefbfc,#f8fbff);
+  border-bottom:1px solid var(--line);
+}
+.record-head h2{
+  margin:0 0 7px;
+  color:var(--navy);
+  font-size:clamp(25px,3vw,34px);
+}
+.record-head p{margin:0;color:#526c84}
+.record-player{
+  position:relative;
+  width:100%;
+  aspect-ratio:16/9;
+  background:#071b34;
+}
+.record-player iframe{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  border:0;
+  background:#071b34;
+}
+.record-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  padding:15px 20px 18px;
+}
+.record-actions .record-url{
+  flex:1 1 360px;
+  min-width:0;
+  margin:0;
+}
+.embed-note{
+  padding:0 20px 18px;
+  color:#63788d;
+  font-size:13px;
+}
+@media(max-width:720px){
+  .layout{width:min(100% - 20px,1180px);gap:16px;padding-top:16px}
+  section{border-radius:16px;padding:18px}
+  .record-card{border-radius:16px}
+  .record-head{padding:17px}
+  .record-actions{padding:13px 15px 16px}
+  .record-actions .btn{width:100%;text-align:center}
+  .record-actions .record-url{font-size:11px}
+  pre{font-size:12px}
+  .editor{font-size:12px;min-height:280px}
+  .task{padding:13px}
+}
+
+
+.lesson-extension{background:rgba(255,255,255,.96)}
+#nav a[href="#recording"]{
+  background:#e8f8fa;
+  color:#0d6671;
+  font-weight:900;
+  margin-bottom:4px;
+}
+.record-player:before{
+  content:"Встроенная запись МТС Link";
+  position:absolute;
+  z-index:1;
+  left:12px;
+  top:10px;
+  padding:5px 9px;
+  border-radius:8px;
+  background:rgba(5,25,48,.78);
+  color:#dff7fa;
+  font-size:12px;
+  pointer-events:none;
+}
+.record-player iframe{z-index:0}
+
 </style>
 </head>
 <body>
@@ -325,6 +419,7 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
 
 <div class="layout">
 <aside id="nav">
+  <a href="#recording">▶ Запись занятия</a>
   <a href="#s1">1. Модель ООП</a>
   <a href="#s2">2. Объекты и методы</a>
   <a href="#s3">3. Инкапсуляция</a>
@@ -339,10 +434,36 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
 
 <main>
 <div class="record-card" id="recording">
-  <h3>▶ Запись занятия</h3>
-  <p>Перед прохождением интерактивной части можно открыть видеозапись занятия в МТС Link. Ссылка откроется в новой вкладке.</p>
-  <a class="btn" href="https://my.mts-link.ru/73314937/27167873442/record-new/26860132063" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none">Открыть запись</a>
-  <div class="record-url">https://my.mts-link.ru/73314937/27167873442/record-new/26860132063</div>
+  <div class="record-head">
+    <h2>▶ Запись занятия</h2>
+    <p>Запись встроена прямо в урок. Можно смотреть её здесь или открыть МТС Link отдельно.</p>
+  </div>
+
+  <div class="record-player">
+    <iframe
+      src="https://my.mts-link.ru/73314937/27167873442/record-new/26860132063"
+      title="Запись занятия — ООП в контексте информационной безопасности"
+      loading="eager"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="record-actions">
+    <a class="btn"
+       href="https://my.mts-link.ru/73314937/27167873442/record-new/26860132063"
+       target="_blank"
+       rel="noopener noreferrer"
+       style="display:inline-block;text-decoration:none">
+       Открыть запись в МТС Link ↗
+    </a>
+    <div class="record-url">https://my.mts-link.ru/73314937/27167873442/record-new/26860132063</div>
+  </div>
+
+  <div class="embed-note">
+    Если браузер или МТС Link запрещает показ страницы внутри iframe, используйте кнопку
+    «Открыть запись в МТС Link». Сам урок при этом продолжит работать.
+  </div>
 </div>
 
 <section id="s1" data-section>
@@ -399,6 +520,10 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
   </div>
 </section>
 
+
+<section class="lesson-extension" id="oop-basics-extra">
+  <h2 style="font-size:clamp(26px,2.6vw,34px)">Как читать код класса: разбор с занятия</h2>
+  <p class="lead">Дополнительное объяснение терминов и движения данных внутри объекта.</p>
 
 <div class="transcript-note">
   <strong>Как это объяснялось на занятии.</strong>
@@ -512,6 +637,7 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
   создать объект → вызвать метод через точку. Поэтому в уроке решения сопровождаются
   комментариями именно по этому маршруту.
 </div>
+</section>
 
 <section id="s2" data-section>
   <h2>2. Визуализатор: объект, состояние и метод</h2>
@@ -942,7 +1068,7 @@ print(account.is_blocked())</code></pre></div>
           </div>
         </div>
       </details>
-    </div>    </div>
+    </div>
   </div>
 </section>
 
@@ -1016,7 +1142,7 @@ print(account.is_blocked())</code></pre></div>
 </main>
 </div>
 
-<div class="footer">Интерактивный урок «ООП в контексте информационной безопасности» • автономный HTML • v4</div>
+<div class="footer">Интерактивный урок «ООП в контексте информационной безопасности» • автономный HTML • v6</div>
 
 <script>
 const $ = (s) => document.querySelector(s);
