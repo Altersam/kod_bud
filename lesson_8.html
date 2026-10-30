@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ООП в контексте информационной безопасности — интерактивный урок</title>
+<style>
+:root{
+  --navy:#0d3f7f;
+  --navy2:#082d60;
+  --teal:#2fa9b8;
+  --teal2:#1f7d83;
+  --bg:#f4f8fb;
+  --card:#ffffff;
+  --ink:#15345c;
+  --muted:#5d718a;
+  --line:#d8e4ee;
+  --ok:#169b62;
+  --warn:#d78a00;
+  --bad:#c43b46;
+  --code:#0f172a;
+  --code2:#111827;
+  --shadow:0 12px 32px rgba(20,55,100,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  color:#18324d;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(47,169,184,.10), transparent 26rem),
+    linear-gradient(#f7fbfd,#eef5f8);
+  line-height:1.58;
+}
+button,input,textarea,select{font:inherit}
+a{color:inherit}
+.hero{
+  min-height:78vh;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  background:
+    radial-gradient(circle at 84% 18%, rgba(73,202,217,.22), transparent 24rem),
+    linear-gradient(135deg,var(--navy2),var(--navy));
+  position:relative;
+  overflow:hidden;
+}
+.hero:before,.hero:after{
+  content:"";
+  position:absolute;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:50%;
+}
+.hero:before{width:640px;height:640px;right:-260px;bottom:-320px}
+.hero:after{width:430px;height:430px;left:-220px;top:-220px}
+.hero-inner{width:min(1120px,92vw);position:relative;z-index:1;padding:54px 0}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(47,169,184,.20);
+  border:1px solid rgba(126,233,242,.32);
+  color:#dffcff;padding:8px 13px;border-radius:999px;font-weight:700
+}
+.hero h1{font-size:clamp(40px,6vw,76px);line-height:1.03;margin:22px 0 14px;max-width:980px}
+.hero p{font-size:clamp(18px,2.2vw,25px);max-width:900px;color:#d6e9fb}
+.hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
+.hero-stat{padding:18px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.11)}
+.hero-stat strong{display:block;font-size:28px}
+.hero-stat span{color:#c8def5;font-size:14px}
+.topbar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.93);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{width:min(1180px,94vw);margin:auto;display:flex;align-items:center;gap:14px;padding:10px 0}
+.progress-wrap{flex:1;height:8px;background:#e5edf3;border-radius:99px;overflow:hidden}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--teal),#55d2cf);transition:.25s}
+.topbar button{border:0;background:#e9f3f5;color:var(--navy);border-radius:10px;padding:8px 11px;cursor:pointer;font-weight:700}
+.layout{width:min(1180px,94vw);margin:0 auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:26px;padding:28px 0 70px}
+aside{
+  position:sticky;top:62px;align-self:start;max-height:calc(100vh - 78px);overflow:auto;
+  background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow)
+}
+aside a{
+  display:block;text-decoration:none;padding:10px 11px;border-radius:10px;color:#425b77;font-size:14px
+}
+aside a:hover,aside a.active{background:#e7f5f7;color:var(--navy);font-weight:700}
+main{min-width:0}
+section{
+  background:rgba(255,255,255,.94);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:30px;
+  margin-bottom:24px;
+  box-shadow:var(--shadow)
+}
+section h2{font-size:clamp(28px,3vw,40px);line-height:1.12;color:var(--navy);margin:0 0 12px}
+section h3{font-size:22px;color:var(--navy);margin:24px 0 10px}
+.lead{font-size:18px;color:#4c647e}
+.callout{
+  border-left:5px solid var(--teal);
+  background:#effafb;
+  padding:16px 18px;border-radius:12px;margin:18px 0
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h4{margin:0 0 8px;color:var(--navy);font-size:18px}
+.kbd{display:inline-block;background:#eef2f7;border:1px solid #d8e0e7;border-bottom-width:2px;border-radius:6px;padding:0 6px;font-family:Consolas,monospace;font-size:.92em}
+.codebox{position:relative;margin:14px 0}
+pre{
+  margin:0;background:linear-gradient(180deg,var(--code),var(--code2));color:#d8e9ff;
+  border-radius:16px;padding:18px 18px 20px;overflow:auto;font:14px/1.62 Consolas,Monaco,monospace;
+  border:1px solid #21334e
+}
+.code-title{position:absolute;right:10px;top:10px;color:#8fb3da;font-size:12px;font-weight:700}
+.copy-btn{
+  position:absolute;right:10px;bottom:10px;border:1px solid #314968;background:#1d2e46;color:#d8e9ff;
+  border-radius:8px;padding:5px 8px;cursor:pointer;font-size:12px
+}
+.diagram{
+  background:linear-gradient(180deg,#f8fcfd,#edf7f9);
+  border:1px dashed #8bcad1;border-radius:18px;padding:18px;margin:16px 0
+}
+.flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
+.node{
+  flex:1 1 150px;min-width:130px;padding:14px;border:2px solid #b8dfe4;background:#fff;border-radius:14px;text-align:center
+}
+.node strong{display:block;color:var(--navy)}
+.arrow{display:grid;place-items:center;color:var(--teal2);font-weight:900;font-size:25px}
+.control-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.control-row label{font-weight:700;color:#37516c}
+input[type="text"],input[type="number"],textarea,select{
+  border:1px solid #c6d6e3;border-radius:10px;background:#fff;padding:10px 12px;color:#163250
+}
+input[type="range"]{accent-color:var(--teal);width:min(360px,90%)}
+.btn{
+  border:0;border-radius:11px;background:linear-gradient(135deg,var(--teal),var(--teal2));
+  color:#fff;padding:10px 16px;cursor:pointer;font-weight:800;box-shadow:0 5px 14px rgba(30,126,132,.18)
+}
+.btn.secondary{background:#eaf2f7;color:var(--navy);box-shadow:none}
+.btn.bad{background:linear-gradient(135deg,#e56a71,#b62e3c)}
+.result{
+  min-height:52px;border:1px solid var(--line);border-radius:13px;background:#f9fbfd;padding:12px 14px;margin-top:12px
+}
+.result.ok{border-color:#8ed8b6;background:#effaf5}
+.result.warn{border-color:#f2cf8e;background:#fff8e8}
+.result.bad{border-color:#ef9aa1;background:#fff1f3}
+.pill{display:inline-block;border-radius:999px;padding:4px 10px;font-weight:800;font-size:12px}
+.pill.ok{background:#dff5e9;color:#0b7349}.pill.warn{background:#fff0c8;color:#915f00}.pill.bad{background:#ffdce0;color:#9d2430}.pill.info{background:#e1f3f6;color:#176a70}
+.object-shell{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.object-card{border:2px solid #b6dce2;border-radius:18px;overflow:hidden;background:#fff}
+.object-head{padding:13px 16px;background:linear-gradient(135deg,#e6f8fa,#f8fdfe);font-weight:900;color:var(--navy)}
+.object-body{padding:14px}
+.attr{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed #dce7ee}
+.method{padding:8px 10px;margin-top:9px;border-radius:10px;background:#eff6fb;color:#244e7e;font-family:Consolas,monospace}
+.access-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.access-card{border:2px solid var(--line);border-radius:16px;padding:15px;cursor:pointer;transition:.2s}
+.access-card:hover{transform:translateY(-2px)}
+.access-card.selected{border-color:var(--teal);box-shadow:0 8px 22px rgba(47,169,184,.12)}
+.audit{font-family:Consolas,monospace;font-size:13px;background:#0d2239;color:#d7ecff;border-radius:13px;padding:12px;min-height:120px;max-height:220px;overflow:auto}
+.audit div{padding:4px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.attack-lane{display:grid;grid-template-columns:1fr 80px 1fr;gap:12px;align-items:center}
+.attack-box{min-height:180px;border:2px solid #d7e2ea;border-radius:18px;padding:15px;background:#fff}
+.attack-arrow{text-align:center;font-size:36px;color:var(--bad)}
+.stepper{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.step-dot{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#e9f0f5;color:#5b7086;font-weight:900}
+.step-dot.active{background:var(--teal);color:#fff}
+details{
+  border:1px solid var(--line);border-radius:14px;padding:0;background:#fff;margin:10px 0;overflow:hidden
+}
+summary{cursor:pointer;padding:14px 16px;font-weight:800;color:var(--navy);background:#fbfdfe}
+details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
+.details-body{padding:15px 16px}
+.task-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.task{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff}
+.task h4{margin:0 0 8px;color:var(--navy)}
+.task-meta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.editor{width:100%;min-height:240px;font:14px/1.55 Consolas,monospace;background:#0e1729;color:#e6f0ff;border:1px solid #243653}
+.checks{display:grid;gap:7px;margin:12px 0}
+.check{padding:8px 10px;border-radius:9px;background:#f4f7fa;font-size:14px}
+.check.pass{background:#ecf8f1;color:#0d7148}.check.fail{background:#fff0f1;color:#982a34}
+.quiz-q{padding:16px;border:1px solid var(--line);border-radius:14px;margin:12px 0}
+.quiz-q label{display:block;margin:8px 0;padding:8px;border-radius:9px;cursor:pointer}
+.quiz-q label:hover{background:#f3f8fb}
+.quiz-score{font-size:22px;font-weight:900;color:var(--navy)}
+.footer{padding:34px;text-align:center;color:#6b7f91}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media (max-width:980px){
+  .layout{grid-template-columns:1fr}
+  aside{position:relative;top:0;max-height:none;display:flex;overflow:auto;white-space:nowrap}
+  aside a{display:inline-block}
+  .hero-grid,.grid3{grid-template-columns:1fr 1fr}
+}
+@media (max-width:720px){
+  section{padding:20px}
+  .grid2,.grid3,.object-shell,.access-grid,.task-grid,.attack-lane{grid-template-columns:1fr}
+  .attack-arrow{transform:rotate(90deg)}
+  .hero-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <div class="badge">Интерактивный урок • Python • ООП • Информационная безопасность</div>
+    <h1>ООП как механизм контроля состояния и доступа</h1>
+    <p>Не просто «класс + if», а понимание того, как объекты защищают данные, почему появляется инкапсуляция, где возникают уязвимости и как проектировать безопасные интерфейсы.</p>
+    <div class="hero-grid">
+      <div class="hero-stat"><strong>10</strong><span>учебных модулей</span></div>
+      <div class="hero-stat"><strong>7</strong><span>интерактивных визуализаторов</span></div>
+      <div class="hero-stat"><strong>20</strong><span>задач с ответами</span></div>
+      <div class="hero-stat"><strong>2</strong><span>основных тренажёра</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <strong>Прогресс</strong>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <span id="progressText">0%</span>
+    <button id="resetProgress">Сбросить</button>
+  </div>
+</div>
+
+<div class="layout">
+<aside id="nav">
+  <a href="#s1">1. Модель ООП</a>
+  <a href="#s2">2. Объекты и методы</a>
+  <a href="#s3">3. Инкапсуляция</a>
+  <a href="#s4">4. Name mangling</a>
+  <a href="#s5">5. @property</a>
+  <a href="#s6">6. Уязвимости</a>
+  <a href="#s7">7. Токены</a>
+  <a href="#s8">8. Тренажёры</a>
+  <a href="#s9">9. Банк 20 задач</a>
+  <a href="#s10">10. Проверка знаний</a>
+</aside>
+
+<main>
+<section id="s1" data-section>
+  <h2>1. Что на самом деле делает ООП</h2>
+  <p class="lead">Класс — это не «коробка для функций». Он задаёт <strong>допустимое состояние</strong> объекта и способы, которыми это состояние можно менять.</p>
+
+  <div class="diagram">
+    <div class="flow">
+      <div class="node"><strong>Класс</strong>Правила и шаблон</div>
+      <div class="arrow">→</div>
+      <div class="node"><strong>Объект</strong>Конкретный экземпляр</div>
+      <div class="arrow">→</div>
+      <div class="node"><strong>Атрибуты</strong>Состояние объекта</div>
+      <div class="arrow">→</div>
+      <div class="node"><strong>Методы</strong>Разрешённые операции</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>Обычный пример</h4>
+      <p>Устройство хранит имя и процент потерь пакетов. Метод вычисляет уровень угрозы.</p>
+      <div class="codebox">
+        <span class="code-title">Python</span>
+<pre><code>class NetworkDevice:
+    def __init__(self, hostname, packet_loss):
+        self.hostname = hostname
+        self.packet_loss = packet_loss
+
+    def threat_level(self):
+        if self.packet_loss &lt; 5:
+            return "NORMAL"
+        elif self.packet_loss &lt;= 20:
+            return "DEGRADED"
+        return "CRITICAL"</code></pre>
+      </div>
+    </div>
+    <div class="card">
+      <h4>Что здесь важно</h4>
+      <ol>
+        <li><code class="kbd">__init__</code> создаёт начальное состояние.</li>
+        <li><code class="kbd">self</code> — ссылка на текущий объект.</li>
+        <li>Метод анализирует состояние именно этого объекта.</li>
+        <li>Если состояние меняется, меняется и поведение метода.</li>
+      </ol>
+      <div class="callout"><strong>Связь с ИБ:</strong> объект может представлять учётную запись, токен, сетевой узел, файл журнала или политику доступа.</div>
+    </div>
+  </div>
+</section>
+
+<section id="s2" data-section>
+  <h2>2. Визуализатор: объект, состояние и метод</h2>
+  <p class="lead">Изменяйте состояние устройства и смотрите, как один и тот же метод выдаёт разный результат.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="control-row">
+        <label for="hostInput">hostname</label>
+        <input id="hostInput" type="text" value="router-1">
+      </div>
+      <div class="control-row">
+        <label for="lossRange">packet_loss</label>
+        <input id="lossRange" type="range" min="0" max="40" value="15">
+        <strong><span id="lossValue">15</span>%</strong>
+      </div>
+      <button class="btn" id="runThreat">Вызвать threat_level()</button>
+      <div class="result" id="threatResult"></div>
+    </div>
+
+    <div class="object-card">
+      <div class="object-head">Объект NetworkDevice</div>
+      <div class="object-body">
+        <div class="attr"><span>hostname</span><strong id="objHost">router-1</strong></div>
+        <div class="attr"><span>packet_loss</span><strong id="objLoss">15.0</strong></div>
+        <div class="method">threat_level()</div>
+        <div class="result" id="objMethodResult">Метод ещё не вызван.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout"><strong>Почему это ООП:</strong> состояние <code class="kbd">packet_loss</code> находится внутри объекта, а правило интерпретации этого состояния — в методе объекта.</div>
+</section>
+
+<section id="s3" data-section>
+  <h2>3. Инкапсуляция: зачем ограничивать прямой доступ</h2>
+  <p class="lead">Если любую переменную объекта можно менять напрямую, объект не контролирует собственное состояние. В безопасности это превращается в повышение привилегий, обход валидации и утечки секретов.</p>
+
+  <div class="grid3">
+    <div class="card">
+      <h4>public</h4>
+      <p><code class="kbd">role</code></p>
+      <p>Доступен всем. Подходит для некритичных данных.</p>
+    </div>
+    <div class="card">
+      <h4>_protected</h4>
+      <p><code class="kbd">_role</code></p>
+      <p>Соглашение: «внутренняя деталь». Python не запрещает доступ технически.</p>
+    </div>
+    <div class="card">
+      <h4>__private</h4>
+      <p><code class="kbd">__role</code></p>
+      <p>Включает name mangling: имя преобразуется внутри класса.</p>
+    </div>
+  </div>
+
+  <h3>Интерактив: попробуйте «достучаться» до атрибута</h3>
+  <div class="access-grid" id="accessGrid">
+    <div class="access-card selected" data-access="public"><strong>user.role</strong><br>Прямой доступ</div>
+    <div class="access-card" data-access="protected"><strong>user._role</strong><br>Доступ возможен, но нарушает соглашение</div>
+    <div class="access-card" data-access="private"><strong>user.__role</strong><br>AttributeError</div>
+  </div>
+  <div class="result" id="accessResult"></div>
+
+  <div class="callout"><strong>Важно:</strong> <code class="kbd">__private</code> в Python — не криптографическая защита. Это механизм проектирования интерфейса, который помогает не обращаться к внутреннему состоянию случайно.</div>
+</section>
+
+<section id="s4" data-section>
+  <h2>4. Name mangling: что происходит с <code>__private</code></h2>
+  <p class="lead">Python меняет внутреннее имя атрибута, чтобы снизить риск случайного конфликта и прямого доступа.</p>
+
+  <div class="grid2">
+    <div>
+      <div class="codebox">
+<pre><code>class PasswordVault:
+    def __init__(self, password):
+        self.__password = password
+
+    def check(self, value):
+        return value == self.__password
+
+v = PasswordVault("s3cr3t")</code></pre>
+      </div>
+      <div class="stepper">
+        <div class="step-dot active">1</div>
+        <div class="step-dot">2</div>
+        <div class="step-dot">3</div>
+      </div>
+      <button class="btn secondary" id="manglePrev">← Назад</button>
+      <button class="btn" id="mangleNext">Дальше →</button>
+    </div>
+    <div class="diagram" id="manglePanel"></div>
+  </div>
+
+  <details>
+    <summary>Показать техническую деталь</summary>
+    <div class="details-body">
+      <p>Внутри экземпляра имя будет храниться примерно как <code class="kbd">_PasswordVault__password</code>. Обратиться к нему технически возможно, но это намеренное нарушение интерфейса класса.</p>
+    </div>
+  </details>
+</section>
+
+<section id="s5" data-section>
+  <h2>5. <code>@property</code>: атрибут с контролем доступа и валидацией</h2>
+  <p class="lead">Снаружи кажется, что мы работаем с обычным атрибутом. На самом деле чтение и запись проходят через методы.</p>
+
+  <div class="grid2">
+    <div class="codebox">
+<pre><code>class UserAccount:
+    def __init__(self, username, privilege):
+        self.username = username
+        self.__privilege = 0
+        self.privilege = privilege
+
+    @property
+    def privilege(self):
+        return self.__privilege
+
+    @privilege.setter
+    def privilege(self, value):
+        if value not in range(4):
+            raise ValueError("Уровень 0–3")
+        self.__privilege = value</code></pre>
+    </div>
+
+    <div class="card">
+      <h4>Попробуйте записать уровень привилегий</h4>
+      <div class="control-row">
+        <label for="privInput">privilege</label>
+        <input type="number" id="privInput" value="2" min="-5" max="100">
+        <button class="btn" id="setPrivilege">Присвоить</button>
+      </div>
+      <div class="result" id="privResult"></div>
+      <h4>Аудит</h4>
+      <div class="audit" id="auditLog"></div>
+    </div>
+  </div>
+
+  <div class="diagram">
+    <div class="flow">
+      <div class="node"><strong>user.privilege = 99</strong>Запрос изменения</div>
+      <div class="arrow">→</div>
+      <div class="node"><strong>setter</strong>Проверка диапазона</div>
+      <div class="arrow">→</div>
+      <div class="node"><strong>ValueError</strong>Состояние не изменено</div>
+    </div>
+  </div>
+</section>
+
+<section id="s6" data-section>
+  <h2>6. Уязвимость: Mass Assignment</h2>
+  <p class="lead">Опасный шаблон: автоматически копировать все поля клиентского запроса в объект без белого списка разрешённых полей.</p>
+
+  <div class="attack-lane">
+    <div class="attack-box">
+      <h4>Клиент присылает JSON</h4>
+      <div class="codebox">
+<pre><code>{
+  "display_name": "Ivan",
+  "role": "admin"
+}</code></pre>
+      </div>
+      <button class="btn bad" id="unsafeAssign">Небезопасно применить всё</button>
+      <button class="btn" id="safeAssign">Применить whitelist</button>
+    </div>
+    <div class="attack-arrow">→</div>
+    <div class="attack-box">
+      <h4>Объект User</h4>
+      <div class="attr"><span>display_name</span><strong id="maName">Guest</strong></div>
+      <div class="attr"><span>role</span><strong id="maRole">user</strong></div>
+      <div class="result" id="maResult">Ожидает изменения.</div>
+    </div>
+  </div>
+
+  <h3>Почему это опасно</h3>
+  <p>Если сервер доверяет любому полю из запроса, пользователь может передать <code class="kbd">role=admin</code>, <code class="kbd">is_staff=true</code> или другой критичный атрибут. Защита — разрешать изменение только явно перечисленных полей.</p>
+
+  <div class="codebox">
+<pre><code>ALLOWED_FIELDS = {"display_name"}
+
+for key, value in payload.items():
+    if key in ALLOWED_FIELDS:
+        setattr(user, key, value)</code></pre>
+  </div>
+</section>
+
+<section id="s7" data-section>
+  <h2>7. Секреты и токены: что можно показывать наружу</h2>
+  <p class="lead">Секрет хранится внутри объекта, а наружу выдаётся только маска или результат проверки.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>AccessToken</h4>
+      <div class="control-row">
+        <label for="tokenInput">token</label>
+        <input id="tokenInput" type="text" value="abcd1234efgh">
+      </div>
+      <button class="btn" id="createToken">Создать объект</button>
+      <div class="result" id="tokenMask"></div>
+      <div class="control-row">
+        <label for="tokenCheck">Проверить значение</label>
+        <input id="tokenCheck" type="text" value="abcd1234efgh">
+        <button class="btn secondary" id="checkToken">is_valid()</button>
+      </div>
+      <div class="result" id="tokenCheckResult"></div>
+    </div>
+
+    <div class="card">
+      <h4>Безопасный интерфейс</h4>
+      <div class="diagram">
+        <div class="flow">
+          <div class="node"><strong>__token</strong>Секрет внутри</div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>get_masked()</strong>abcd****</div>
+          <div class="arrow">→</div>
+          <div class="node"><strong>is_valid()</strong>YES / NO</div>
+        </div>
+      </div>
+      <p><strong>Нельзя:</strong> выводить токен в <code class="kbd">__repr__</code>, логи или исключения.</p>
+      <p><strong>Для реальных секретов:</strong> сравнение токенов следует выполнять через <code class="kbd">hmac.compare_digest()</code>, чтобы уменьшить риск timing attack.</p>
+    </div>
+  </div>
+</section>
+
+<section id="s8" data-section>
+  <h2>8. Основные тренажёры</h2>
+  <p class="lead">Браузер не запускает Python без внешнего интерпретатора, поэтому встроенная проверка анализирует структуру решения: имя класса, методы, ключевые условия и возвращаемые значения.</p>
+
+  <div class="task-grid">
+    <div class="task">
+      <h4>Тренажёр 1. UserAccount.status()</h4>
+      <p>Создайте класс <code class="kbd">UserAccount</code>. Конструктор принимает <code class="kbd">username</code> и <code class="kbd">attempts</code>. Метод <code class="kbd">status()</code> возвращает:</p>
+      <ul><li>SAFE, если attempts &lt; 3</li><li>WARNING, если 3–5</li><li>BLOCKED, если &gt; 5</li></ul>
+      <textarea class="editor" id="editor1">class UserAccount:
+    def __init__(self, username, attempts):
+        pass
+
+    def status(self):
+        pass</textarea>
+      <div class="control-row">
+        <button class="btn" onclick="checkTrainer(1)">Проверить структуру</button>
+        <button class="btn secondary" onclick="showSolution(1)">Показать ответ</button>
+      </div>
+      <div class="checks" id="checks1"></div>
+      <details id="solution1"><summary>Ответ</summary><div class="details-body"><div class="codebox"><pre><code>class UserAccount:
+    def __init__(self, username, attempts):
+        self.username = username
+        self.attempts = attempts
+
+    def status(self):
+        if self.attempts &lt; 3:
+            return "SAFE"
+        elif self.attempts &lt;= 5:
+            return "WARNING"
+        return "BLOCKED"
+
+username = input()
+attempts = int(input())
+
+user = UserAccount(username, attempts)
+print(user.username)
+print(user.status())</code></pre></div></div></details>
+    </div>
+
+    <div class="task">
+      <h4>Тренажёр 2. SecureAccount</h4>
+      <p>Теперь состояние должно меняться <strong>через методы</strong>. Храните число неудач в <code class="kbd">__failed_attempts</code>. Добавьте <code class="kbd">register_failure()</code>, <code class="kbd">reset_attempts()</code>, <code class="kbd">is_blocked()</code>.</p>
+      <textarea class="editor" id="editor2">class SecureAccount:
+    def __init__(self, login):
+        pass
+
+    def register_failure(self):
+        pass
+
+    def reset_attempts(self):
+        pass
+
+    def is_blocked(self):
+        pass</textarea>
+      <div class="control-row">
+        <button class="btn" onclick="checkTrainer(2)">Проверить структуру</button>
+        <button class="btn secondary" onclick="showSolution(2)">Показать ответ</button>
+      </div>
+      <div class="checks" id="checks2"></div>
+      <details id="solution2"><summary>Ответ</summary><div class="details-body"><div class="codebox"><pre><code>class SecureAccount:
+    def __init__(self, login):
+        self.login = login
+        self.__failed_attempts = 0
+
+    def register_failure(self):
+        self.__failed_attempts += 1
+
+    def reset_attempts(self):
+        self.__failed_attempts = 0
+
+    def is_blocked(self):
+        if self.__failed_attempts &gt;= 3:
+            return "BLOCKED"
+        return "OK"
+
+account = SecureAccount("ivan")
+account.register_failure()
+account.register_failure()
+account.register_failure()
+
+print(account.is_blocked())  # BLOCKED</code></pre></div></div></details>
+    </div>
+  </div>
+</section>
+
+<section id="s9" data-section>
+  <h2>9. Банк из 20 задач с ответами</h2>
+  <p class="lead">Первые задания отрабатывают базовую механику классов и методов. Последние постепенно усложняют условия. Не обязательно выполнять все подряд: можно использовать как варианты.</p>
+
+  <div id="taskBank"></div>
+</section>
+
+<section id="s10" data-section>
+  <h2>10. Финальная проверка знаний</h2>
+  <p class="lead">Проверьте, получилось ли связать ООП с безопасностью, а не только с синтаксисом Python.</p>
+
+  <form id="quizForm">
+    <div class="quiz-q">
+      <strong>1. Что лучше всего описывает инкапсуляцию?</strong>
+      <label><input type="radio" name="q1" value="a"> Скрыть весь код программы</label>
+      <label><input type="radio" name="q1" value="b"> Ограничить способы чтения и изменения внутреннего состояния</label>
+      <label><input type="radio" name="q1" value="c"> Сделать все атрибуты глобальными</label>
+    </div>
+    <div class="quiz-q">
+      <strong>2. Что произойдёт при обращении <code class="kbd">obj.__secret</code> к атрибуту, созданному как <code class="kbd">self.__secret</code>?</strong>
+      <label><input type="radio" name="q2" value="a"> Обычно AttributeError</label>
+      <label><input type="radio" name="q2" value="b"> Python удалит объект</label>
+      <label><input type="radio" name="q2" value="c"> Значение автоматически зашифруется</label>
+    </div>
+    <div class="quiz-q">
+      <strong>3. Зачем нужен setter свойства?</strong>
+      <label><input type="radio" name="q3" value="a"> Чтобы валидировать изменение значения</label>
+      <label><input type="radio" name="q3" value="b"> Чтобы ускорить интернет</label>
+      <label><input type="radio" name="q3" value="c"> Только для красивого синтаксиса</label>
+    </div>
+    <div class="quiz-q">
+      <strong>4. Что такое Mass Assignment?</strong>
+      <label><input type="radio" name="q4" value="a"> Массовое создание паролей</label>
+      <label><input type="radio" name="q4" value="b"> Автоматическое присваивание полей запроса объекту без достаточного контроля</label>
+      <label><input type="radio" name="q4" value="c"> Сортировка объектов</label>
+    </div>
+    <div class="quiz-q">
+      <strong>5. Что безопаснее возвращать вместо полного токена?</strong>
+      <label><input type="radio" name="q5" value="a"> Полный токен в repr()</label>
+      <label><input type="radio" name="q5" value="b"> Маску и результат проверки</label>
+      <label><input type="radio" name="q5" value="c"> Записать токен в лог</label>
+    </div>
+    <button class="btn" type="submit">Проверить тест</button>
+  </form>
+  <div class="result quiz-score" id="quizScore"></div>
+
+  <div class="callout">
+    <strong>Главная мысль урока:</strong> хороший объект не просто хранит данные. Он <strong>защищает допустимые состояния</strong> и предоставляет контролируемый интерфейс для работы с ними.
+  </div>
+</section>
+</main>
+</div>
+
+<div class="footer">Интерактивный урок «ООП в контексте информационной безопасности» • автономный HTML</div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+
+function markProgress(){
+  const sections = $$('[data-section]');
+  const passed = sections.filter(s => s.getBoundingClientRect().top < window.innerHeight * 0.62).length;
+  const p = Math.min(100, Math.round((passed / sections.length) * 100));
+  $('#progressBar').style.width = p + '%';
+  $('#progressText').textContent = p + '%';
+  try{ localStorage.setItem('oop_ib_progress', p); }catch(e){}
+}
+window.addEventListener('scroll', markProgress);
+window.addEventListener('load', markProgress);
+$('#resetProgress').addEventListener('click',()=>{
+  try{localStorage.removeItem('oop_ib_progress')}catch(e){}
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+const navLinks = $$('#nav a');
+const sections = $$('main section');
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href') === '#'+e.target.id));
+    }
+  });
+},{rootMargin:'-30% 0px -55% 0px'});
+sections.forEach(s=>io.observe(s));
+
+function copyButtons(){
+  $$('.codebox').forEach(box=>{
+    if(box.querySelector('.copy-btn')) return;
+    const b=document.createElement('button');
+    b.className='copy-btn';
+    b.textContent='Копировать';
+    b.onclick=async()=>{
+      const text=box.querySelector('pre')?.innerText || '';
+      try{await navigator.clipboard.writeText(text); b.textContent='Скопировано'; setTimeout(()=>b.textContent='Копировать',1200)}catch(e){}
+    };
+    box.appendChild(b);
+  });
+}
+copyButtons();
+
+// NetworkDevice visualizer
+function threatLevel(x){
+  if(x < 5) return ['NORMAL','ok','Потери малы: устройство работает в нормальном режиме.'];
+  if(x <= 20) return ['DEGRADED','warn','Потери заметны: качество связи ухудшено.'];
+  return ['CRITICAL','bad','Потери высокие: требуется реакция.'];
+}
+$('#lossRange').addEventListener('input',e=>{
+  $('#lossValue').textContent=e.target.value;
+  $('#objLoss').textContent=Number(e.target.value).toFixed(1);
+});
+$('#hostInput').addEventListener('input',e=>$('#objHost').textContent=e.target.value || '—');
+$('#runThreat').addEventListener('click',()=>{
+  const x=Number($('#lossRange').value);
+  const [label,cls,msg]=threatLevel(x);
+  $('#threatResult').className='result '+cls;
+  $('#threatResult').innerHTML='<span class="pill '+cls+'">'+label+'</span> '+msg;
+  $('#objMethodResult').className='result '+cls;
+  $('#objMethodResult').textContent='threat_level() → '+label;
+});
+$('#runThreat').click();
+
+// Access levels
+const accessText={
+  public:['ok','Доступ разрешён. Это обычный публичный атрибут. Но любое внешнее значение сможет изменить его напрямую.'],
+  protected:['warn','Доступ технически возможен. Подчёркивание — соглашение «не трогать снаружи», а не запрет интерпретатора.'],
+  private:['bad','obj.__role → AttributeError. Python применяет name mangling и меняет внутреннее имя атрибута.']
+};
+$$('.access-card').forEach(card=>card.addEventListener('click',()=>{
+  $$('.access-card').forEach(c=>c.classList.remove('selected')); card.classList.add('selected');
+  const [cls,msg]=accessText[card.dataset.access];
+  $('#accessResult').className='result '+cls; $('#accessResult').textContent=msg;
+}));
+$$('.access-card')[0].click();
+
+// Name mangling stepper
+let mStep=0;
+const mangleSteps=[
+  '<h4>Шаг 1. Создание</h4><p>Конструктор получает строку <code class="kbd">s3cr3t</code> и выполняет <code class="kbd">self.__password = password</code>.</p>',
+  '<h4>Шаг 2. Преобразование имени</h4><p>Внутреннее имя становится примерно <code class="kbd">_PasswordVault__password</code>. Поэтому <code class="kbd">v.__password</code> не находит атрибут.</p>',
+  '<h4>Шаг 3. Контролируемый доступ</h4><p>Внешний код не читает пароль напрямую, а вызывает <code class="kbd">v.check(value)</code>. Наружу возвращается только <strong>True / False</strong>.</p>'
+];
+function renderMangle(){
+  $('#manglePanel').innerHTML=mangleSteps[mStep];
+  $$('.step-dot').forEach((d,i)=>d.classList.toggle('active',i===mStep));
+}
+$('#mangleNext').onclick=()=>{mStep=Math.min(2,mStep+1);renderMangle()};
+$('#manglePrev').onclick=()=>{mStep=Math.max(0,mStep-1);renderMangle()};
+renderMangle();
+
+// Property validator
+let privilege=0;
+function audit(msg,kind='info'){
+  const row=document.createElement('div');
+  row.textContent=new Date().toLocaleTimeString()+'  '+msg;
+  $('#auditLog').prepend(row);
+}
+audit('Объект создан: __privilege = 0');
+$('#setPrivilege').onclick=()=>{
+  const v=Number($('#privInput').value);
+  if(Number.isInteger(v) && v>=0 && v<=3){
+    privilege=v;
+    $('#privResult').className='result ok';
+    $('#privResult').innerHTML='<span class="pill ok">OK</span> __privilege = '+v;
+    audit('SET privilege='+v+' → разрешено');
+  }else{
+    $('#privResult').className='result bad';
+    $('#privResult').innerHTML='<span class="pill bad">ValueError</span> Разрешены только уровни 0–3. Состояние осталось '+privilege+'.';
+    audit('SET privilege='+v+' → ОТКЛОНЕНО');
+  }
+};
+
+// Mass assignment
+function resetMA(){ $('#maName').textContent='Guest'; $('#maRole').textContent='user';}
+resetMA();
+$('#unsafeAssign').onclick=()=>{
+  $('#maName').textContent='Ivan'; $('#maRole').textContent='admin';
+  $('#maResult').className='result bad';
+  $('#maResult').innerHTML='<span class="pill bad">УЯЗВИМОСТЬ</span> role изменён на admin.';
+};
+$('#safeAssign').onclick=()=>{
+  resetMA(); $('#maName').textContent='Ivan';
+  $('#maResult').className='result ok';
+  $('#maResult').innerHTML='<span class="pill ok">WHITELIST</span> Изменено только display_name. role остался user.';
+};
+
+// Token
+let currentToken='abcd1234efgh';
+function renderMask(){
+  const t=currentToken;
+  const mask=(t.slice(0,4) || '----')+'****';
+  $('#tokenMask').className='result ok';
+  $('#tokenMask').innerHTML='get_masked() → <strong>'+mask.replace(/</g,'&lt;')+'</strong>';
+}
+$('#createToken').onclick=()=>{currentToken=$('#tokenInput').value;renderMask()};
+$('#checkToken').onclick=()=>{
+  const ok=$('#tokenCheck').value===currentToken;
+  $('#tokenCheckResult').className='result '+(ok?'ok':'bad');
+  $('#tokenCheckResult').innerHTML='is_valid() → <strong>'+(ok?'YES':'NO')+'</strong>';
+};
+renderMask();
+
+// Trainers
+window.showSolution=(n)=>{const d=$('#solution'+n);d.open=true;d.scrollIntoView({behavior:'smooth',block:'nearest'})}
+function trainerRules(n){
+  if(n===1) return [
+    ['Есть class UserAccount',/class\s+UserAccount\s*:/],
+    ['Есть __init__',/def\s+__init__\s*\(/],
+    ['Сохраняется username',/self\.username\s*=/],
+    ['Сохраняется attempts',/self\.attempts\s*=/],
+    ['Есть status()',/def\s+status\s*\(\s*self\s*\)/],
+    ['Возвращается SAFE',/return\s+["']SAFE["']/],
+    ['Возвращается WARNING',/return\s+["']WARNING["']/],
+    ['Возвращается BLOCKED',/return\s+["']BLOCKED["']/]
+  ];
+  return [
+    ['Есть class SecureAccount',/class\s+SecureAccount\s*:/],
+    ['Есть приватный __failed_attempts',/self\.__failed_attempts\s*=/],
+    ['Есть register_failure()',/def\s+register_failure\s*\(\s*self\s*\)/],
+    ['Счётчик увеличивается',/__failed_attempts\s*\+=\s*1/],
+    ['Есть reset_attempts()',/def\s+reset_attempts\s*\(\s*self\s*\)/],
+    ['Есть is_blocked()',/def\s+is_blocked\s*\(\s*self\s*\)/],
+    ['Возвращается BLOCKED',/return\s+["']BLOCKED["']/],
+    ['Возвращается OK',/return\s+["']OK["']/]
+  ];
+}
+window.checkTrainer=(n)=>{
+  const code=$('#editor'+n).value;
+  const out=$('#checks'+n); out.innerHTML='';
+  let pass=0;
+  trainerRules(n).forEach(([name,re])=>{
+    const ok=re.test(code); if(ok) pass++;
+    const div=document.createElement('div'); div.className='check '+(ok?'pass':'fail');
+    div.textContent=(ok?'✓ ':'✗ ')+name; out.appendChild(div);
+  });
+  const total=trainerRules(n).length;
+  const sum=document.createElement('div'); sum.className='check '+(pass===total?'pass':'fail');
+  sum.innerHTML='<strong>'+pass+' / '+total+'</strong> структурных проверок пройдено.';
+  out.prepend(sum);
+};
+
+// Task bank
+const tasks = [
+{
+n:1,title:'Сетевое устройство',cls:'NetworkDevice',
+desc:'Сохраните hostname и ip. Создайте объект NetworkDevice("server01", "192.168.1.10") и выведите оба значения.',
+answer:`class NetworkDevice:
+    def __init__(self, hostname, ip):
+        self.hostname = hostname
+        self.ip = ip
+
+device = NetworkDevice("server01", "192.168.1.10")
+print(device.hostname)
+print(device.ip)`
+},
+{
+n:2,title:'Событие безопасности',cls:'SecurityEvent',
+desc:'Сохраните event_type и source. Метод info() возвращает строку "ТИП from ИСТОЧНИК".',
+answer:`class SecurityEvent:
+    def __init__(self, event_type, source):
+        self.event_type = event_type
+        self.source = source
+
+    def info(self):
+        return f"{self.event_type} from {self.source}"
+
+event = SecurityEvent("LOGIN_FAIL", "server01")
+print(event.info())`
+},
+{
+n:3,title:'Проверка антивируса',cls:'Computer',
+desc:'Сохраните name и antivirus_enabled. protection() → PROTECTED, если True, иначе UNPROTECTED.',
+answer:`class Computer:
+    def __init__(self, name, antivirus_enabled):
+        self.name = name
+        self.antivirus_enabled = antivirus_enabled
+
+    def protection(self):
+        if self.antivirus_enabled:
+            return "PROTECTED"
+        return "UNPROTECTED"
+
+pc = Computer("PC-01", True)
+print(pc.protection())`
+},
+{
+n:4,title:'Проверка резервной копии',cls:'Backup',
+desc:'Сохраните age. check() → FRESH, если age <= 1, иначе OLD.',
+answer:`class Backup:
+    def __init__(self, age):
+        self.age = age
+
+    def check(self):
+        if self.age <= 1:
+            return "FRESH"
+        return "OLD"
+
+backup = Backup(3)
+print(backup.check())`
+},
+{
+n:5,title:'Проверка пароля по длине',cls:'PasswordCheck',
+desc:'Сохраните password. result() → STRONG, если длина >= 8, иначе WEAK. Пароль считывается через input().',
+answer:`class PasswordCheck:
+    def __init__(self, password):
+        self.password = password
+
+    def result(self):
+        if len(self.password) >= 8:
+            return "STRONG"
+        return "WEAK"
+
+password = input()
+check = PasswordCheck(password)
+print(check.result())`
+},
+{
+n:6,title:'Возраст обновлений',cls:'UpdateStatus',
+desc:'Сохраните days. status() → CURRENT, если days <= 7, иначе UPDATE.',
+answer:`class UpdateStatus:
+    def __init__(self, days):
+        self.days = days
+
+    def status(self):
+        if self.days <= 7:
+            return "CURRENT"
+        return "UPDATE"
+
+days = int(input())
+item = UpdateStatus(days)
+print(item.status())`
+},
+{
+n:7,title:'Срок действия токена',cls:'Token',
+desc:'Сохраните days_left. state() → VALID, если > 0, иначе EXPIRED.',
+answer:`class Token:
+    def __init__(self, days_left):
+        self.days_left = days_left
+
+    def state(self):
+        if self.days_left > 0:
+            return "VALID"
+        return "EXPIRED"
+
+days_left = int(input())
+token = Token(days_left)
+print(token.state())`
+},
+{
+n:8,title:'Подозрительный порт',cls:'Connection',
+desc:'Сохраните port. check_port() → CHECK для 22, 23 или 3389; иначе OK.',
+answer:`class Connection:
+    def __init__(self, port):
+        self.port = port
+
+    def check_port(self):
+        if self.port in (22, 23, 3389):
+            return "CHECK"
+        return "OK"
+
+port = int(input())
+conn = Connection(port)
+print(conn.check_port())`
+},
+{
+n:9,title:'Размер файла журнала',cls:'LogFile',
+desc:'Сохраните size. size_status() → NORMAL при size < 100, иначе LARGE.',
+answer:`class LogFile:
+    def __init__(self, size):
+        self.size = size
+
+    def size_status(self):
+        if self.size < 100:
+            return "NORMAL"
+        return "LARGE"
+
+size = int(input())
+log = LogFile(size)
+print(log.size_status())`
+},
+{
+n:10,title:'Проверка MFA',cls:'AccessProfile',
+desc:'Сохраните mfa_enabled. access() → SECURE при True, иначе CHECK MFA.',
+answer:`class AccessProfile:
+    def __init__(self, mfa_enabled):
+        self.mfa_enabled = mfa_enabled
+
+    def access(self):
+        if self.mfa_enabled:
+            return "SECURE"
+        return "CHECK MFA"
+
+profile = AccessProfile(False)
+print(profile.access())`
+},
+{
+n:11,title:'Нагрузка на сервер',cls:'Server',
+desc:'Сохраните load. status() → NORMAL при <50, HIGH при 50–80, CRITICAL при >80.',
+answer:`class Server:
+    def __init__(self, load):
+        self.load = load
+
+    def status(self):
+        if self.load < 50:
+            return "NORMAL"
+        elif self.load <= 80:
+            return "HIGH"
+        return "CRITICAL"
+
+load = int(input())
+server = Server(load)
+print(server.status())`
+},
+{
+n:12,title:'Уровень уязвимости',cls:'Vulnerability',
+desc:'Сохраните score. level() → LOW при <=3, MEDIUM при 4–7, HIGH при >7.',
+answer:`class Vulnerability:
+    def __init__(self, score):
+        self.score = score
+
+    def level(self):
+        if self.score <= 3:
+            return "LOW"
+        elif self.score <= 7:
+            return "MEDIUM"
+        return "HIGH"
+
+score = int(input())
+v = Vulnerability(score)
+print(v.level())`
+},
+{
+n:13,title:'Приоритет инцидента',cls:'Incident',
+desc:'Сохраните events. priority() → LOW при <5, MEDIUM при 5–10, HIGH при >10.',
+answer:`class Incident:
+    def __init__(self, events):
+        self.events = events
+
+    def priority(self):
+        if self.events < 5:
+            return "LOW"
+        elif self.events <= 10:
+            return "MEDIUM"
+        return "HIGH"
+
+events = int(input())
+incident = Incident(events)
+print(incident.priority())`
+},
+{
+n:14,title:'Состояние сертификата',cls:'Certificate',
+desc:'Сохраните days. status() → EXPIRED при <=0, RENEW при 1–14, VALID при >14.',
+answer:`class Certificate:
+    def __init__(self, days):
+        self.days = days
+
+    def status(self):
+        if self.days <= 0:
+            return "EXPIRED"
+        elif self.days <= 14:
+            return "RENEW"
+        return "VALID"
+
+days = int(input())
+cert = Certificate(days)
+print(cert.status())`
+},
+{
+n:15,title:'Защищённое рабочее место',cls:'Workstation',
+desc:'Сохраните antivirus и firewall. is_secure() → SECURE только если оба True, иначе CHECK.',
+answer:`class Workstation:
+    def __init__(self, antivirus, firewall):
+        self.antivirus = antivirus
+        self.firewall = firewall
+
+    def is_secure(self):
+        if self.antivirus and self.firewall:
+            return "SECURE"
+        return "CHECK"
+
+pc = Workstation(True, False)
+print(pc.is_secure())`
+},
+{
+n:16,title:'Проверка файла',cls:'FileCheck',
+desc:'Сохраните name и size. result() → SUSPICIOUS, если имя заканчивается на .exe и size > 10; иначе OK.',
+answer:`class FileCheck:
+    def __init__(self, name, size):
+        self.name = name
+        self.size = size
+
+    def result(self):
+        if self.name.lower().endswith(".exe") and self.size > 10:
+            return "SUSPICIOUS"
+        return "OK"
+
+name = input()
+size = int(input())
+file = FileCheck(name, size)
+print(file.result())`
+},
+{
+n:17,title:'Политика удалённого доступа',cls:'RemoteAccess',
+desc:'Сохраните vpn и mfa. check() → ALLOW только если оба True, иначе DENY.',
+answer:`class RemoteAccess:
+    def __init__(self, vpn, mfa):
+        self.vpn = vpn
+        self.mfa = mfa
+
+    def check(self):
+        if self.vpn and self.mfa:
+            return "ALLOW"
+        return "DENY"
+
+access = RemoteAccess(True, True)
+print(access.check())`
+},
+{
+n:18,title:'Риск сетевого узла',cls:'NetworkNode',
+desc:'Сохраните open_ports и updated. risk() → HIGH, если открыто >10 портов ИЛИ обновления не установлены; иначе LOW.',
+answer:`class NetworkNode:
+    def __init__(self, open_ports, updated):
+        self.open_ports = open_ports
+        self.updated = updated
+
+    def risk(self):
+        if self.open_ports > 10 or not self.updated:
+            return "HIGH"
+        return "LOW"
+
+node = NetworkNode(5, False)
+print(node.risk())`
+},
+{
+n:19,title:'Анализ API-ключа',cls:'ApiKey',
+desc:'Сохраните name и age. rotation_status() → OK при <30, ROTATE при 30–90, EXPIRED при >90. Выведите имя и статус.',
+answer:`class ApiKey:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def rotation_status(self):
+        if self.age < 30:
+            return "OK"
+        elif self.age <= 90:
+            return "ROTATE"
+        return "EXPIRED"
+
+name = input().strip()
+age = int(input())
+key = ApiKey(name, age)
+print(key.name)
+print(key.rotation_status())`
+},
+{
+n:20,title:'SecurityScanner',cls:'SecurityScanner',
+desc:'Сохраните target и alerts. verdict() → CLEAN при 0, REVIEW при 1–3, DANGER при >3. Выведите target и verdict.',
+answer:`class SecurityScanner:
+    def __init__(self, target, alerts):
+        self.target = target
+        self.alerts = alerts
+
+    def verdict(self):
+        if self.alerts == 0:
+            return "CLEAN"
+        elif self.alerts <= 3:
+            return "REVIEW"
+        return "DANGER"
+
+target = input().strip()
+alerts = int(input())
+scanner = SecurityScanner(target, alerts)
+print(scanner.target)
+print(scanner.verdict())`
+}
+];
+
+const bank=$('#taskBank');
+tasks.forEach(t=>{
+  const d=document.createElement('details');
+  d.innerHTML=`<summary>Задание ${t.n}. ${t.title}</summary>
+  <div class="details-body">
+    <div class="task-meta"><span class="pill info">${t.cls}</span><span class="pill ${t.n<5?'ok':t.n<15?'warn':'bad'}">${t.n<5?'База':t.n<15?'Условия':'Комбинация'}</span></div>
+    <p>${t.desc}</p>
+    <details><summary>Показать решение</summary><div class="details-body"><div class="codebox"><pre><code></code></pre></div></div></details>
+  </div>`;
+  d.querySelector('code').textContent=t.answer;
+  bank.appendChild(d);
+});
+copyButtons();
+
+// Quiz
+$('#quizForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const correct={q1:'b',q2:'a',q3:'a',q4:'b',q5:'b'};
+  let score=0;
+  Object.entries(correct).forEach(([q,a])=>{
+    const el=document.querySelector(`input[name="${q}"]:checked`);
+    if(el && el.value===a) score++;
+  });
+  const out=$('#quizScore');
+  out.className='result quiz-score '+(score>=4?'ok':score>=3?'warn':'bad');
+  out.textContent=`Результат: ${score} / 5. `+(score===5?'Отлично: связь ООП и ИБ понята.':score>=4?'Хорошо. Повторите спорные места.':'Вернитесь к инкапсуляции, @property и Mass Assignment.');
+});
+</script>
+</body>
+</html>
