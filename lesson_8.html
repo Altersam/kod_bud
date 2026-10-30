@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ООП в контексте информационной безопасности — интерактивный урок v2</title>
+<title>ООП в контексте информационной безопасности — интерактивный урок v4</title>
 <style>
 :root{
   --navy:#0d3f7f;
@@ -198,6 +198,101 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
   .attack-arrow{transform:rotate(90deg)}
   .hero-grid{grid-template-columns:1fr 1fr}
 }
+
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.hero-link{
+  display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+  background:#fff;color:var(--navy);font-weight:900;padding:12px 18px;
+  border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.12)
+}
+.hero-link.secondary{
+  background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.2)
+}
+.record-card{
+  border:2px solid #9edbe1;
+  background:linear-gradient(135deg,#f0fbfc,#ffffff);
+  border-radius:18px;padding:18px;margin-bottom:20px
+}
+.record-card h3{margin:0 0 6px}
+.record-url{
+  margin-top:10px;padding:10px 12px;border-radius:10px;background:#eef4f8;
+  font:13px/1.45 Consolas,monospace;overflow-wrap:anywhere;color:#35536f
+}
+.task-condition{
+  padding:14px 16px;border-radius:13px;background:#f5fafc;
+  border:1px solid #d6e8ef;margin:12px 0
+}
+.task-condition strong{color:var(--navy)}
+.req-list{margin:8px 0 0;padding-left:22px}
+.example-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.example-box{
+  background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px
+}
+.example-box strong{display:block;color:var(--navy);margin-bottom:6px}
+.example-box pre{
+  background:#fff;color:#17324e;border:1px solid #dce5ec;border-radius:9px;
+  padding:10px;font-size:13px
+}
+.answer-note{
+  background:#fff8e8;border-left:4px solid #e4a227;padding:10px 12px;
+  border-radius:8px;margin:10px 0
+}
+.code-explain{
+  font-size:14px;color:#506a83;margin:8px 0 0
+}
+@media (max-width:720px){.example-grid{grid-template-columns:1fr}}
+
+
+.transcript-note{
+  margin:18px 0;padding:16px 18px;border-radius:15px;
+  background:linear-gradient(135deg,#eef8ff,#f4fcfc);
+  border:1px solid #c9e0ee
+}
+.transcript-note strong{color:var(--navy)}
+.term-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:15px 0}
+.term-card{
+  padding:15px;border-radius:14px;background:#fff;border:1px solid var(--line)
+}
+.term-card code{font-weight:900;color:#124c83}
+.term-card h4{margin:0 0 5px;color:var(--navy)}
+.cube-demo{
+  display:grid;grid-template-columns:1fr auto 1.25fr auto 1fr;
+  gap:10px;align-items:center;margin:18px 0
+}
+.cube-out,.cube-in,.cube-result{
+  border-radius:16px;padding:16px;text-align:center;border:2px solid #cce1eb;background:#fff
+}
+.cube-in{
+  border-color:#66c4cf;background:linear-gradient(180deg,#eefcfd,#fff);
+  box-shadow:inset 0 0 0 5px rgba(47,169,184,.06)
+}
+.cube-arrow{font-size:28px;color:var(--teal2);font-weight:900}
+.code-read{
+  display:grid;grid-template-columns:44px 1fr;gap:10px;margin:8px 0;align-items:start
+}
+.code-read-num{
+  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  background:var(--navy);color:white;font-weight:900
+}
+.code-read-body{
+  background:#f6fafc;border:1px solid #dce8ef;border-radius:12px;padding:10px 12px
+}
+.compare-table{width:100%;border-collapse:collapse;margin:14px 0}
+.compare-table th,.compare-table td{border:1px solid #d8e4ee;padding:11px;vertical-align:top;text-align:left}
+.compare-table th{background:#eaf6f8;color:var(--navy)}
+.clarify{
+  margin:12px 0;padding:12px 14px;border-radius:12px;
+  background:#fff8e9;border:1px solid #efd092;color:#684d14
+}
+.trainer-contract{
+  background:#edf9f4;border:1px solid #b9e1cd;border-radius:13px;padding:13px 15px;margin:12px 0
+}
+@media (max-width:720px){
+  .term-grid{grid-template-columns:1fr}
+  .cube-demo{grid-template-columns:1fr}
+  .cube-arrow{transform:rotate(90deg)}
+}
+
 </style>
 </head>
 <body>
@@ -206,6 +301,10 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
     <div class="badge">Интерактивный урок • Python • ООП • Информационная безопасность</div>
     <h1>ООП как механизм контроля состояния и доступа</h1>
     <p>Не просто «класс + if», а понимание того, как объекты защищают данные, почему появляется инкапсуляция, где возникают уязвимости и как проектировать безопасные интерфейсы.</p>
+    <div class="hero-actions">
+      <a class="hero-link" href="https://my.mts-link.ru/73314937/27167873442/record-new/26860132063" target="_blank" rel="noopener noreferrer">▶ Открыть запись занятия</a>
+      <a class="hero-link secondary" href="#s1">Перейти к уроку ↓</a>
+    </div>
     <div class="hero-grid">
       <div class="hero-stat"><strong>10</strong><span>учебных модулей</span></div>
       <div class="hero-stat"><strong>7</strong><span>интерактивных визуализаторов</span></div>
@@ -239,6 +338,13 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
 </aside>
 
 <main>
+<div class="record-card" id="recording">
+  <h3>▶ Запись занятия</h3>
+  <p>Перед прохождением интерактивной части можно открыть видеозапись занятия в МТС Link. Ссылка откроется в новой вкладке.</p>
+  <a class="btn" href="https://my.mts-link.ru/73314937/27167873442/record-new/26860132063" target="_blank" rel="noopener noreferrer" style="display:inline-block;text-decoration:none">Открыть запись</a>
+  <div class="record-url">https://my.mts-link.ru/73314937/27167873442/record-new/26860132063</div>
+</div>
+
 <section id="s1" data-section>
   <h2>1. Что на самом деле делает ООП</h2>
   <p class="lead">Класс — это не «коробка для функций». Он задаёт <strong>допустимое состояние</strong> объекта и способы, которыми это состояние можно менять.</p>
@@ -263,14 +369,20 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
         <span class="code-title">Python</span>
 <pre><code>class NetworkDevice:
     def __init__(self, hostname, packet_loss):
+        # Атрибуты описывают состояние конкретного устройства.
         self.hostname = hostname
         self.packet_loss = packet_loss
 
     def threat_level(self):
+        # Метод анализирует внутреннее состояние объекта.
         if self.packet_loss &lt; 5:
             return "NORMAL"
+
+        # От 5 до 20 процентов включительно.
         elif self.packet_loss &lt;= 20:
             return "DEGRADED"
+
+        # Всё, что выше 20 процентов.
         return "CRITICAL"</code></pre>
       </div>
     </div>
@@ -286,6 +398,120 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
     </div>
   </div>
 </section>
+
+
+<div class="transcript-note">
+  <strong>Как это объяснялось на занятии.</strong>
+  Класс удобно представлять как «кубик»: снаружи в него передаются данные, внутри они
+  сохраняются в атрибутах объекта, методы работают с этими данными, а наружу возвращается
+  уже результат. Это помогает увидеть разницу между входным параметром и тем, что объект
+  запомнил как <code class="kbd">self.имя</code>.
+</div>
+
+<h3>Как читать класс сверху вниз</h3>
+<div class="cube-demo">
+  <div class="cube-out">
+    <strong>Снаружи</strong><br>
+    <code>login</code><br>
+    <code>failed_attempts</code>
+  </div>
+  <div class="cube-arrow">→</div>
+  <div class="cube-in">
+    <strong>Объект UserAccount</strong><br><br>
+    <code>self.login</code><br>
+    <code>self.failed_attempts</code><br><br>
+    <span class="pill info">is_blocked()</span>
+  </div>
+  <div class="cube-arrow">→</div>
+  <div class="cube-result">
+    <strong>Наружу</strong><br>
+    <code>"OK"</code><br>или<br><code>"BLOCKED"</code>
+  </div>
+</div>
+
+<div class="code-read">
+  <div class="code-read-num">1</div>
+  <div class="code-read-body"><code>class UserAccount:</code> — объявляем новый тип объектов.</div>
+</div>
+<div class="code-read">
+  <div class="code-read-num">2</div>
+  <div class="code-read-body"><code>def __init__(self, login, failed_attempts):</code> — описываем начальное состояние объекта.</div>
+</div>
+<div class="code-read">
+  <div class="code-read-num">3</div>
+  <div class="code-read-body"><code>self.login = login</code> — значение параметра <code>login</code> сохраняется внутри конкретного объекта.</div>
+</div>
+<div class="code-read">
+  <div class="code-read-num">4</div>
+  <div class="code-read-body"><code>def is_blocked(self):</code> — создаём поведение объекта: метод проверяет его состояние.</div>
+</div>
+<div class="code-read">
+  <div class="code-read-num">5</div>
+  <div class="code-read-body"><code>account.is_blocked()</code> — вызываем метод через созданный объект.</div>
+</div>
+
+<div class="clarify">
+  <strong>Уточнение к объяснению с занятия:</strong>
+  <code>__init__</code> — специальный метод инициализации, который вызывается при создании
+  экземпляра, если он определён. Писать собственный <code>__init__</code> в каждом классе
+  необязательно. <code>def</code> не вызывает функцию, а <strong>определяет</strong> её.
+</div>
+
+<h3>Мини-шпаргалка по терминам, которые разбирали на занятии</h3>
+<div class="term-grid">
+  <div class="term-card">
+    <h4><code>__init__</code></h4>
+    Начальная настройка объекта: сюда обычно передают данные, которые объект должен запомнить.
+  </div>
+  <div class="term-card">
+    <h4><code>def</code></h4>
+    От слова <em>definition</em>: объявляет функцию или метод. Сам по себе <code>def</code> функцию не запускает.
+  </div>
+  <div class="term-card">
+    <h4><code>self</code></h4>
+    Ссылка на текущий объект. Благодаря ей метод читает и изменяет именно его атрибуты:
+    <code>self.login</code>, <code>self.failed_attempts</code>.
+  </div>
+  <div class="term-card">
+    <h4><code>value</code></h4>
+    Просто имя параметра. Оно не является специальным словом Python: вместо <code>value</code>
+    можно выбрать другое понятное имя.
+  </div>
+  <div class="term-card">
+    <h4><code>pass</code></h4>
+    Пустая команда-заглушка. Ничего не делает и позволяет временно оставить тело функции или класса пустым.
+  </div>
+  <div class="term-card">
+    <h4><code>continue</code> и <code>break</code></h4>
+    Работают в циклах: <code>continue</code> переходит к следующей итерации,
+    а <code>break</code> полностью завершает цикл.
+  </div>
+</div>
+
+<h3>Почему не просто функция?</h3>
+<table class="compare-table">
+  <tr><th>Отдельная функция</th><th>Класс + объект</th></tr>
+  <tr>
+    <td>Получает значения, что-то проверяет и возвращает результат.</td>
+    <td>Хранит состояние объекта и объединяет рядом методы, которые относятся именно к этому состоянию.</td>
+  </tr>
+  <tr>
+    <td>Удобна для независимой операции.</td>
+    <td>Удобен, когда одна сущность живёт дольше одного вызова: пользователь, токен, устройство, файл, инцидент.</td>
+  </tr>
+  <tr>
+    <td><code>check(attempts)</code></td>
+    <td><code>account.is_blocked()</code></td>
+  </tr>
+</table>
+
+<div class="transcript-note">
+  В расшифровке отдельно подчёркивается, что банк из 20 заданий — это прежде всего
+  <strong>тренировка одного шаблона</strong>: создать класс → принять значения →
+  сохранить их через <code>self</code> → написать метод с условием →
+  создать объект → вызвать метод через точку. Поэтому в уроке решения сопровождаются
+  комментариями именно по этому маршруту.
+</div>
 
 <section id="s2" data-section>
   <h2>2. Визуализатор: объект, состояние и метод</h2>
@@ -362,9 +588,13 @@ details[open] summary{border-bottom:1px solid var(--line);background:#f3fafb}
       <div class="codebox">
 <pre><code>class PasswordVault:
     def __init__(self, password):
+        # Двойное подчёркивание включает name mangling.
+        # Пароль считается внутренним состоянием объекта.
         self.__password = password
 
     def check(self, value):
+        # Наружу не выдаём сам пароль.
+        # Возвращаем только результат сравнения: True / False.
         return value == self.__password
 
 v = PasswordVault("s3cr3t")</code></pre>
@@ -396,18 +626,32 @@ v = PasswordVault("s3cr3t")</code></pre>
     <div class="codebox">
 <pre><code>class UserAccount:
     def __init__(self, username, privilege):
+        # username можно читать и менять напрямую:
+        # здесь это обычный публичный атрибут.
         self.username = username
+
+        # Реальное значение уровня прав храним отдельно.
+        # Начальное безопасное значение — 0.
         self.__privilege = 0
+
+        # ВАЖНО: эта строка вызывает setter ниже.
+        # Значение privilege сначала пройдёт проверку.
         self.privilege = privilege
 
     @property
     def privilege(self):
+        # Getter срабатывает при чтении:
+        # print(user.privilege)
         return self.__privilege
 
     @privilege.setter
     def privilege(self, value):
+        # Разрешаем только уровни 0, 1, 2 и 3.
         if value not in range(4):
             raise ValueError("Уровень 0–3")
+
+        # Сохраняем значение только после проверки.
+        # Правильно: value, а не valuej.
         self.__privilege = value</code></pre>
     </div>
 
@@ -424,7 +668,19 @@ v = PasswordVault("s3cr3t")</code></pre>
     </div>
   </div>
 
-  <div class="diagram">
+  
+  <div class="transcript-note">
+    На занятии этот механизм сравнивался с фильтром: внешнее значение сначала попадает
+    в проверку, и только после успешной проверки записывается во внутренний атрибут.
+    Для пароля, роли или уровня привилегий это удобная модель:
+    <strong>вход → проверка → сохранение</strong>.
+  </div>
+  <div class="clarify">
+    <strong>Важно:</strong> setter — это валидация и контроль состояния объекта.
+    Сам по себе <code>@property</code> не является универсальной защитой от SQL-инъекций,
+    XSS и других атак; для них нужны отдельные механизмы защиты.
+  </div>
+<div class="diagram">
     <div class="flow">
       <div class="node"><strong>user.privilege = 99</strong>Запрос изменения</div>
       <div class="arrow">→</div>
@@ -464,9 +720,12 @@ v = PasswordVault("s3cr3t")</code></pre>
   <p>Если сервер доверяет любому полю из запроса, пользователь может передать <code class="kbd">role=admin</code>, <code class="kbd">is_staff=true</code> или другой критичный атрибут. Защита — разрешать изменение только явно перечисленных полей.</p>
 
   <div class="codebox">
-<pre><code>ALLOWED_FIELDS = {"display_name"}
+<pre><code># Белый список полей, которые клиенту разрешено менять.
+ALLOWED_FIELDS = {"display_name"}
 
+# Перебираем поля входящего запроса.
 for key, value in payload.items():
+    # Критичные поля вроде role сюда не попадут.
     if key in ALLOWED_FIELDS:
         setattr(user, key, value)</code></pre>
   </div>
@@ -532,19 +791,27 @@ for key, value in payload.items():
       <div class="checks" id="checks1"></div>
       <details id="solution1"><summary>Ответ</summary><div class="details-body"><div class="codebox"><pre><code>class UserAccount:
     def __init__(self, username, attempts):
+        # Сохраняем данные конкретной учётной записи.
         self.username = username
         self.attempts = attempts
 
     def status(self):
+        # 0–2 неудачные попытки: обычное состояние.
         if self.attempts &lt; 3:
             return "SAFE"
+
+        # 3–5 попыток включительно: требуется внимание.
         elif self.attempts &lt;= 5:
             return "WARNING"
+
+        # Более 5 попыток: считаем запись заблокированной.
         return "BLOCKED"
 
+# Считываем две строки входных данных.
 username = input()
 attempts = int(input())
 
+# Создаём объект и выводим требуемый результат.
 user = UserAccount(username, attempts)
 print(user.username)
 print(user.status())</code></pre></div></div></details>
@@ -552,53 +819,155 @@ print(user.status())</code></pre></div></div></details>
 
     <div class="task">
       <h4>Тренажёр 2. UserAccount.is_blocked()</h4>
-      <p>Этот тренажёр соответствует автопроверке на платформе. Создайте класс <code class="kbd">UserAccount</code>. Конструктор принимает <code class="kbd">login</code> и <code class="kbd">failed_attempts</code> и сохраняет их в атрибутах объекта.</p>
+
+      <div class="trainer-contract">
+        <strong>Формат именно для тренажёра на платформе:</strong>
+        здесь не нужны приватные атрибуты, setter, <code>register_failure()</code> или
+        <code>reset_attempts()</code>. По условию — обычный класс, два атрибута и один метод проверки.
+      </div>
+
+      <p><strong>Условие.</strong> Создайте класс <code class="kbd">UserAccount</code>.
+      На вход программе подаются две строки:</p>
       <ul>
-        <li><code class="kbd">is_blocked()</code> возвращает <strong>OK</strong>, если неудачных попыток 0–2;</li>
-        <li><code class="kbd">is_blocked()</code> возвращает <strong>BLOCKED</strong>, если <code class="kbd">failed_attempts &gt;= 3</code>.</li>
+        <li><code class="kbd">login</code> — логин пользователя;</li>
+        <li><code class="kbd">failed_attempts</code> — целое число неудачных попыток входа.</li>
       </ul>
-      <div class="callout"><strong>Важно для автопроверки:</strong> не меняйте имя класса, имена атрибутов, сигнатуру конструктора и строки <code class="kbd">OK</code>/<code class="kbd">BLOCKED</code>.</div>
+
+      <p>Конструктор должен сохранить оба значения в атрибутах
+      <code class="kbd">self.login</code> и <code class="kbd">self.failed_attempts</code>.
+      Метод <code class="kbd">is_blocked()</code> должен вернуть:</p>
+      <ul>
+        <li><strong>BLOCKED</strong>, если <code class="kbd">failed_attempts &gt;= 3</code>;</li>
+        <li><strong>OK</strong> во всех остальных случаях.</li>
+      </ul>
+
+      <p>После этого считайте обе переменные, создайте объект и выведите
+      <strong>только результат</strong> метода <code class="kbd">is_blocked()</code>.</p>
+
+      <div class="example-grid">
+        <div class="example-box">
+          <strong>Пример входа</strong>
+          <pre>ivan
+4</pre>
+        </div>
+        <div class="example-box">
+          <strong>Пример вывода</strong>
+          <pre>BLOCKED</pre>
+        </div>
+      </div>
+
       <textarea class="editor" id="editor2">class UserAccount:
     def __init__(self, login, failed_attempts):
         pass
 
     def is_blocked(self):
-        pass</textarea>
+        pass
+
+
+login = input()
+failed_attempts = int(input())
+
+account = UserAccount(login, failed_attempts)
+print(account.is_blocked())</textarea>
+
       <div class="control-row">
         <button class="btn" onclick="checkTrainer(2)">Проверить структуру</button>
         <button class="btn secondary" onclick="showSolution(2)">Показать ответ</button>
       </div>
       <div class="checks" id="checks2"></div>
-      <details id="solution2"><summary>Ответ</summary><div class="details-body">
-        <p><strong>Код, который нужно отправлять в тренажёр:</strong></p>
-        <div class="codebox"><pre><code>class UserAccount:
+
+      <details id="solution2">
+        <summary>Ответ с подробными комментариями</summary>
+        <div class="details-body">
+          <div class="codebox"><pre><code>class UserAccount:
     def __init__(self, login, failed_attempts):
+        # login и failed_attempts — значения,
+        # которые пришли СНАРУЖИ при создании объекта.
+
+        # Сохраняем login ВНУТРИ конкретного объекта.
         self.login = login
+
+        # Сохраняем число неудачных попыток входа.
         self.failed_attempts = failed_attempts
 
     def is_blocked(self):
+        # Метод работает уже с тем значением,
+        # которое объект запомнил в self.failed_attempts.
+
+        # Ровно 3 попытки уже означают блокировку,
+        # поэтому нужен оператор &gt;=, а не просто &gt;.
         if self.failed_attempts &gt;= 3:
             return "BLOCKED"
-        return "OK"</code></pre></div>
-        <p><strong>Как проверить самостоятельно:</strong></p>
-        <div class="codebox"><pre><code>user1 = UserAccount("anna", 1)
-user2 = UserAccount("ivan", 3)
-user3 = UserAccount("petr", 7)
 
-print(user1.is_blocked())  # OK
-print(user2.is_blocked())  # BLOCKED
-print(user3.is_blocked())  # BLOCKED</code></pre></div>
-        <div class="callout"><strong>Почему работает:</strong> состояние объекта хранится в <code class="kbd">failed_attempts</code>. Метод читает это состояние и классифицирует учётную запись. Граница блокировки — ровно 3 попытки, поэтому используется <code class="kbd">&gt;= 3</code>.</div>
-      </div></details>
+        # Если условие выше не выполнилось,
+        # значит попыток 0, 1 или 2.
+        return "OK"
+
+
+# 1. Читаем логин как строку.
+login = input()
+
+# 2. Читаем число попыток и преобразуем строку в int.
+failed_attempts = int(input())
+
+# 3. Создаём объект.
+# Значения попадут в параметры login и failed_attempts
+# метода __init__.
+account = UserAccount(login, failed_attempts)
+
+# 4. Через точку вызываем метод ЭТОГО объекта.
+# Печатаем только то, что требует тренажёр.
+print(account.is_blocked())</code></pre></div>
+
+          <h4>Как данные проходят по программе</h4>
+          <div class="diagram">
+            <div class="flow">
+              <div class="node"><strong>input()</strong>ivan<br>4</div>
+              <div class="arrow">→</div>
+              <div class="node"><strong>UserAccount(...)</strong>создание объекта</div>
+              <div class="arrow">→</div>
+              <div class="node"><strong>self.failed_attempts</strong>4</div>
+              <div class="arrow">→</div>
+              <div class="node"><strong>is_blocked()</strong>4 &gt;= 3</div>
+              <div class="arrow">→</div>
+              <div class="node"><strong>return</strong>BLOCKED</div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>Ключевой момент из занятия:</strong>
+            параметр <code class="kbd">failed_attempts</code> существует во время вызова
+            <code class="kbd">__init__</code>, а <code class="kbd">self.failed_attempts</code>
+            — это значение, которое объект запомнил и может использовать позже в других методах.
+          </div>
+        </div>
+      </details>
     </div>    </div>
   </div>
 </section>
 
 <section id="s9" data-section>
   <h2>9. Банк из 20 задач с ответами</h2>
-  <p class="lead">Первые задания отрабатывают базовую механику классов и методов. Последние постепенно усложняют условия. Не обязательно выполнять все подряд: можно использовать как варианты.</p>
+  <p class="lead">Каждое из 20 заданий теперь содержит полное условие: что хранит класс, какие методы создать, какие границы использовать, какие входные данные ожидаются и что именно вывести. Решение с подробными комментариями раскрывается отдельно.</p>
 
-  <div id="taskBank"></div>
+  
+  <div class="transcript-note">
+    <strong>Как выполнять эти 20 заданий.</strong>
+    На занятии был сформулирован один повторяющийся алгоритм:
+    <ol>
+      <li>посмотрите имя требуемого класса;</li>
+      <li>посмотрите, какие параметры должен принять <code>__init__</code>;</li>
+      <li>сохраните их как <code>self.атрибут</code>;</li>
+      <li>напишите метод проверки;</li>
+      <li>считайте входные значения, если это требуется;</li>
+      <li>создайте объект;</li>
+      <li>вызовите метод через точку и выведите результат.</li>
+    </ol>
+    Это не 20 разных архитектур — это 20 повторений одного базового паттерна с постепенно
+    усложняющимися условиями.
+  </div>
+
+<div id="taskBank"></div>
 </section>
 
 <section id="s10" data-section>
@@ -647,7 +1016,7 @@ print(user3.is_blocked())  # BLOCKED</code></pre></div>
 </main>
 </div>
 
-<div class="footer">Интерактивный урок «ООП в контексте информационной безопасности» • автономный HTML • v2</div>
+<div class="footer">Интерактивный урок «ООП в контексте информационной безопасности» • автономный HTML • v4</div>
 
 <script>
 const $ = (s) => document.querySelector(s);
@@ -810,13 +1179,17 @@ function trainerRules(n){
   ];
   return [
     ['Есть class UserAccount',/class\s+UserAccount\s*:/],
-    ['Конструктор принимает login и failed_attempts',/def\s+__init__\s*\(\s*self\s*,\s*login\s*,\s*failed_attempts\s*\)/],
+    ['__init__ принимает login и failed_attempts',/def\s+__init__\s*\(\s*self\s*,\s*login\s*,\s*failed_attempts\s*\)/],
     ['Сохраняется self.login',/self\.login\s*=\s*login/],
     ['Сохраняется self.failed_attempts',/self\.failed_attempts\s*=\s*failed_attempts/],
     ['Есть is_blocked()',/def\s+is_blocked\s*\(\s*self\s*\)/],
-    ['Проверяется граница failed_attempts >= 3',/self\.failed_attempts\s*>=\s*3/],
+    ['Проверяется failed_attempts >= 3',/self\.failed_attempts\s*>=\s*3/],
     ['Возвращается BLOCKED',/return\s+["']BLOCKED["']/],
-    ['Возвращается OK',/return\s+["']OK["']/]
+    ['Возвращается OK',/return\s+["']OK["']/],
+    ['Считывается login через input()',/login\s*=\s*input\s*\(\s*\)/],
+    ['Считывается failed_attempts как int',/failed_attempts\s*=\s*int\s*\(\s*input\s*\(\s*\)\s*\)/],
+    ['Создаётся UserAccount(login, failed_attempts)',/\w+\s*=\s*UserAccount\s*\(\s*login\s*,\s*failed_attempts\s*\)/],
+    ['Печатается результат is_blocked()',/print\s*\(\s*\w+\.is_blocked\s*\(\s*\)\s*\)/]
   ];
 }
 window.checkTrainer=(n)=>{
@@ -836,349 +1209,387 @@ window.checkTrainer=(n)=>{
 
 // Task bank
 const tasks = [
-{
-n:1,title:'Сетевое устройство',cls:'NetworkDevice',
-desc:'Сохраните hostname и ip. Создайте объект NetworkDevice("server01", "192.168.1.10") и выведите оба значения.',
-answer:`class NetworkDevice:
+{n:1,title:"Сетевое устройство",cls:"NetworkDevice",level:"База",condition:"Создайте класс NetworkDevice для представления сетевого устройства. Объект должен хранить имя устройства и его IP-адрес.",req:["В конструкторе примите hostname и ip.","Сохраните оба значения в атрибутах объекта.","Создайте объект со значениями hostname = \"server01\" и ip = \"192.168.1.10\".","Выведите сначала hostname, затем ip — каждое значение с новой строки."],input:"Ввод с клавиатуры не требуется.",output:"server01\n192.168.1.10",answer:"class NetworkDevice:
     def __init__(self, hostname, ip):
+        # Сохраняем имя сетевого устройства.
         self.hostname = hostname
+
+        # Сохраняем IP-адрес устройства.
         self.ip = ip
 
-device = NetworkDevice("server01", "192.168.1.10")
+
+# Создаём конкретный объект класса.
+device = NetworkDevice(\"server01\", \"192.168.1.10\")
+
+# Формат вывода: каждое значение с новой строки.
 print(device.hostname)
-print(device.ip)`
-},
-{
-n:2,title:'Событие безопасности',cls:'SecurityEvent',
-desc:'Сохраните event_type и source. Метод info() возвращает строку "ТИП from ИСТОЧНИК".',
-answer:`class SecurityEvent:
+print(device.ip)"},
+{n:2,title:"Событие безопасности",cls:"SecurityEvent",level:"База",condition:"Создайте класс SecurityEvent, описывающий событие информационной безопасности и источник, на котором оно обнаружено.",req:["В конструкторе примите event_type и source.","Сохраните их в атрибутах объекта.","Создайте метод info(), который возвращает строку вида: ТИП_СОБЫТИЯ from ИСТОЧНИК.","Создайте SecurityEvent(\"LOGIN_FAIL\", \"server01\") и выведите результат info()."],input:"Ввод с клавиатуры не требуется.",output:"LOGIN_FAIL from server01",answer:"class SecurityEvent:
     def __init__(self, event_type, source):
+        # Тип события, например неудачная попытка входа.
         self.event_type = event_type
+
+        # Узел, на котором произошло событие.
         self.source = source
 
     def info(self):
-        return f"{self.event_type} from {self.source}"
+        # Метод формирует одно текстовое представление события.
+        return f\"{self.event_type} from {self.source}\"
 
-event = SecurityEvent("LOGIN_FAIL", "server01")
-print(event.info())`
-},
-{
-n:3,title:'Проверка антивируса',cls:'Computer',
-desc:'Сохраните name и antivirus_enabled. protection() → PROTECTED, если True, иначе UNPROTECTED.',
-answer:`class Computer:
+
+event = SecurityEvent(\"LOGIN_FAIL\", \"server01\")
+print(event.info())"},
+{n:3,title:"Проверка антивируса",cls:"Computer",level:"База",condition:"Создайте класс Computer, который хранит имя компьютера и признак того, включён ли антивирус.",req:["В конструкторе сохраните name и antivirus_enabled.","Создайте метод protection().","Если antivirus_enabled равен True, метод возвращает PROTECTED.","Иначе метод возвращает UNPROTECTED.","Создайте Computer(\"PC-01\", True) и выведите результат метода."],input:"Ввод с клавиатуры не требуется.",output:"PROTECTED",answer:"class Computer:
     def __init__(self, name, antivirus_enabled):
         self.name = name
+        # Логический атрибут: True — антивирус включён.
         self.antivirus_enabled = antivirus_enabled
 
     def protection(self):
+        # Проверяем состояние объекта.
         if self.antivirus_enabled:
-            return "PROTECTED"
-        return "UNPROTECTED"
+            return \"PROTECTED\"
 
-pc = Computer("PC-01", True)
-print(pc.protection())`
-},
-{
-n:4,title:'Проверка резервной копии',cls:'Backup',
-desc:'Сохраните age. check() → FRESH, если age <= 1, иначе OLD.',
-answer:`class Backup:
+        return \"UNPROTECTED\"
+
+
+computer = Computer(\"PC-01\", True)
+print(computer.protection())"},
+{n:4,title:"Проверка резервной копии",cls:"Backup",level:"База",condition:"Создайте класс Backup, который определяет актуальность резервной копии по её возрасту.",req:["В конструкторе сохраните age — количество дней с момента последней копии.","Создайте метод check().","Верните FRESH, если age <= 1.","Верните OLD, если age > 1.","Создайте объект со значением 3 и выведите check()."],input:"Ввод с клавиатуры не требуется.",output:"OLD",answer:"class Backup:
     def __init__(self, age):
+        # Количество дней с момента резервного копирования.
         self.age = age
 
     def check(self):
+        # Копия считается свежей, если ей не больше одного дня.
         if self.age <= 1:
-            return "FRESH"
-        return "OLD"
+            return \"FRESH\"
+
+        return \"OLD\"
+
 
 backup = Backup(3)
-print(backup.check())`
-},
-{
-n:5,title:'Проверка пароля по длине',cls:'PasswordCheck',
-desc:'Сохраните password. result() → STRONG, если длина >= 8, иначе WEAK. Пароль считывается через input().',
-answer:`class PasswordCheck:
+print(backup.check())"},
+{n:5,title:"Проверка пароля по длине",cls:"PasswordCheck",level:"Условия",condition:"Создайте учебный класс PasswordCheck, который классифицирует пароль только по его длине.",req:["В конструкторе сохраните password.","Метод result() возвращает STRONG, если длина пароля не меньше 8 символов.","Иначе result() возвращает WEAK.","Считайте пароль через input(), создайте объект и выведите результат."],input:"Одна строка — пароль.",output:"STRONG или WEAK",answer:"class PasswordCheck:
     def __init__(self, password):
         self.password = password
 
     def result(self):
+        # Это учебная проверка только длины.
+        # В реальных системах одной длины недостаточно.
         if len(self.password) >= 8:
-            return "STRONG"
-        return "WEAK"
+            return \"STRONG\"
+
+        return \"WEAK\"
+
 
 password = input()
 check = PasswordCheck(password)
-print(check.result())`
-},
-{
-n:6,title:'Возраст обновлений',cls:'UpdateStatus',
-desc:'Сохраните days. status() → CURRENT, если days <= 7, иначе UPDATE.',
-answer:`class UpdateStatus:
+print(check.result())"},
+{n:6,title:"Возраст обновлений",cls:"UpdateStatus",level:"Условия",condition:"Создайте класс UpdateStatus для контроля давности последнего обновления системы.",req:["В конструкторе сохраните days.","Метод status() возвращает CURRENT, если days <= 7.","Если days > 7, метод возвращает UPDATE.","Считайте days через int(input()), создайте объект и выведите статус."],input:"Одно целое число days.",output:"CURRENT или UPDATE",answer:"class UpdateStatus:
     def __init__(self, days):
         self.days = days
 
     def status(self):
+        # Обновление не старше недели считаем актуальным.
         if self.days <= 7:
-            return "CURRENT"
-        return "UPDATE"
+            return \"CURRENT\"
+
+        return \"UPDATE\"
+
 
 days = int(input())
-item = UpdateStatus(days)
-print(item.status())`
-},
-{
-n:7,title:'Срок действия токена',cls:'Token',
-desc:'Сохраните days_left. state() → VALID, если > 0, иначе EXPIRED.',
-answer:`class Token:
+update = UpdateStatus(days)
+print(update.status())"},
+{n:7,title:"Срок действия токена",cls:"Token",level:"Условия",condition:"Создайте класс Token, который определяет, действует ли токен по количеству оставшихся дней.",req:["В конструкторе сохраните days_left.","Метод state() возвращает VALID, если days_left > 0.","Если days_left <= 0, метод возвращает EXPIRED.","Считайте значение через int(input()), создайте объект и выведите результат."],input:"Одно целое число days_left.",output:"VALID или EXPIRED",answer:"class Token:
     def __init__(self, days_left):
         self.days_left = days_left
 
     def state(self):
+        # Положительное число означает, что срок ещё не истёк.
         if self.days_left > 0:
-            return "VALID"
-        return "EXPIRED"
+            return \"VALID\"
+
+        return \"EXPIRED\"
+
 
 days_left = int(input())
 token = Token(days_left)
-print(token.state())`
-},
-{
-n:8,title:'Подозрительный порт',cls:'Connection',
-desc:'Сохраните port. check_port() → CHECK для 22, 23 или 3389; иначе OK.',
-answer:`class Connection:
+print(token.state())"},
+{n:8,title:"Подозрительный порт",cls:"Connection",level:"Условия",condition:"Создайте класс Connection для учебной проверки номера сетевого порта.",req:["В конструкторе сохраните port.","Метод check_port() возвращает CHECK для портов 22, 23 или 3389.","Для всех остальных портов метод возвращает OK.","Считайте порт через int(input()), создайте объект и выведите результат."],input:"Одно целое число — номер порта.",output:"CHECK или OK",answer:"class Connection:
     def __init__(self, port):
         self.port = port
 
     def check_port(self):
+        # Учебный список портов, требующих дополнительного внимания.
         if self.port in (22, 23, 3389):
-            return "CHECK"
-        return "OK"
+            return \"CHECK\"
+
+        return \"OK\"
+
 
 port = int(input())
-conn = Connection(port)
-print(conn.check_port())`
-},
-{
-n:9,title:'Размер файла журнала',cls:'LogFile',
-desc:'Сохраните size. size_status() → NORMAL при size < 100, иначе LARGE.',
-answer:`class LogFile:
+connection = Connection(port)
+print(connection.check_port())"},
+{n:9,title:"Размер файла журнала",cls:"LogFile",level:"Условия",condition:"Создайте класс LogFile, который классифицирует файл журнала по размеру.",req:["В конструкторе сохраните size — размер в мегабайтах.","Метод size_status() возвращает NORMAL, если size < 100.","Если size >= 100, метод возвращает LARGE.","Считайте размер через int(input()), создайте объект и выведите статус."],input:"Одно целое число size.",output:"NORMAL или LARGE",answer:"class LogFile:
     def __init__(self, size):
         self.size = size
 
     def size_status(self):
         if self.size < 100:
-            return "NORMAL"
-        return "LARGE"
+            return \"NORMAL\"
+
+        # 100 МБ тоже относится к LARGE.
+        return \"LARGE\"
+
 
 size = int(input())
 log = LogFile(size)
-print(log.size_status())`
-},
-{
-n:10,title:'Проверка MFA',cls:'AccessProfile',
-desc:'Сохраните mfa_enabled. access() → SECURE при True, иначе CHECK MFA.',
-answer:`class AccessProfile:
+print(log.size_status())"},
+{n:10,title:"Проверка MFA",cls:"AccessProfile",level:"Условия",condition:"Создайте класс AccessProfile, который хранит признак включённой многофакторной аутентификации.",req:["В конструкторе сохраните логический атрибут mfa_enabled.","Метод access() возвращает SECURE, если MFA включена.","Если MFA выключена, метод возвращает CHECK MFA.","Создайте объект со значением False и выведите результат."],input:"Ввод с клавиатуры не требуется.",output:"CHECK MFA",answer:"class AccessProfile:
     def __init__(self, mfa_enabled):
         self.mfa_enabled = mfa_enabled
 
     def access(self):
+        # True означает, что MFA включена.
         if self.mfa_enabled:
-            return "SECURE"
-        return "CHECK MFA"
+            return \"SECURE\"
+
+        return \"CHECK MFA\"
+
 
 profile = AccessProfile(False)
-print(profile.access())`
-},
-{
-n:11,title:'Нагрузка на сервер',cls:'Server',
-desc:'Сохраните load. status() → NORMAL при <50, HIGH при 50–80, CRITICAL при >80.',
-answer:`class Server:
+print(profile.access())"},
+{n:11,title:"Нагрузка на сервер",cls:"Server",level:"Диапазоны",condition:"Создайте класс Server, который классифицирует загрузку процессора по проценту.",req:["В конструкторе сохраните load.","status() возвращает NORMAL при load < 50.","status() возвращает HIGH при load от 50 до 80 включительно.","status() возвращает CRITICAL при load > 80.","Считайте load через int(input())."],input:"Одно целое число load.",output:"NORMAL, HIGH или CRITICAL",answer:"class Server:
     def __init__(self, load):
         self.load = load
 
     def status(self):
         if self.load < 50:
-            return "NORMAL"
+            return \"NORMAL\"
+
+        # Здесь автоматически остаётся диапазон 50–80.
         elif self.load <= 80:
-            return "HIGH"
-        return "CRITICAL"
+            return \"HIGH\"
+
+        return \"CRITICAL\"
+
 
 load = int(input())
 server = Server(load)
-print(server.status())`
-},
-{
-n:12,title:'Уровень уязвимости',cls:'Vulnerability',
-desc:'Сохраните score. level() → LOW при <=3, MEDIUM при 4–7, HIGH при >7.',
-answer:`class Vulnerability:
+print(server.status())"},
+{n:12,title:"Уровень уязвимости",cls:"Vulnerability",level:"Диапазоны",condition:"Создайте класс Vulnerability, который переводит целую оценку риска в текстовый уровень.",req:["В конструкторе сохраните score.","level() возвращает LOW при score <= 3.","level() возвращает MEDIUM при score от 4 до 7 включительно.","level() возвращает HIGH при score > 7.","Считайте score через int(input())."],input:"Одно целое число score.",output:"LOW, MEDIUM или HIGH",answer:"class Vulnerability:
     def __init__(self, score):
         self.score = score
 
     def level(self):
         if self.score <= 3:
-            return "LOW"
+            return \"LOW\"
+
+        # После первой проверки сюда попадают значения > 3.
         elif self.score <= 7:
-            return "MEDIUM"
-        return "HIGH"
+            return \"MEDIUM\"
+
+        return \"HIGH\"
+
 
 score = int(input())
-v = Vulnerability(score)
-print(v.level())`
-},
-{
-n:13,title:'Приоритет инцидента',cls:'Incident',
-desc:'Сохраните events. priority() → LOW при <5, MEDIUM при 5–10, HIGH при >10.',
-answer:`class Incident:
+vulnerability = Vulnerability(score)
+print(vulnerability.level())"},
+{n:13,title:"Приоритет инцидента",cls:"Incident",level:"Диапазоны",condition:"Создайте класс Incident, определяющий приоритет инцидента по числу обнаруженных подозрительных событий.",req:["В конструкторе сохраните events.","priority() возвращает LOW, если events < 5.","MEDIUM — если events от 5 до 10 включительно.","HIGH — если events > 10.","Считайте events через int(input())."],input:"Одно целое число events.",output:"LOW, MEDIUM или HIGH",answer:"class Incident:
     def __init__(self, events):
         self.events = events
 
     def priority(self):
         if self.events < 5:
-            return "LOW"
+            return \"LOW\"
+
         elif self.events <= 10:
-            return "MEDIUM"
-        return "HIGH"
+            return \"MEDIUM\"
+
+        return \"HIGH\"
+
 
 events = int(input())
 incident = Incident(events)
-print(incident.priority())`
-},
-{
-n:14,title:'Состояние сертификата',cls:'Certificate',
-desc:'Сохраните days. status() → EXPIRED при <=0, RENEW при 1–14, VALID при >14.',
-answer:`class Certificate:
+print(incident.priority())"},
+{n:14,title:"Состояние сертификата",cls:"Certificate",level:"Диапазоны",condition:"Создайте класс Certificate, который определяет состояние сертификата по числу дней до окончания его срока.",req:["В конструкторе сохраните days.","status() возвращает EXPIRED, если days <= 0.","RENEW — если days от 1 до 14 включительно.","VALID — если days > 14.","Считайте days через int(input())."],input:"Одно целое число days.",output:"EXPIRED, RENEW или VALID",answer:"class Certificate:
     def __init__(self, days):
         self.days = days
 
     def status(self):
         if self.days <= 0:
-            return "EXPIRED"
+            return \"EXPIRED\"
+
+        # После проверки <= 0 здесь остаются дни от 1 и выше.
         elif self.days <= 14:
-            return "RENEW"
-        return "VALID"
+            return \"RENEW\"
+
+        return \"VALID\"
+
 
 days = int(input())
-cert = Certificate(days)
-print(cert.status())`
-},
-{
-n:15,title:'Защищённое рабочее место',cls:'Workstation',
-desc:'Сохраните antivirus и firewall. is_secure() → SECURE только если оба True, иначе CHECK.',
-answer:`class Workstation:
+certificate = Certificate(days)
+print(certificate.status())"},
+{n:15,title:"Защищённое рабочее место",cls:"Workstation",level:"Комбинация",condition:"Создайте класс Workstation, который оценивает рабочее место по двум логическим признакам: антивирус и межсетевой экран.",req:["В конструкторе сохраните antivirus и firewall.","Метод is_secure() возвращает SECURE только тогда, когда оба значения True.","Во всех остальных случаях возвращается CHECK.","Создайте Workstation(True, False) и выведите результат."],input:"Ввод с клавиатуры не требуется.",output:"CHECK",answer:"class Workstation:
     def __init__(self, antivirus, firewall):
         self.antivirus = antivirus
         self.firewall = firewall
 
     def is_secure(self):
+        # Для безопасного состояния нужны ОБА условия.
         if self.antivirus and self.firewall:
-            return "SECURE"
-        return "CHECK"
+            return \"SECURE\"
 
-pc = Workstation(True, False)
-print(pc.is_secure())`
-},
-{
-n:16,title:'Проверка файла',cls:'FileCheck',
-desc:'Сохраните name и size. result() → SUSPICIOUS, если имя заканчивается на .exe и size > 10; иначе OK.',
-answer:`class FileCheck:
+        return \"CHECK\"
+
+
+workstation = Workstation(True, False)
+print(workstation.is_secure())"},
+{n:16,title:"Проверка файла",cls:"FileCheck",level:"Комбинация",condition:"Создайте класс FileCheck. В учебной модели файл считается подозрительным, только если одновременно имеет расширение .exe и размер больше 10 МБ.",req:["В конструкторе сохраните name и size.","Метод result() возвращает SUSPICIOUS, если имя заканчивается на .exe И size > 10.","В остальных случаях возвращается OK.","Имя считайте через input(), размер — через int(input())."],input:"Первая строка — имя файла. Вторая строка — целый размер в МБ.",output:"SUSPICIOUS или OK",answer:"class FileCheck:
     def __init__(self, name, size):
         self.name = name
         self.size = size
 
     def result(self):
-        if self.name.lower().endswith(".exe") and self.size > 10:
-            return "SUSPICIOUS"
-        return "OK"
+        # lower() позволяет корректно обработать .EXE и .Exe.
+        is_exe = self.name.lower().endswith(\".exe\")
+
+        # Подозрительным считаем файл только при выполнении ОБОИХ условий.
+        if is_exe and self.size > 10:
+            return \"SUSPICIOUS\"
+
+        return \"OK\"
+
 
 name = input()
 size = int(input())
-file = FileCheck(name, size)
-print(file.result())`
-},
-{
-n:17,title:'Политика удалённого доступа',cls:'RemoteAccess',
-desc:'Сохраните vpn и mfa. check() → ALLOW только если оба True, иначе DENY.',
-answer:`class RemoteAccess:
+
+file_check = FileCheck(name, size)
+print(file_check.result())"},
+{n:17,title:"Политика удалённого доступа",cls:"RemoteAccess",level:"Комбинация",condition:"Создайте класс RemoteAccess, моделирующий простую политику удалённого доступа: разрешение даётся только при использовании VPN и MFA.",req:["В конструкторе сохраните vpn и mfa.","Метод check() возвращает ALLOW, если vpn == True и mfa == True.","Во всех остальных случаях возвращает DENY.","Создайте RemoteAccess(True, True) и выведите результат."],input:"Ввод с клавиатуры не требуется.",output:"ALLOW",answer:"class RemoteAccess:
     def __init__(self, vpn, mfa):
         self.vpn = vpn
         self.mfa = mfa
 
     def check(self):
+        # Доступ разрешаем только при выполнении двух требований.
         if self.vpn and self.mfa:
-            return "ALLOW"
-        return "DENY"
+            return \"ALLOW\"
+
+        return \"DENY\"
+
 
 access = RemoteAccess(True, True)
-print(access.check())`
-},
-{
-n:18,title:'Риск сетевого узла',cls:'NetworkNode',
-desc:'Сохраните open_ports и updated. risk() → HIGH, если открыто >10 портов ИЛИ обновления не установлены; иначе LOW.',
-answer:`class NetworkNode:
+print(access.check())"},
+{n:18,title:"Риск сетевого узла",cls:"NetworkNode",level:"Комбинация",condition:"Создайте класс NetworkNode. Узел считается высокорисковым, если открыто слишком много портов ИЛИ на нём не установлены обновления.",req:["В конструкторе сохраните open_ports и updated.","risk() возвращает HIGH, если open_ports > 10 ИЛИ updated == False.","В остальных случаях возвращает LOW.","Создайте NetworkNode(5, False) и выведите результат."],input:"Ввод с клавиатуры не требуется.",output:"HIGH",answer:"class NetworkNode:
     def __init__(self, open_ports, updated):
         self.open_ports = open_ports
         self.updated = updated
 
     def risk(self):
+        # Достаточно хотя бы одного опасного условия.
         if self.open_ports > 10 or not self.updated:
-            return "HIGH"
-        return "LOW"
+            return \"HIGH\"
+
+        return \"LOW\"
+
 
 node = NetworkNode(5, False)
-print(node.risk())`
-},
-{
-n:19,title:'Анализ API-ключа',cls:'ApiKey',
-desc:'Сохраните name и age. rotation_status() → OK при <30, ROTATE при 30–90, EXPIRED при >90. Выведите имя и статус.',
-answer:`class ApiKey:
+print(node.risk())"},
+{n:19,title:"Анализ API-ключа",cls:"ApiKey",level:"Комбинация",condition:"Создайте класс ApiKey, который определяет необходимость ротации ключа по его возрасту.",req:["В конструкторе сохраните name и age.","rotation_status() возвращает OK, если age < 30.","ROTATE — если age от 30 до 90 дней включительно.","EXPIRED — если age > 90.","Считайте name через input().strip(), age через int(input()).","Выведите сначала имя ключа, затем результат rotation_status() — с новой строки."],input:"Первая строка — name. Вторая строка — целое age.",output:"имя_ключа\nOK / ROTATE / EXPIRED",answer:"class ApiKey:
     def __init__(self, name, age):
         self.name = name
         self.age = age
 
     def rotation_status(self):
         if self.age < 30:
-            return "OK"
+            return \"OK\"
+
+        # 30 и 90 входят в диапазон ротации.
         elif self.age <= 90:
-            return "ROTATE"
-        return "EXPIRED"
+            return \"ROTATE\"
+
+        return \"EXPIRED\"
+
 
 name = input().strip()
 age = int(input())
+
 key = ApiKey(name, age)
+
+# Формат вывода менять не нужно.
 print(key.name)
-print(key.rotation_status())`
-},
-{
-n:20,title:'SecurityScanner',cls:'SecurityScanner',
-desc:'Сохраните target и alerts. verdict() → CLEAN при 0, REVIEW при 1–3, DANGER при >3. Выведите target и verdict.',
-answer:`class SecurityScanner:
+print(key.rotation_status())"},
+{n:20,title:"Класс SecurityScanner",cls:"SecurityScanner",level:"Комбинация",condition:"Создайте класс SecurityScanner для учебной классификации результата сканирования узла по количеству найденных предупреждений.",req:["В конструкторе сохраните target и alerts.","verdict() возвращает CLEAN, если alerts == 0.","REVIEW — если alerts от 1 до 3 включительно.","DANGER — если alerts > 3.","Считайте target через input().strip(), alerts через int(input()).","Выведите сначала target, затем verdict() — каждое значение с новой строки."],input:"Первая строка — имя узла target. Вторая строка — целое alerts.",output:"имя_узла\nCLEAN / REVIEW / DANGER",answer:"class SecurityScanner:
     def __init__(self, target, alerts):
         self.target = target
         self.alerts = alerts
 
     def verdict(self):
+        # Нет предупреждений.
         if self.alerts == 0:
-            return "CLEAN"
+            return \"CLEAN\"
+
+        # От одного до трёх предупреждений включительно.
         elif self.alerts <= 3:
-            return "REVIEW"
-        return "DANGER"
+            return \"REVIEW\"
+
+        # Более трёх предупреждений.
+        return \"DANGER\"
+
 
 target = input().strip()
 alerts = int(input())
+
 scanner = SecurityScanner(target, alerts)
+
+# Требуемый формат: две строки.
 print(scanner.target)
-print(scanner.verdict())`
-}
+print(scanner.verdict())"}
 ];
 
 const bank=$('#taskBank');
 tasks.forEach(t=>{
   const d=document.createElement('details');
+
+  const reqHtml = t.req.map(item=>`<li>${item}</li>`).join('');
+  const levelClass = t.level === 'База' ? 'ok' : (t.level === 'Условия' || t.level === 'Диапазоны' ? 'warn' : 'bad');
+
   d.innerHTML=`<summary>Задание ${t.n}. ${t.title}</summary>
   <div class="details-body">
-    <div class="task-meta"><span class="pill info">${t.cls}</span><span class="pill ${t.n<5?'ok':t.n<15?'warn':'bad'}">${t.n<5?'База':t.n<15?'Условия':'Комбинация'}</span></div>
-    <p>${t.desc}</p>
-    <details><summary>Показать решение</summary><div class="details-body"><div class="codebox"><pre><code></code></pre></div></div></details>
+    <div class="task-meta">
+      <span class="pill info">${t.cls}</span>
+      <span class="pill ${levelClass}">${t.level}</span>
+    </div>
+
+    <div class="task-condition">
+      <strong>Условие</strong>
+      <p>${t.condition}</p>
+      <strong>Необходимо:</strong>
+      <ol class="req-list">${reqHtml}</ol>
+    </div>
+
+    <div class="example-grid">
+      <div class="example-box">
+        <strong>Входные данные</strong>
+        <div>${t.input}</div>
+      </div>
+      <div class="example-box">
+        <strong>Что должно быть выведено</strong>
+        <pre>${t.output}</pre>
+      </div>
+    </div>
+
+    <details>
+      <summary>Показать решение с комментариями</summary>
+      <div class="details-body">
+        <div class="answer-note">Сначала попробуйте решить самостоятельно. Комментарии в ответе показывают, зачем нужна каждая ключевая часть программы.</div>
+        <div class="codebox"><pre><code></code></pre></div>
+      </div>
+    </details>
   </div>`;
+
   d.querySelector('code').textContent=t.answer;
   bank.appendChild(d);
 });
