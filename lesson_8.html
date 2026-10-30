@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ООП в контексте информационной безопасности — интерактивный урок</title>
+<title>ООП в контексте информационной безопасности — интерактивный урок v2</title>
 <style>
 :root{
   --navy:#0d3f7f;
@@ -551,16 +551,15 @@ print(user.status())</code></pre></div></div></details>
     </div>
 
     <div class="task">
-      <h4>Тренажёр 2. SecureAccount</h4>
-      <p>Теперь состояние должно меняться <strong>через методы</strong>. Храните число неудач в <code class="kbd">__failed_attempts</code>. Добавьте <code class="kbd">register_failure()</code>, <code class="kbd">reset_attempts()</code>, <code class="kbd">is_blocked()</code>.</p>
-      <textarea class="editor" id="editor2">class SecureAccount:
-    def __init__(self, login):
-        pass
-
-    def register_failure(self):
-        pass
-
-    def reset_attempts(self):
+      <h4>Тренажёр 2. UserAccount.is_blocked()</h4>
+      <p>Этот тренажёр соответствует автопроверке на платформе. Создайте класс <code class="kbd">UserAccount</code>. Конструктор принимает <code class="kbd">login</code> и <code class="kbd">failed_attempts</code> и сохраняет их в атрибутах объекта.</p>
+      <ul>
+        <li><code class="kbd">is_blocked()</code> возвращает <strong>OK</strong>, если неудачных попыток 0–2;</li>
+        <li><code class="kbd">is_blocked()</code> возвращает <strong>BLOCKED</strong>, если <code class="kbd">failed_attempts &gt;= 3</code>.</li>
+      </ul>
+      <div class="callout"><strong>Важно для автопроверки:</strong> не меняйте имя класса, имена атрибутов, сигнатуру конструктора и строки <code class="kbd">OK</code>/<code class="kbd">BLOCKED</code>.</div>
+      <textarea class="editor" id="editor2">class UserAccount:
+    def __init__(self, login, failed_attempts):
         pass
 
     def is_blocked(self):
@@ -570,29 +569,28 @@ print(user.status())</code></pre></div></div></details>
         <button class="btn secondary" onclick="showSolution(2)">Показать ответ</button>
       </div>
       <div class="checks" id="checks2"></div>
-      <details id="solution2"><summary>Ответ</summary><div class="details-body"><div class="codebox"><pre><code>class SecureAccount:
-    def __init__(self, login):
+      <details id="solution2"><summary>Ответ</summary><div class="details-body">
+        <p><strong>Код, который нужно отправлять в тренажёр:</strong></p>
+        <div class="codebox"><pre><code>class UserAccount:
+    def __init__(self, login, failed_attempts):
         self.login = login
-        self.__failed_attempts = 0
-
-    def register_failure(self):
-        self.__failed_attempts += 1
-
-    def reset_attempts(self):
-        self.__failed_attempts = 0
+        self.failed_attempts = failed_attempts
 
     def is_blocked(self):
-        if self.__failed_attempts &gt;= 3:
+        if self.failed_attempts &gt;= 3:
             return "BLOCKED"
-        return "OK"
+        return "OK"</code></pre></div>
+        <p><strong>Как проверить самостоятельно:</strong></p>
+        <div class="codebox"><pre><code>user1 = UserAccount("anna", 1)
+user2 = UserAccount("ivan", 3)
+user3 = UserAccount("petr", 7)
 
-account = SecureAccount("ivan")
-account.register_failure()
-account.register_failure()
-account.register_failure()
-
-print(account.is_blocked())  # BLOCKED</code></pre></div></div></details>
-    </div>
+print(user1.is_blocked())  # OK
+print(user2.is_blocked())  # BLOCKED
+print(user3.is_blocked())  # BLOCKED</code></pre></div>
+        <div class="callout"><strong>Почему работает:</strong> состояние объекта хранится в <code class="kbd">failed_attempts</code>. Метод читает это состояние и классифицирует учётную запись. Граница блокировки — ровно 3 попытки, поэтому используется <code class="kbd">&gt;= 3</code>.</div>
+      </div></details>
+    </div>    </div>
   </div>
 </section>
 
@@ -649,7 +647,7 @@ print(account.is_blocked())  # BLOCKED</code></pre></div></div></details>
 </main>
 </div>
 
-<div class="footer">Интерактивный урок «ООП в контексте информационной безопасности» • автономный HTML</div>
+<div class="footer">Интерактивный урок «ООП в контексте информационной безопасности» • автономный HTML • v2</div>
 
 <script>
 const $ = (s) => document.querySelector(s);
@@ -811,12 +809,12 @@ function trainerRules(n){
     ['Возвращается BLOCKED',/return\s+["']BLOCKED["']/]
   ];
   return [
-    ['Есть class SecureAccount',/class\s+SecureAccount\s*:/],
-    ['Есть приватный __failed_attempts',/self\.__failed_attempts\s*=/],
-    ['Есть register_failure()',/def\s+register_failure\s*\(\s*self\s*\)/],
-    ['Счётчик увеличивается',/__failed_attempts\s*\+=\s*1/],
-    ['Есть reset_attempts()',/def\s+reset_attempts\s*\(\s*self\s*\)/],
+    ['Есть class UserAccount',/class\s+UserAccount\s*:/],
+    ['Конструктор принимает login и failed_attempts',/def\s+__init__\s*\(\s*self\s*,\s*login\s*,\s*failed_attempts\s*\)/],
+    ['Сохраняется self.login',/self\.login\s*=\s*login/],
+    ['Сохраняется self.failed_attempts',/self\.failed_attempts\s*=\s*failed_attempts/],
     ['Есть is_blocked()',/def\s+is_blocked\s*\(\s*self\s*\)/],
+    ['Проверяется граница failed_attempts >= 3',/self\.failed_attempts\s*>=\s*3/],
     ['Возвращается BLOCKED',/return\s+["']BLOCKED["']/],
     ['Возвращается OK',/return\s+["']OK["']/]
   ];
