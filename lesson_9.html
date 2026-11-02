@@ -1,0 +1,2115 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Урок 9 — Классы и инкапсуляция в кибербезопасности</title>
+
+<style>
+:root{
+  --bg:#eef2f9;
+  --dark:#0a1224;
+  --dark2:#101c38;
+  --card:#ffffff;
+  --ink:#141d2e;
+  --muted:#5d6b85;
+  --line:#dfe7f3;
+
+  --blue:#3a6fe0;
+  --cyan:#0ea5b7;
+  --violet:#6c5ce7;
+  --green:#2f936b;
+  --amber:#c07f16;
+  --red:#c6535d;
+
+  --code-bg:#0d1526;
+  --code-head:#131e35;
+  --code-line:#223252;
+
+  --shadow:0 14px 38px rgba(24,44,84,.09);
+  --radius:22px;
+}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  font-family:"Segoe UI",Inter,Roboto,Arial,sans-serif;
+  font-feature-settings:"cv11","ss01";
+  background:
+    radial-gradient(1100px 520px at 12% -8%, rgba(56,104,220,.28), transparent 60%),
+    radial-gradient(900px 480px at 88% -6%, rgba(15,163,177,.22), transparent 60%),
+    linear-gradient(180deg, var(--dark) 0, var(--dark2) 400px, var(--bg) 400px, var(--bg) 100%);
+  color:var(--ink);
+  line-height:1.58;
+}
+
+button{font:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+::selection{background:#c9dcff}
+
+/* SCROLL PROGRESS */
+
+.progress{
+  position:fixed;
+  top:0;left:0;
+  height:3px;width:0;
+  z-index:50;
+  background:linear-gradient(90deg,var(--cyan),var(--blue),var(--violet));
+  border-radius:0 3px 3px 0;
+}
+
+.wrap{
+  max-width:1360px;
+  margin:auto;
+  padding:22px;
+}
+
+/* HERO */
+
+.hero{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:18px;
+  padding:30px 0 34px;
+  color:#fff;
+}
+
+.hero-main,.hero-side{
+  padding:30px;
+  background:linear-gradient(135deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:26px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 20px 50px rgba(4,10,26,.35);
+}
+
+.hero-main{animation:appear .7s ease}
+
+@keyframes appear{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+
+.hero-main>.badge{
+  color:#bcd2ff;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-weight:700;
+}
+
+.hero h1{
+  margin:12px 0 14px;
+  font-size:clamp(32px,4.6vw,54px);
+  line-height:1.06;
+  letter-spacing:-.03em;
+}
+
+.hero p{
+  max-width:860px;
+  margin:0;
+  color:#cfddF4;
+  color:#cfddf4;
+  font-size:17.5px;
+}
+
+.badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:20px;
+}
+
+.badge{
+  padding:7px 12px;
+  font-size:12.5px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;
+}
+
+.hero-side{
+  display:grid;
+  align-content:center;
+  gap:12px;
+}
+
+.hero-note{
+  padding:15px 16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:16px;
+}
+
+.hero-note b{
+  display:block;
+  margin-bottom:5px;
+  font-size:14px;
+}
+
+.hero-note span{color:#cfddf4;font-size:13.5px}
+
+/* LAYOUT */
+
+.layout{
+  display:grid;
+  grid-template-columns:280px minmax(0,1fr);
+  gap:20px;
+  align-items:start;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  position:sticky;
+  top:14px;
+  padding:18px;
+  background:rgba(255,255,255,.96);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+}
+
+.sidebar h3{
+  margin:0 0 12px;
+  font-size:15px;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  color:var(--muted);
+}
+
+.nav{display:grid;gap:6px}
+
+.nav a{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:9px 11px;
+  font-size:14px;
+  background:#f7f9fd;
+  border:1px solid #e4eaf4;
+  border-radius:11px;
+  transition:background .15s,border-color .15s,transform .15s;
+}
+
+.nav a::before{
+  content:"";
+  width:6px;height:6px;
+  flex:0 0 auto;
+  border-radius:50%;
+  background:#b9c8e4;
+}
+
+.nav a:hover{
+  background:#ecf3ff;
+  border-color:#c9dbfa;
+  transform:translateX(2px);
+}
+
+.nav a.active{
+  background:linear-gradient(135deg,#e7f0ff,#eef9ff);
+  border-color:#a9c6f5;
+  color:#1d4390;
+  font-weight:700;
+}
+
+.nav a.active::before{background:var(--blue)}
+
+/* CONTENT */
+
+.content{display:grid;gap:20px}
+
+.section{
+  padding:26px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  scroll-margin-top:16px;
+}
+
+.section h2{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin:0 0 14px;
+  font-size:27px;
+  line-height:1.2;
+  letter-spacing:-.015em;
+}
+
+.sec-num{
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  width:42px;height:42px;
+  font-size:15px;
+  font-weight:800;
+  color:#fff;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  border-radius:13px;
+  box-shadow:0 6px 14px rgba(58,111,224,.35);
+}
+
+.section h3{margin:0 0 8px}
+
+.lead{
+  color:var(--muted);
+  font-size:16.5px;
+  margin:0 0 6px;
+}
+
+/* UTILS */
+
+.kbd{
+  display:inline-block;
+  padding:1.5px 7px;
+  font-family:Consolas,Monaco,monospace;
+  font-size:.86em;
+  color:#274a86;
+  background:#eaf2ff;
+  border:1px solid #d4e2fa;
+  border-bottom-width:2px;
+  border-radius:7px;
+  white-space:nowrap;
+}
+
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.callout{
+  padding:18px;
+  background:#f8fbff;
+  border:1px solid #dfe9f8;
+  border-left:4px solid var(--blue);
+  border-radius:16px;
+}
+
+.callout.good{background:#eef9f3;border-color:#c8e6d6;border-left-color:var(--green)}
+.callout.warn{background:#fff8ec;border-color:#eed9ac;border-left-color:var(--amber)}
+
+ul{margin:8px 0 0 20px;padding:0}
+li{margin:6px 0}
+li::marker{color:var(--blue)}
+
+.callout p{margin:8px 0}
+
+/* FLOW */
+
+.flow{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-top:16px;
+}
+
+.step{
+  position:relative;
+  min-height:112px;
+  padding:16px;
+  background:#f7f9fd;
+  border:1px solid var(--line);
+  border-radius:16px;
+  transition:transform .18s, box-shadow .18s;
+}
+
+.step:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 22px rgba(30,50,90,.10);
+}
+
+.step:after{
+  content:"→";
+  position:absolute;
+  right:-13px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:1;
+  color:#8ea1c6;
+  font-size:22px;
+  font-weight:800;
+}
+
+.step:last-child:after{display:none}
+
+.step-number{
+  display:grid;
+  place-items:center;
+  width:30px;height:30px;
+  margin-bottom:9px;
+  color:#fff;
+  font-weight:800;
+  font-size:14px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  border-radius:50%;
+}
+
+/* SCHEME */
+
+.scheme{
+  padding:14px;
+  margin-top:16px;
+  overflow:auto;
+  background:#f8fbff;
+  border:1px solid var(--line);
+  border-radius:18px;
+}
+
+.scheme svg{display:block;width:100%;height:auto}
+
+/* CARDS */
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:13px;
+}
+
+.card{
+  padding:17px;
+  background:linear-gradient(180deg,#fff,#f8faff);
+  border:1px solid var(--line);
+  border-radius:16px;
+  transition:transform .18s, box-shadow .18s;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 22px rgba(30,50,90,.08);
+}
+
+.card b{
+  display:block;
+  margin-bottom:8px;
+  font-size:15.5px;
+}
+
+.card p{margin:8px 0;color:var(--muted);font-size:14px}
+
+/* TRAINERS */
+
+.trainer-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.trainer{
+  padding:20px;
+  background:linear-gradient(180deg,#fff,#f8faff);
+  border:1px solid var(--line);
+  border-radius:18px;
+}
+
+.trainer h3{font-size:20px}
+.trainer>p{color:var(--muted);font-size:14.5px}
+
+.checks{display:grid;gap:7px;margin:13px 0}
+
+.check{
+  padding:9px 12px;
+  font-size:13.5px;
+  background:#f2f7f2;
+  background:#eef7f1;
+  border:1px solid #d7eadf;
+  border-radius:10px;
+}
+
+/* CODE */
+
+.code-panel{
+  overflow:hidden;
+  background:var(--code-bg);
+  border:1px solid var(--code-line);
+  border-radius:15px;
+}
+
+.code-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 14px;
+  color:#c6d6ef;
+  font-size:13.5px;
+  background:var(--code-head);
+  border-bottom:1px solid var(--code-line);
+}
+
+.code-head>span{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.code-head>span::before{
+  content:"";
+  width:9px;height:9px;
+  border-radius:50%;
+  background:var(--cyan);
+  box-shadow:14px 0 0 var(--amber), 28px 0 0 var(--green);
+  margin-right:28px;
+}
+
+.copy{
+  padding:7px 12px;
+  color:#fff;
+  font-weight:700;
+  font-size:12.5px;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  border:0;
+  border-radius:9px;
+  transition:filter .15s, transform .15s;
+}
+
+.copy:hover{filter:brightness(1.1);transform:translateY(-1px)}
+
+.copy-status{
+  margin-right:8px;
+  color:#9fe8c8;
+  font-size:11.5px;
+  opacity:0;
+  transition:.2s;
+}
+
+.copy-status.on{opacity:1}
+
+pre{
+  margin:0;
+  padding:16px 18px;
+  overflow:auto;
+  color:#dfe9f9;
+  font-size:13.5px;
+  line-height:1.62;
+  tab-size:4;
+}
+
+code{font-family:Consolas,"Cascadia Code",Monaco,"Courier New",monospace}
+
+/* syntax colors */
+.tok-k{color:#82aaff;font-weight:600}     /* keywords */
+.tok-s{color:#9ece8a}                     /* strings */
+.tok-c{color:#7288ad;font-style:italic}   /* comments */
+.tok-f{color:#5fd3d0}                     /* def/class names */
+.tok-n{color:#f2c97d}                     /* numbers */
+.tok-b{color:#e6a3d0}                     /* builtins / True False */
+.tok-self{color:#ff9e8a}                  /* self */
+
+/* TASKS */
+
+.task-list{display:grid;gap:12px}
+
+details.task{
+  overflow:hidden;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  transition:box-shadow .2s;
+}
+
+details.task[open]{
+  box-shadow:0 14px 30px rgba(33,54,91,.09);
+  border-color:#c9d9f2;
+}
+
+details.task summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:16px 18px;
+  cursor:pointer;
+  list-style:none;
+  background:linear-gradient(180deg,#fff,#f7f9fd);
+  transition:background .15s;
+}
+
+details.task summary:hover{background:#f0f6ff}
+
+details.task summary::-webkit-details-marker{display:none}
+
+.task-title{font-size:16.5px;font-weight:800}
+
+.task-meta{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:12.5px;
+}
+
+.caret{
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  width:33px;height:33px;
+  color:#3158af;
+  background:#eaf1ff;
+  border-radius:50%;
+  transition:transform .2s, background .2s;
+}
+
+details[open] .caret{
+  transform:rotate(180deg);
+  background:#d9e7ff;
+}
+
+.task-body{padding:4px 18px 18px}
+
+.task-grid{
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  gap:14px;
+}
+
+.explain{
+  padding:15px;
+  background:#f8fbff;
+  border:1px solid #e1eaf8;
+  border-radius:14px;
+}
+
+.explain h3{font-size:15px}
+
+.explain p{margin:8px 0;font-size:14.5px}
+
+.note{
+  margin-top:10px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* TABLE */
+
+.table-wrap{overflow:auto}
+
+table{
+  width:100%;
+  min-width:750px;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:11px 12px;
+  text-align:left;
+  font-size:13.5px;
+  border-bottom:1px solid var(--line);
+}
+
+th{
+  background:#f2f6fd;
+  color:#2c3d5c;
+  font-size:12.5px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+tbody tr{transition:background .12s}
+tbody tr:hover{background:#f5f9ff}
+tbody tr:last-child td{border-bottom:0}
+
+/* FOOTER */
+
+.footer{
+  padding:22px 0 36px;
+  color:#7a87a0;
+  font-size:13px;
+  text-align:center;
+}
+
+/* BACK TO TOP */
+
+.to-top{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:40;
+  width:44px;height:44px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  font-size:19px;
+  background:linear-gradient(135deg,var(--blue),var(--violet));
+  border:0;
+  border-radius:50%;
+  box-shadow:0 10px 24px rgba(58,111,224,.4);
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(8px);
+  transition:opacity .25s, transform .25s;
+}
+
+.to-top.on{opacity:1;pointer-events:auto;transform:none}
+
+/* RESPONSIVE */
+
+@media(max-width:1050px){
+  .hero,.layout,.task-grid,.grid2,.trainer-grid{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .flow{grid-template-columns:1fr 1fr}
+  .cards{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:700px){
+  .wrap{padding:12px}
+  .hero-main,.hero-side{padding:20px}
+  .hero h1{font-size:30px}
+  .section{padding:17px}
+  .section h2{font-size:22px}
+  .sec-num{width:36px;height:36px;font-size:13px}
+  .flow,.cards{grid-template-columns:1fr}
+  .step:after{display:none}
+}
+</style>
+</head>
+
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="wrap">
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="hero-main">
+
+<span class="badge">Python · Кибербезопасность · Занятие 9</span>
+
+<h1>Объектно-ориентированная логика защиты: классы и инкапсуляция</h1>
+
+<p>
+Как хранить чувствительные данные внутри объекта, не раскрывать их напрямую
+и предоставлять наружу только безопасные операции: проверку, маску,
+ограниченное представление и контролируемое обновление.
+</p>
+
+<div class="badges">
+<span class="badge">2 тренажёра</span>
+<span class="badge">20 заданий</span>
+<span class="badge">22 примера кода</span>
+<span class="badge">Анимации и схемы</span>
+<span class="badge">Копирование кода</span>
+</div>
+
+</div>
+
+<div class="hero-side">
+
+<div class="hero-note">
+<b>Самая важная запись</b>
+<span>
+Конструктор класса: <strong>__init__</strong>.
+То есть слово <b>init</b>, а не <b>inti</b>,
+и по два подчёркивания с каждой стороны.
+</span>
+</div>
+
+<div class="hero-note">
+<b>Базовая формула</b>
+<span>секрет → приватный атрибут → метод → безопасный результат.</span>
+</div>
+
+<div class="hero-note">
+<b>Не путать</b>
+<span>
+Маскирование не является шифрованием.
+<span class="kbd">__attr</span> — механизм инкапсуляции Python,
+а не криптографическая защита.
+</span>
+</div>
+
+</div>
+
+</section>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+<h3>Содержание</h3>
+
+<nav class="nav" id="nav">
+<a href="#goals">Цели урока</a>
+<a href="#syntax">__init__, self и __attr</a>
+<a href="#logic">Логика инкапсуляции</a>
+<a href="#scheme">Визуальная схема</a>
+<a href="#patterns">Три паттерна защиты</a>
+<a href="#trainers">Два тренажёра</a>
+<a href="#autotest">Что проверяет автотест</a>
+<a href="#tasks">Все 20 заданий</a>
+<a href="#summary">Итоги</a>
+</nav>
+
+</aside>
+
+<!-- CONTENT -->
+
+<main class="content">
+
+<!-- GOALS -->
+
+<section class="section" id="goals">
+
+<h2><span class="sec-num">01</span>Что изучаем</h2>
+
+<div class="grid2">
+
+<div class="callout good">
+
+<h3>После урока вы сможете</h3>
+
+<ul>
+<li>создавать классы с конструктором <span class="kbd">__init__</span>;</li>
+<li>хранить чувствительные значения во внутренних атрибутах;</li>
+<li>маскировать токены, номера и ключи;</li>
+<li>проверять PIN и пароль без раскрытия исходного значения;</li>
+<li>контролируемо менять PIN, API-ключ и токен;</li>
+<li>хранить состояние: например, число попыток или факт использования одноразового кода.</li>
+</ul>
+
+</div>
+
+<div class="callout warn">
+
+<h3>Важный момент из твоей ошибки</h3>
+
+<p>Правильно:</p>
+
+<pre><code>def __init__(self, secret):
+    self.__secret = secret</code></pre>
+
+<p>Неправильно:</p>
+
+<pre><code>def __inti__(self, secret):
+    ...
+
+def inti(self, secret):
+    ...
+
+def _init_(self, secret):
+    ...</code></pre>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- SYNTAX -->
+
+<section class="section" id="syntax">
+
+<h2><span class="sec-num">02</span>Три конструкции, которые нужны почти во всех заданиях</h2>
+
+<div class="cards">
+
+<div class="card">
+<b>1. Конструктор</b>
+<pre><code>def __init__(self, value):
+    ...</code></pre>
+<p>Он вызывается при создании объекта.</p>
+</div>
+
+<div class="card">
+<b>2. self</b>
+<pre><code>self.__secret = secret</code></pre>
+<p><span class="kbd">self</span> указывает на конкретный объект.</p>
+</div>
+
+<div class="card">
+<b>3. Внутренний атрибут</b>
+<pre><code>self.__secret</code></pre>
+<p>Двойное подчёркивание включает name mangling.</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- LOGIC -->
+
+<section class="section" id="logic">
+
+<h2><span class="sec-num">03</span>Логика инкапсуляции</h2>
+
+<p class="lead">
+Внешнему коду обычно не требуется знать секрет.
+Ему требуется только выполнить разрешённую операцию.
+</p>
+
+<div class="flow">
+
+<div class="step">
+<div class="step-number">1</div>
+<b>Получаем значение</b>
+<br>
+Например, PIN, пароль, API-токен.
+</div>
+
+<div class="step">
+<div class="step-number">2</div>
+<b>Храним внутри</b>
+<br>
+<span class="kbd">self.__token</span>
+</div>
+
+<div class="step">
+<div class="step-number">3</div>
+<b>Работаем через метод</b>
+<br>
+<span class="kbd">check()</span>
+или
+<span class="kbd">masked()</span>
+</div>
+
+<div class="step">
+<div class="step-number">4</div>
+<b>Возвращаем результат</b>
+<br>
+ACCESS, True, ******, длину и т. д.
+</div>
+
+</div>
+
+</section>
+
+<!-- SCHEME -->
+
+<section class="section" id="scheme">
+
+<h2><span class="sec-num">04</span>Как секрет проходит через объект</h2>
+
+<div class="scheme">
+
+<svg viewBox="0 0 1000 310" xmlns="http://www.w3.org/2000/svg">
+
+<defs>
+
+<linearGradient id="objbg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0%" stop-color="#e5f8fb"/>
+<stop offset="100%" stop-color="#eef0ff"/>
+</linearGradient>
+
+<marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+<path d="M0,0 L6,3 L0,6 z" fill="#748bc0"/>
+</marker>
+
+</defs>
+
+<rect x="30" y="72" width="210" height="165" rx="24" fill="#ffffff" stroke="#d9e4f5" stroke-width="2"/>
+<text x="135" y="108" text-anchor="middle" font-size="22" fill="#203250" font-weight="700">Внешний код</text>
+
+<rect x="65" y="133" width="140" height="38" rx="12" fill="#f5f8ff" stroke="#dce6f6"/>
+<text x="135" y="157" text-anchor="middle" font-size="15" fill="#415879">input()</text>
+
+<rect x="65" y="187" width="140" height="38" rx="12" fill="#f5f8ff" stroke="#dce6f6"/>
+<text x="135" y="211" text-anchor="middle" font-size="15" fill="#415879">print(result)</text>
+
+<rect x="320" y="38" width="365" height="235" rx="28" fill="url(#objbg)" stroke="#cedeef" stroke-width="2"/>
+<text x="502" y="76" text-anchor="middle" font-size="24" fill="#203250" font-weight="700">Объект</text>
+
+<rect x="355" y="102" width="148" height="125" rx="18" fill="#fff" stroke="#dce6f6"/>
+<text x="429" y="132" text-anchor="middle" font-size="17" fill="#2d4267" font-weight="700">Внутри</text>
+<text x="429" y="165" text-anchor="middle" font-size="16" fill="#5e6e85">__secret</text>
+<text x="429" y="194" text-anchor="middle" font-size="16" fill="#5e6e85">__token</text>
+
+<rect x="528" y="104" width="120" height="35" rx="12" fill="#fff" stroke="#dce6f6"/>
+<text x="588" y="127" text-anchor="middle" font-size="15" fill="#314a70">masked()</text>
+
+<rect x="528" y="151" width="120" height="35" rx="12" fill="#fff" stroke="#dce6f6"/>
+<text x="588" y="174" text-anchor="middle" font-size="15" fill="#314a70">check()</text>
+
+<rect x="528" y="198" width="120" height="35" rx="12" fill="#fff" stroke="#dce6f6"/>
+<text x="588" y="221" text-anchor="middle" font-size="15" fill="#314a70">update()</text>
+
+<rect x="790" y="72" width="180" height="165" rx="24" fill="#fff" stroke="#d9e4f5" stroke-width="2"/>
+<text x="880" y="108" text-anchor="middle" font-size="22" fill="#203250" font-weight="700">Наружу</text>
+
+<rect x="823" y="133" width="114" height="38" rx="12" fill="#eaf7f2" stroke="#cae5d8"/>
+<text x="880" y="157" text-anchor="middle" font-size="15" fill="#25634e">******</text>
+
+<rect x="813" y="187" width="134" height="38" rx="12" fill="#f5f8ff" stroke="#dce6f6"/>
+<text x="880" y="211" text-anchor="middle" font-size="14" fill="#415879">ACCESS / DENIED</text>
+
+<path d="M240 155 C275 155 285 155 320 155" stroke="#748bc0" stroke-width="3" fill="none" marker-end="url(#arr)">
+<animate attributeName="stroke-dasharray" from="1,9" to="10,0" dur="1.7s" repeatCount="indefinite"/>
+</path>
+
+<path d="M685 155 C730 155 750 155 790 155" stroke="#748bc0" stroke-width="3" fill="none" marker-end="url(#arr)">
+<animate attributeName="stroke-dasharray" from="1,9" to="10,0" dur="1.7s" repeatCount="indefinite"/>
+</path>
+
+</svg>
+
+</div>
+
+</section>
+
+<!-- PATTERNS -->
+
+<section class="section" id="patterns">
+
+<h2><span class="sec-num">05</span>Три основных паттерна</h2>
+
+<div class="cards">
+
+<div class="card">
+<b>Маскирование</b>
+<p>Вместо секрета:</p>
+<pre><code>return "******"</code></pre>
+</div>
+
+<div class="card">
+<b>Проверка</b>
+<pre><code>return value == self.__key</code></pre>
+<p>Снаружи виден результат, но не ключ.</p>
+</div>
+
+<div class="card">
+<b>Контролируемая замена</b>
+<pre><code>if old == self.__key:
+    self.__key = new</code></pre>
+</div>
+
+</div>
+
+</section>
+
+<!-- TRAINERS -->
+
+<section class="section" id="trainers">
+
+<h2><span class="sec-num">06</span>Вводные тренажёры</h2>
+
+<div class="trainer-grid">
+
+<!-- TRAINER 1 -->
+
+<div class="trainer">
+
+<h3>Тренажёр 1 — SecretValue</h3>
+
+<p>
+Секрет хранится внутри объекта.
+Метод всегда возвращает ровно шесть звёздочек.
+</p>
+
+<div class="checks">
+<div class="check">✓ класс называется <span class="kbd">SecretValue</span></div>
+<div class="check">✓ конструктор: <span class="kbd">__init__</span></div>
+<div class="check">✓ внутренний атрибут: <span class="kbd">__secret</span></div>
+<div class="check">✓ маска: <span class="kbd">******</span></div>
+</div>
+
+<div class="code-panel">
+
+<div class="code-head">
+<span>Решение</span>
+<div>
+<span class="copy-status">Скопировано</span>
+<button class="copy" data-target="trainer1">Копировать</button>
+</div>
+</div>
+
+<pre id="trainer1"><code>class SecretValue:
+    def __init__(self, secret):
+        # Сохраняем секрет внутри объекта.
+        self.__secret = secret
+
+    def get_masked(self):
+        # Исходный секрет наружу не выдаём.
+        # По условию возвращаем ровно 6 звёздочек.
+        return "******"</code></pre>
+
+</div>
+
+</div>
+
+<!-- TRAINER 2 -->
+
+<div class="trainer">
+
+<h3>Тренажёр 2 — PasswordVault</h3>
+
+<p>
+Пароль хранится внутри объекта,
+а наружу доступен только метод проверки.
+</p>
+
+<div class="code-panel">
+
+<div class="code-head">
+<span>Решение</span>
+<div>
+<span class="copy-status">Скопировано</span>
+<button class="copy" data-target="trainer2">Копировать</button>
+</div>
+</div>
+
+<pre id="trainer2"><code>class PasswordVault:
+    def __init__(self, password):
+        # Сохраняем пароль во внутреннем атрибуте.
+        self.__password = password
+
+    def check_password(self, value):
+        # Сам пароль не возвращается.
+        if value == self.__password:
+            return "ACCESS"
+
+        return "DENIED"</code></pre>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- AUTOTEST -->
+
+<section class="section" id="autotest">
+
+<h2><span class="sec-num">07</span>Почему решение может не пройти автоматическую проверку</h2>
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+<tr>
+<th>Что проверяется</th>
+<th>Что требуется</th>
+<th>Типичная ошибка</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Конструктор</td>
+<td><span class="kbd">def __init__(...)</span></td>
+<td><span class="kbd">inti</span> или <span class="kbd">_init_</span></td>
+</tr>
+
+<tr>
+<td>Имя класса</td>
+<td>Точное совпадение</td>
+<td>Другое имя</td>
+</tr>
+
+<tr>
+<td>Атрибут</td>
+<td><span class="kbd">self.__secret</span></td>
+<td>Локальная переменная <span class="kbd">secret</span></td>
+</tr>
+
+<tr>
+<td>Возврат</td>
+<td>Точное значение</td>
+<td>5 звёздочек вместо 6</td>
+</tr>
+
+<tr>
+<td>Повторные вызовы</td>
+<td>Состояние секрета не меняется</td>
+<td>Метод случайно перезаписывает атрибут</td>
+</tr>
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<!-- TASKS -->
+
+<section class="section" id="tasks">
+
+<h2><span class="sec-num">08</span>Практика: задания 1–20</h2>
+
+<p class="lead">
+Откройте нужную карточку.
+В каждой — смысл задачи и готовое решение с комментариями.
+</p>
+
+<div class="task-list" id="taskList"></div>
+
+</section>
+
+<!-- SUMMARY -->
+
+<section class="section" id="summary">
+
+<h2><span class="sec-num">09</span>Итоги урока</h2>
+
+<div class="grid2">
+
+<div class="callout good">
+
+<h3>Главные идеи</h3>
+
+<ul>
+<li>данные хранятся внутри объекта;</li>
+<li>работа идёт через методы;</li>
+<li>секрет не раскрывается без необходимости;</li>
+<li>можно вернуть маску, длину, статус или True/False;</li>
+<li>изменения выполняются по контролируемому правилу.</li>
+</ul>
+
+</div>
+
+<div class="callout warn">
+
+<h3>Не забывать</h3>
+
+<ul>
+<li><span class="kbd">__init__</span> — это <b>init</b>;</li>
+<li><span class="kbd">self</span> обязателен в методах экземпляра;</li>
+<li>маскирование не является шифрованием;</li>
+<li><span class="kbd">__attr</span> не делает секрет абсолютно недоступным;</li>
+<li>возвращать настоящий пароль наружу обычно не нужно.</li>
+</ul>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+</div>
+
+<div class="footer">
+Урок 9 · Python как инструмент кибербезопасности · Классы и инкапсуляция
+</div>
+
+</div>
+
+<button class="to-top" id="toTop" title="Наверх">↑</button>
+
+<script>
+
+/* =========================================================
+   DATA: задания 1–20
+   ========================================================= */
+
+const tasks=[
+
+{
+title:"Скрытая заметка",
+className:"SecureNote",
+attribute:"__text",
+method:"show_mask()",
+explanation:
+"Текст заметки хранится внутри объекта. Метод не показывает исходное содержимое и всегда возвращает HIDDEN.",
+code:`class SecureNote:
+    def __init__(self, text):
+        # Сохраняем текст заметки внутри объекта.
+        self.__text = text
+
+    def show_mask(self):
+        # Не раскрываем исходный текст.
+        return "HIDDEN"
+
+
+note = SecureNote("server_password")
+print(note.show_mask())`
+},
+
+{
+title:"Маскирование API-токена",
+className:"ApiToken",
+attribute:"__token",
+method:"masked()",
+explanation:
+"Токен не показывается. Вместо него возвращается строка из звёздочек той же длины.",
+code:`class ApiToken:
+    def __init__(self, token):
+        # Сохраняем токен внутри объекта.
+        self.__token = token
+
+    def masked(self):
+        # Количество звёздочек равно длине токена.
+        return "*" * len(self.__token)
+
+
+token = input()
+obj = ApiToken(token)
+
+print(obj.masked())`
+},
+
+{
+title:"Проверка PIN-кода",
+className:"PinCode",
+attribute:"__pin",
+method:"check(value)",
+explanation:
+"PIN хранится внутри. Внешний код получает только CORRECT или WRONG.",
+code:`class PinCode:
+    def __init__(self, pin):
+        # Сохраняем PIN внутри объекта.
+        self.__pin = pin
+
+    def check(self, value):
+        # Проверяем введённое значение.
+        if value == self.__pin:
+            return "CORRECT"
+
+        return "WRONG"
+
+
+obj = PinCode("4821")
+
+value = input()
+
+print(obj.check(value))`
+},
+
+{
+title:"Безопасная длина секрета",
+className:"ConfigSecret",
+attribute:"__value",
+method:"length()",
+explanation:
+"Настоящий секрет не возвращается. Метод сообщает только количество символов.",
+code:`class ConfigSecret:
+    def __init__(self, value):
+        # Храним секрет внутри объекта.
+        self.__value = value
+
+    def length(self):
+        # Возвращаем только длину секрета.
+        return len(self.__value)
+
+
+value = input()
+
+obj = ConfigSecret(value)
+
+print(obj.length())`
+},
+
+{
+title:"Частичное отображение идентификатора",
+className:"AccessKey",
+attribute:"__key",
+method:"preview()",
+explanation:
+"Видимыми остаются только последние 4 символа, остальные заменяются на *.",
+code:`class AccessKey:
+    def __init__(self, key):
+        # Храним идентификатор внутри объекта.
+        self.__key = key
+
+    def preview(self):
+        # Если ключ длиннее 4 символов,
+        # скрываем всё кроме последних четырёх.
+        if len(self.__key) > 4:
+            return "*" * (len(self.__key) - 4) + self.__key[-4:]
+
+        return self.__key
+
+
+key = input()
+
+obj = AccessKey(key)
+
+print(obj.preview())`
+},
+
+{
+title:"Проверка секретного слова",
+className:"SecurityQuestion",
+attribute:"__answer",
+method:"verify(value)",
+explanation:
+"Правильный ответ не выводится. Метод сообщает только MATCH или NO MATCH.",
+code:`class SecurityQuestion:
+    def __init__(self, answer):
+        # Сохраняем правильный ответ.
+        self.__answer = answer
+
+    def verify(self, value):
+        # Сравниваем без раскрытия ответа.
+        if value == self.__answer:
+            return "MATCH"
+
+        return "NO MATCH"
+
+
+answer = input()
+
+obj = SecurityQuestion(answer)
+
+value = input()
+
+print(obj.verify(value))`
+},
+
+{
+title:"Защищённый серийный номер",
+className:"CertificateInfo",
+attribute:"__serial",
+method:"short_serial()",
+explanation:
+"Полный серийный номер скрывается. Метод возвращает только последние 3 символа.",
+code:`class CertificateInfo:
+    def __init__(self, serial):
+        # Храним полный серийный номер.
+        self.__serial = serial
+
+    def short_serial(self):
+        # Возвращаем только последние 3 символа.
+        return self.__serial[-3:]
+
+
+serial = input()
+
+obj = CertificateInfo(serial)
+
+print(obj.short_serial())`
+},
+
+{
+title:"Проверка ключа устройства",
+className:"DeviceKey",
+attribute:"__key",
+method:"matches(value)",
+explanation:
+"Метод возвращает логическое значение True или False.",
+code:`class DeviceKey:
+    def __init__(self, key):
+        # Храним ключ устройства.
+        self.__key = key
+
+    def matches(self, value):
+        # Результат сравнения сразу является bool.
+        return value == self.__key
+
+
+key = input()
+
+obj = DeviceKey(key)
+
+value = input()
+
+print(obj.matches(value))`
+},
+
+{
+title:"Смена внутреннего токена",
+className:"SessionToken",
+attribute:"__token",
+method:"check() / rotate()",
+explanation:
+"Объект умеет проверять текущий токен и заменять его новым.",
+code:`class SessionToken:
+    def __init__(self, token):
+        # Сохраняем текущий токен.
+        self.__token = token
+
+    def check(self, value):
+        # Проверяем текущее значение токена.
+        if value == self.__token:
+            return "VALID"
+
+        return "INVALID"
+
+    def rotate(self, new_token):
+        # Заменяем старый токен новым.
+        self.__token = new_token
+
+
+obj = SessionToken("abc123")
+
+obj.rotate("xyz789")
+
+print(obj.check("xyz789"))`
+},
+
+{
+title:"Контролируемое изменение PIN",
+className:"SecurePin",
+attribute:"__pin",
+method:"change(old_pin, new_pin)",
+explanation:
+"Новый PIN устанавливается только если старый PIN указан правильно.",
+code:`class SecurePin:
+    def __init__(self, pin):
+        # Сохраняем текущий PIN.
+        self.__pin = pin
+
+    def change(self, old_pin, new_pin):
+        # Меняем PIN только после проверки старого.
+        if old_pin == self.__pin:
+            self.__pin = new_pin
+
+            return "CHANGED"
+
+        return "DENIED"
+
+
+pin = input()
+
+obj = SecurePin(pin)
+
+old_pin = input()
+new_pin = input()
+
+print(obj.change(old_pin, new_pin))`
+},
+
+{
+title:"Одноразовый резервный код",
+className:"BackupCode",
+attribute:"__code / __used",
+method:"use(value)",
+explanation:
+"После первого правильного использования код помечается использованным и затем всегда считается EXPIRED.",
+code:`class BackupCode:
+    def __init__(self, code):
+        # Сам резервный код.
+        self.__code = code
+
+        # Состояние использования.
+        self.__used = False
+
+    def use(self, value):
+        # Уже использованный код больше не работает.
+        if self.__used:
+            return "EXPIRED"
+
+        # Первый правильный ввод.
+        if value == self.__code:
+            self.__used = True
+
+            return "ACCEPTED"
+
+        return "DENIED"
+
+
+code = input()
+
+obj = BackupCode(code)
+
+value = input()
+
+print(obj.use(value))`
+},
+
+{
+title:"Секрет только для администратора",
+className:"ProtectedConfig",
+attribute:"__value",
+method:"read(is_admin)",
+explanation:
+"Реальное значение возвращается только если is_admin равно True.",
+code:`class ProtectedConfig:
+    def __init__(self, value):
+        # Сохраняем защищённую конфигурацию.
+        self.__value = value
+
+    def read(self, is_admin):
+        # Только администратор получает секрет.
+        if is_admin:
+            return self.__value
+
+        return "ACCESS DENIED"
+
+
+value = input()
+
+obj = ProtectedConfig(value)
+
+print(obj.read(True))
+print(obj.read(False))`
+},
+
+{
+title:"Маскирование номера карты доступа",
+className:"AccessCard",
+attribute:"__number",
+method:"masked()",
+explanation:
+"Первые 2 и последние 2 символа остаются видимыми, середина заменяется звёздочками.",
+code:`class AccessCard:
+    def __init__(self, number):
+        # Храним номер карты.
+        self.__number = number
+
+    def masked(self):
+        # Для короткой строки маскирование не требуется.
+        if len(self.__number) <= 4:
+            return self.__number
+
+        hidden_count = len(self.__number) - 4
+
+        return (
+            self.__number[:2]
+            + "*" * hidden_count
+            + self.__number[-2:]
+        )
+
+
+number = input()
+
+obj = AccessCard(number)
+
+print(obj.masked())`
+},
+
+{
+title:"Лимит попыток проверки секрета",
+className:"LimitedSecret",
+attribute:"__secret / __attempts",
+method:"check(value)",
+explanation:
+"Каждая проверка увеличивает счётчик. После трёх попыток дальнейшие вызовы возвращают LOCKED.",
+code:`class LimitedSecret:
+    def __init__(self, secret):
+        # Секрет.
+        self.__secret = secret
+
+        # Количество попыток.
+        self.__attempts = 0
+
+    def check(self, value):
+        # Каждый вызов считается попыткой.
+        self.__attempts += 1
+
+        # Начиная с 4-й попытки блокируем проверку.
+        if self.__attempts > 3:
+            return "LOCKED"
+
+        if value == self.__secret:
+            return "ACCESS"
+
+        return "DENIED"
+
+
+secret = input()
+
+obj = LimitedSecret(secret)
+
+value = input()
+
+print(obj.check(value))`
+},
+
+{
+title:"Хранилище нескольких секретов",
+className:"CredentialStore",
+attribute:"__data",
+method:"has_service(service)",
+explanation:
+"Внутри хранится словарь секретов, но метод сообщает только наличие сервиса.",
+code:`class CredentialStore:
+    def __init__(self, data):
+        # Словарь хранится внутри объекта.
+        self.__data = data
+
+    def has_service(self, service):
+        # Проверяем только наличие ключа.
+        return service in self.__data
+
+
+store = CredentialStore({
+    "mail": "alpha",
+    "vpn": "bravo"
+})
+
+service = input()
+
+print(store.has_service(service))`
+},
+
+{
+title:"Проверка секрета по имени сервиса",
+className:"ServiceVault",
+attribute:"__data",
+method:"check(service, value)",
+explanation:
+"Метод одновременно проверяет наличие сервиса и совпадение секрета.",
+code:`class ServiceVault:
+    def __init__(self):
+        # Закрытое хранилище.
+        self.__data = {
+            "mail": "alpha",
+            "vpn": "bravo"
+        }
+
+    def check(self, service, value):
+        # Сервис должен существовать,
+        # а переданное значение — совпадать.
+        if (
+            service in self.__data
+            and self.__data[service] == value
+        ):
+            return "ACCESS"
+
+        return "DENIED"
+
+
+obj = ServiceVault()
+
+service = input()
+value = input()
+
+print(obj.check(service, value))`
+},
+
+{
+title:"Контролируемое обновление API-ключа",
+className:"ApiCredential",
+attribute:"__key",
+method:"check() / update()",
+explanation:
+"Ключ можно заменить только после подтверждения старого ключа.",
+code:`class ApiCredential:
+    def __init__(self, key):
+        # Храним текущий API-ключ.
+        self.__key = key
+
+    def check(self, value):
+        # Проверяем текущее значение.
+        return value == self.__key
+
+    def update(self, old_key, new_key):
+        # Новый ключ устанавливается
+        # только при правильном old_key.
+        if old_key == self.__key:
+            self.__key = new_key
+
+            return "UPDATED"
+
+        return "DENIED"
+
+
+key = input()
+
+obj = ApiCredential(key)
+
+old_key = input()
+new_key = input()
+
+print(obj.update(old_key, new_key))`
+},
+
+{
+title:"Закрытое сообщение с безопасным превью",
+className:"EncryptedMessage",
+attribute:"__message",
+method:"preview()",
+explanation:
+"По видимому условию короткие сообщения маскируются полностью, а у длинных показываются первые 5 символов и многоточие.",
+code:`class EncryptedMessage:
+    def __init__(self, message):
+        # Полное сообщение хранится внутри объекта.
+        self.__message = message
+
+    def preview(self):
+        # Если сообщение короткое,
+        # его содержимое вообще не показываем.
+        if len(self.__message) <= 5:
+            return "*****"
+
+        # Для длинного сообщения —
+        # только первые пять символов.
+        return self.__message[:5] + "..."
+
+
+message = input()
+
+obj = EncryptedMessage(message)
+
+print(obj.preview())`
+},
+
+{
+title:"Защищённое хранилище пароля",
+className:"LoginVault",
+attribute:"__password",
+method:"authenticate() / masked()",
+explanation:
+"Пароль можно проверить, но сам пароль наружу не возвращается.",
+code:`class LoginVault:
+    def __init__(self, password):
+        # Пароль хранится внутри объекта.
+        self.__password = password
+
+    def authenticate(self, candidate):
+        # Проверяем кандидата.
+        if candidate == self.__password:
+            return "LOGIN OK"
+
+        return "LOGIN FAILED"
+
+    def masked(self):
+        # Всегда возвращаем безопасную маску.
+        return "********"
+
+
+password = input()
+
+obj = LoginVault(password)
+
+candidate = input()
+
+print(obj.authenticate(candidate))
+print(obj.masked())`
+},
+
+{
+title:"Защищённый токен приложения",
+className:"ApplicationToken",
+attribute:"__token",
+method:"masked() / validate()",
+explanation:
+"На фотографии полностью видна логика masked(), но нижняя часть требования validate(value) обрезана. Ниже дан учебный вариант с True/False — перед сдачей сверьте точный ожидаемый результат с полной формулировкой задания.",
+code:`class ApplicationToken:
+    def __init__(self, token):
+        # Сохраняем токен внутри объекта.
+        self.__token = token
+
+    def masked(self):
+        # По условию возвращаем постоянную маску.
+        return "******"
+
+    def validate(self, value):
+        # Учебный вариант:
+        # возвращаем True при совпадении,
+        # иначе False.
+        return value == self.__token
+
+
+token = input()
+
+obj = ApplicationToken(token)
+
+value = input()
+
+print(obj.masked())
+print(obj.validate(value))`
+}
+
+];
+
+/* =========================================================
+   RENDER TASKS
+   ========================================================= */
+
+function escapeHtml(value){
+
+return value
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;");
+
+}
+
+const taskList=
+document.getElementById("taskList");
+
+tasks.forEach((task,index)=>{
+
+const number=
+index+1;
+
+const details=
+document.createElement("details");
+
+details.className=
+"task";
+
+details.innerHTML=`
+
+<summary>
+
+<div>
+
+<div class="task-title">
+Задание ${number}. ${task.title}
+</div>
+
+<div class="task-meta">
+
+Класс
+<span class="kbd">
+${task.className}
+</span>
+
+· атрибут
+<span class="kbd">
+${task.attribute}
+</span>
+
+· метод
+<span class="kbd">
+${task.method}
+</span>
+
+</div>
+
+</div>
+
+<div class="caret">
+⌄
+</div>
+
+</summary>
+
+<div class="task-body">
+
+<div class="task-grid">
+
+<div class="explain">
+
+<h3>
+Что происходит
+</h3>
+
+<p>
+${task.explanation}
+</p>
+
+<p class="note">
+
+<b>
+Общий шаблон:
+</b>
+
+конструктор
+<span class="kbd">
+__init__
+</span>
+
+→
+
+внутренний атрибут
+
+→
+
+безопасный метод.
+
+</p>
+
+</div>
+
+<div class="code-panel">
+
+<div class="code-head">
+
+<span>
+Готовое решение
+</span>
+
+<div>
+
+<span class="copy-status">
+Скопировано
+</span>
+
+<button
+class="copy"
+data-target="task-code-${number}"
+>
+Копировать
+</button>
+
+</div>
+
+</div>
+
+<pre id="task-code-${number}"><code>${escapeHtml(task.code)}</code></pre>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+taskList.appendChild(details);
+
+});
+
+/* =========================================================
+   COPY
+   ========================================================= */
+
+document.addEventListener(
+"click",
+async event=>{
+
+const button=
+event.target.closest(".copy");
+
+if(!button){
+return;
+}
+
+const target=
+document.getElementById(
+button.dataset.target
+);
+
+if(!target){
+return;
+}
+
+const text=
+target.innerText;
+
+try{
+
+await navigator.clipboard.writeText(text);
+
+const status=
+button.parentElement.querySelector(
+".copy-status"
+);
+
+status.classList.add("on");
+
+setTimeout(
+()=>status.classList.remove("on"),
+1200
+);
+
+}catch(error){
+
+alert(
+"Автоматическое копирование недоступно. Выделите код вручную."
+);
+
+}
+
+}
+);
+
+</script>
+
+
+<script>
+/* =========================================================
+   ENHANCEMENTS: подсветка кода, прогресс, навигация
+   ========================================================= */
+
+/* --- Подсветка синтаксиса Python для всех pre>code --- */
+
+function highlightPython(codeEl){
+
+let text = codeEl.textContent;
+
+text = text
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;");
+
+/* комментарии и строки — в первую очередь, с плейсхолдерами */
+
+const stash = [];
+
+function keep(html){
+stash.push(html);
+return "\u0000" + (stash.length - 1) + "\u0000";
+}
+
+text = text.replace(/#[^\n]*/g, m => keep('<span class="tok-c">' + m + "</span>"));
+
+text = text.replace(/(&quot;.*?&quot;|".*?"|'.*?')/g,
+m => keep('<span class="tok-s">' + m + "</span>"));
+
+/* self */
+
+text = text.replace(/\bself\b/g, '<span class="tok-self">self</span>');
+
+/* ключевые слова */
+
+text = text.replace(
+/\b(def|class|return|if|else|elif|for|while|in|not|and|or|import|from|pass|None)\b/g,
+'<span class="tok-k">$1</span>'
+);
+
+/* True / False и числа */
+
+text = text.replace(/\b(True|False)\b/g, '<span class="tok-b">$1</span>');
+text = text.replace(/\b(\d+)\b/g, '<span class="tok-n">$1</span>');
+
+/* имена после def / class */
+
+text = text.replace(
+/(<span class="tok-k">(?:def|class)<\/span>\s+)([A-Za-z_][A-Za-z0-9_]*)/g,
+'$1<span class="tok-f">$2</span>'
+);
+
+/* встроенные функции */
+
+text = text.replace(
+/\b(print|input|len|range|str|int)\b(?=\()/g,
+'<span class="tok-b">$1</span>'
+);
+
+/* вернуть спрятанные фрагменты */
+
+text = text.replace(/\u0000(\d+)\u0000/g, (m, i) => stash[+i]);
+
+codeEl.innerHTML = text;
+
+}
+
+document.querySelectorAll("pre > code").forEach(highlightPython);
+
+/* --- Прогресс прокрутки + кнопка наверх --- */
+
+const progressBar = document.getElementById("progress");
+const toTop = document.getElementById("toTop");
+
+function onScroll(){
+
+const doc = document.documentElement;
+const max = doc.scrollHeight - doc.clientHeight;
+const ratio = max > 0 ? doc.scrollTop / max : 0;
+
+progressBar.style.width = (ratio * 100) + "%";
+
+toTop.classList.toggle("on", doc.scrollTop > 500);
+
+/* активный пункт навигации */
+
+let current = null;
+
+document.querySelectorAll(".section[id]").forEach(sec => {
+if (sec.getBoundingClientRect().top <= 120) current = sec.id;
+});
+
+document.querySelectorAll("#nav a").forEach(a => {
+a.classList.toggle("active", a.getAttribute("href") === "#" + current);
+});
+
+}
+
+document.addEventListener("scroll", onScroll, {passive:true});
+onScroll();
+
+toTop.addEventListener("click", () => {
+window.scrollTo({top:0, behavior:"smooth"});
+});
+
+</script>
+
+</body>
+</html>
