@@ -660,7 +660,7 @@ EXPIRED</pre></div><div class="reason-box"><span class="mini-label">Разбор
 
     def mask_secret(self):
         if len(self._secret) &lt;= 2:
-            return &quot;***&quot;
+            return &quot;**&quot;
         return self._secret[:2] + &quot;*&quot; * (len(self._secret) - 2)
 
     def reveal_secret(self, is_admin):
