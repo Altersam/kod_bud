@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Занятие 10 | Python для кибербезопасности — классы и инкапсуляция</title>
+<meta name="description" content="Интерактивный урок: Python ООП, инкапсуляция, методы, валидация сессий. 20 практических заданий, 2 тренажёра и 2 самопроверки с решениями.">
+<style>
+:root{--navy:#0b1930;--navy2:#132a46;--teal:#0e9b95;--mint:#46e1cd;--amber:#ffbb64;--ink:#1b3045;--muted:#647789;--line:#dce7ec;--paper:#f4f8fb;--card:#fff;--shadow:0 12px 35px rgba(25,53,78,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:34px}body{margin:0;background:var(--paper);font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #efb04d;outline-offset:3px}a{color:inherit}h1,h2,h3,p{margin-top:0}code,pre{font-family:ui-monospace,"SFMono-Regular",Consolas,"Liberation Mono",monospace}code{font-size:.94em}h2{font-size:clamp(1.75rem,2.9vw,2.4rem);line-height:1.22;letter-spacing:-.035em}h3{line-height:1.3}
+.progress{height:4px;background:linear-gradient(90deg,var(--mint),#6f9fff);width:0;position:fixed;top:0;left:0;z-index:20;transition:width .16s}
+.hero{background:radial-gradient(ellipse at 78% 13%,#174d68 0,#112942 35%,#081728 82%);color:#f6fcff;position:relative;overflow:hidden}.hero-inner{max-width:1280px;padding:69px 30px 72px;margin:0 auto;position:relative;z-index:1}.hero::after{content:"";pointer-events:none;position:absolute;inset:0;background-image:linear-gradient(#ffffff09 1px,transparent 1px),linear-gradient(90deg,#ffffff09 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(90deg,transparent 18%,#000 100%)}.eyebrow{text-transform:uppercase;letter-spacing:.19em;font-weight:800;font-size:.77rem;color:var(--mint)}.hero h1{font-size:clamp(2.5rem,6.4vw,5.25rem);line-height:1.045;letter-spacing:-.052em;max-width:900px;margin:16px 0 20px}.hero h1 em{font-style:normal;color:#7de3d5}.lead{font-size:clamp(1.03rem,1.65vw,1.22rem);color:#c4d5e3;max-width:750px}.chips{display:flex;flex-wrap:wrap;gap:9px;margin:24px 0 28px}.chip{padding:6px 12px;border:1px solid #587185;border-radius:99px;font-size:.84rem;color:#d2edf4;background:#ffffff0a}.hero-cta{display:inline-flex;gap:10px;align-items:center;text-decoration:none;background:var(--mint);border-radius:12px;color:#08252a;font-weight:800;padding:13px 20px}.hero-stat{display:flex;gap:36px;margin-top:32px;flex-wrap:wrap}.hero-stat div{border-left:2px solid #377b7c;padding-left:13px}.hero-stat b{display:block;font-size:1.55rem}.hero-stat small{display:block;color:#b8cbd6}.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:38px;max-width:1360px;margin:0 auto;padding:34px 28px 100px}.sidebar{align-self:start;position:sticky;top:24px;height:calc(100vh - 48px);overflow:auto;padding:20px 16px;border-radius:20px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}.sidebrand{font-weight:900;letter-spacing:-.02em;padding:0 12px 12px}.sidelink{display:block;text-decoration:none;border-radius:10px;padding:9px 12px;color:#51667a;font-size:.9rem}.sidelink:hover{background:#eef7f8;color:#0c7976}.side-kicker{font-size:.68rem;font-weight:900;color:#90a0b0;letter-spacing:.16em;padding:17px 12px 3px}.sidefoot{font-size:.75rem;color:#8091a0;padding:12px}.content{min-width:0}.section{margin-bottom:70px;scroll-margin-top:32px}.section-heading{display:flex;gap:15px;align-items:center;margin-bottom:14px}.section-index{width:44px;height:44px;border-radius:14px;background:#d9f4ef;color:#08786f;display:grid;place-items:center;font-weight:900}.section-heading h2{margin:0}.section-intro{color:var(--muted);max-width:790px}.story-card{background:#fff;border:1px solid var(--line);border-radius:19px;padding:26px;margin:22px 0;box-shadow:var(--shadow)}.story-card h3{font-size:1.23rem;margin-bottom:6px}.info-callout{border-left:4px solid var(--teal);background:#effbf9;color:#29545a;border-radius:0 13px 13px 0;padding:13px 18px;margin:18px 0}.warn{margin:15px 0;background:#fff7e7;border:1px solid #f3d59c;border-radius:12px;padding:13px 15px;font-size:.91rem;color:#6d4c13}.concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}.diagram{padding:13px;background:#0a1c30;border-radius:16px;overflow:hidden}.diagram svg{width:100%;height:auto;display:block}.diagram-caption{font-size:.85rem;color:var(--muted);margin-top:9px}.flow{stroke-dasharray:7 8;animation:flow 2s linear infinite}.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.7s ease-in-out infinite}.float{animation:float 3.6s ease-in-out infinite}@keyframes flow{to{stroke-dashoffset:-30}}@keyframes pulse{50%{opacity:.4;transform:scale(.95)}}@keyframes float{50%{transform:translateY(-6px)}}.theory-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.theory-numbers div{background:#eef8fa;border-radius:12px;padding:14px}.theory-numbers b{display:block;font-family:monospace;color:#087e79;margin-bottom:5px}.mini-label{display:block;text-transform:uppercase;letter-spacing:.12em;font-size:.68rem;color:#6b8493;font-weight:900;margin-bottom:5px}.lab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.lab-panel{border-radius:18px;background:#fff;border:1px solid var(--line);padding:20px;box-shadow:var(--shadow)}.lab-panel h3{margin-bottom:7px}.lab-panel.wide{grid-column:1/-1}.lab-panel p{font-size:.92rem;color:#5b6d7c}.lab-panel button,.toolbar button,.copy-btn{background:#103451;color:#f4fbff;border:none;border-radius:9px;padding:9px 12px;font-size:.87rem;font-weight:750}.lab-panel button:hover,.toolbar button:hover,.copy-btn:hover{background:#0c777a}.lab-panel .secondary{background:#e9f3f7;color:#23506a}.lab-panel .secondary:hover{background:#d7eaf0}.buttonrow{display:flex;gap:8px;flex-wrap:wrap}.counter-value{font-size:4.5rem;font-weight:900;letter-spacing:-.06em;line-height:1;margin:12px 0;color:#123750}.pill{border:1px solid #b2e2d9;background:#e7fbf5;color:#06796e;border-radius:99px;padding:5px 11px;font-weight:900;font-size:.8rem;display:inline-flex}.pill.danger{color:#ae4c32;background:#fff0ea;border-color:#f2c3b1}.pill.warning{color:#825800;background:#fff5d8;border-color:#ecd391}.threshold{display:flex;gap:3px;margin:14px 0}.threshold span{flex:1;height:12px;border-radius:4px;background:#e0e9eb;transition:background .2s}.threshold span.active{background:#20b69c}.threshold span.alarm{background:#f6815e}.mini-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.field{display:flex;flex-direction:column;gap:5px;font-size:.82rem;color:#576e7f;font-weight:700}.field input,.field select{min-width:0;width:100%;padding:9px 10px;border:1px solid #cbdce5;border-radius:9px;color:#233d52;background:#fff}.status-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:17px}.status-list div{background:#f2f7fa;border-radius:10px;padding:13px}.status-list strong{display:block;margin-top:5px}.vault-result{white-space:pre-wrap;overflow-wrap:anywhere;background:#102c42;color:#d0f6f0;padding:18px;border-radius:12px;font-family:monospace;min-height:90px;margin-top:13px}.task-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:18px 0 20px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.toolbar button{background:#dae9ee;color:#1a4655}.toolbar button:hover{color:white}.search-wrap{flex:1;min-width:170px}.search-wrap input{width:100%;border:1px solid var(--line);border-radius:11px;padding:10px 14px;background:white}.count-line{color:#687e8a;font-size:.9rem}.task-card{background:#fff;border:1px solid var(--line);border-radius:16px;margin:12px 0;box-shadow:0 3px 10px #123b5209;overflow:hidden;scroll-margin-top:18px}.task-card[open]{border-color:#abd7d4;box-shadow:0 13px 26px #154b6410}.task-card>summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:92px 1fr auto;column-gap:15px;align-items:center;padding:17px 20px}.task-card>summary::-webkit-details-marker{display:none}.task-no{background:#e8f6f4;border:1px solid #d0e8e5;color:#0e7c78;border-radius:8px;padding:7px 9px;text-align:center;font-size:.77rem;font-weight:900;grid-row:span 2}.task-title{font-weight:900;line-height:1.3;font-size:1.06rem}.task-brief{grid-column:2;grid-row:2;color:#738494;font-size:.83rem}.chevron{grid-column:3;grid-row:1/span 2;font-size:1.4rem;color:#6e8895;transition:transform .2s}.task-card[open] .chevron{transform:rotate(180deg)}.task-body{padding:3px 20px 23px;border-top:1px solid #e5ecef}.two-points{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:19px 0 8px}.two-points p{font-size:.91rem;line-height:1.5;margin:0;color:#455c6a}.code-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:11px;border-radius:12px 12px 0 0;padding:11px 14px;background:#17344b;color:white}.code-head strong{font-size:.83rem}.copy-btn{background:#28556b;padding:7px 11px}.code-pre{margin:0;background:#0a1c2b;color:#d5e9f2;border-radius:0 0 12px 12px;padding:17px;overflow-x:auto;line-height:1.55;font-size:.86rem;tab-size:4}.python-code{font-size:inherit;white-space:pre}.answer-grid{display:grid;grid-template-columns:minmax(185px,.8fr) minmax(0,1.2fr);gap:13px;margin-top:13px}.answer-grid>div{padding:14px;border-radius:11px}.output-box{background:#eef8f6}.output-box pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:7px 0 0;color:#157568;font-size:.83rem}.reason-box{background:#f3f6fb}.reason-box p{margin:0;font-size:.9rem;line-height:1.58}.edge{border-top:1px solid #e6eff0;padding-top:13px;margin-top:15px;font-size:.88rem;color:#677988}.edge strong{color:#244758}.task-card.hidden{display:none}.divider-small{font-size:.8rem;text-transform:uppercase;letter-spacing:.14em;font-weight:900;color:#7d909e;margin:25px 0 8px}.quiz{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.quiz details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 17px}.quiz summary{cursor:pointer;font-weight:800}.quiz p{color:#526776;margin:13px 0 3px}.footer{border-top:1px solid var(--line);padding:27px 0;font-size:.88rem;color:#657985}.kbd{background:#eaf0f5;border:1px solid #d5e1e8;border-radius:4px;padding:1px 5px}body.moodle .sidebar,body.moodle .lab-grid,body.moodle .task-toolbar,body.moodle .copy-btn,body.moodle .progress{display:none!important}body.moodle .layout{display:block;max-width:1100px}body.moodle .hero-inner{padding:38px 22px}body.moodle .hero h1{font-size:2.8rem}body.moodle .task-card{break-inside:avoid}.small{font-size:.85rem;color:#6d8492}.none-note{display:none;padding:13px;color:#9b6542}
+@media(max-width:1040px){.layout{grid-template-columns:205px minmax(0,1fr);gap:18px;padding:24px 16px 80px}.sidebar{padding:13px 8px}.concept-grid{grid-template-columns:1fr}.task-card>summary{grid-template-columns:76px 1fr auto}}@media(max-width:740px){.layout{display:block;padding:22px 12px 80px}.sidebar{position:static;height:auto;margin-bottom:25px;display:flex;flex-wrap:wrap;gap:2px}.sidebar .sidebrand{width:100%}.side-kicker,.sidefoot{display:none}.sidelink{font-size:.82rem;padding:7px 9px}.hero-inner{padding:46px 20px}.hero-stat{gap:18px}.concept-grid,.lab-grid,.quiz,.theory-numbers,.mini-controls,.status-list,.answer-grid,.two-points{grid-template-columns:1fr}.task-card>summary{grid-template-columns:1fr auto;padding:15px}.task-no{grid-column:1;grid-row:1;justify-self:start;margin-bottom:6px}.task-title{grid-column:1;grid-row:2}.task-brief{grid-column:1;grid-row:3;margin-top:5px}.chevron{grid-column:2;grid-row:1/span 3}.task-body{padding:2px 13px 19px}.code-pre{font-size:.77rem}.story-card{padding:18px}.lab-panel.wide{grid-column:auto}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}@media print{.sidebar,.task-toolbar,.copy-btn,.lab-grid,.progress{display:none!important}.layout{display:block}.hero{background:white;color:#111}.hero h1 em{color:#047e74}.hero .lead,.hero-stat small{color:#333}.section{page-break-inside:auto}.task-card{break-inside:avoid}.task-card>summary{padding:9px 8px}.task-body{padding:4px}.code-pre{color:#111;background:#f6f8f9;font-size:8.5pt;white-space:pre-wrap}.task-card:not([open]) .task-body{display:block}a{text-decoration:none}}
+</style></head><body>
+<div class="progress" id="page-progress" aria-hidden="true"></div>
+<header class="hero" id="top"><div class="hero-inner"><div class="eyebrow">Python · Кибербезопасность · Занятие 10</div><h1>Объектно-ориентированная <em>логика защиты</em></h1>
+<p class="lead">Классы и инкапсуляция: превращаем события безопасности, сессии и правила доступа в понятные Python-объекты. Подробные решения всех доступных заданий со снимков, визуальные схемы, интерактивные тренажёры и код для копирования.</p>
+<div class="chips"><span class="chip">__init__ и self</span><span class="chip">Атрибуты и методы</span><span class="chip">Инкапсуляция</span><span class="chip">Сессии / роли / MFA</span><span class="chip">Счётчики и пороги</span></div>
+<a class="hero-cta" href="#theory">Начать изучение →</a><div class="hero-stat"><div><b>20</b><small>практических заданий</small></div><div><b>2</b><small>тренажёра кода</small></div><div><b>2</b><small>самопроверки со снимков</small></div><div><b>24</b><small>готовых фрагмента Python</small></div></div></div></header>
+<div class="layout"><aside class="sidebar" aria-label="Навигация по занятию"><div class="sidebrand">◈ Занятие 10</div><div class="side-kicker">Теория</div><a class="sidelink" href="#theory">01 · Как устроен объект</a><a class="sidelink" href="#diagrams">02 · SVG-схемы</a><a class="sidelink" href="#labs">03 · Интерактивная лаборатория</a><div class="side-kicker">Практика</div><a class="sidelink" href="#trainers">04 · Тренажёры 1–2</a><a class="sidelink" href="#solutions">05 · Задания 1–20</a><a class="sidelink" href="#selfchecks">06 · Самопроверки 2–3</a><div class="side-kicker">Закрепление</div><a class="sidelink" href="#mistakes">07 · Частые ошибки</a><a class="sidelink" href="#quiz">08 · Вопросы для проверки</a><div class="sidefoot">Автономный HTML: без внешних библиотек и запросов в сеть.</div></aside>
+<main class="content">
+<section id="theory" class="section"><div class="section-heading"><span class="section-index">01</span><h2>Как работает ООП</h2></div><p class="section-intro">Объект объединяет данные и операции над ними. Это полезно, когда у каждой сессии, токена или счётчика должно быть собственное состояние.</p>
+<div class="story-card"><h3>Четыре строительных блока</h3><div class="theory-numbers"><div><b>class</b>Шаблон объекта, задающий его данные и поведение.</div><div><b>__init__(self, ...)</b>Конструктор: создаёт начальное состояние экземпляра.</div><div><b>self</b>Ссылка на конкретный объект внутри его методов.</div></div><div class="info-callout"><strong>Инкапсуляция:</strong> внешний код вызывает методы <code>add_event()</code>, <code>status()</code>, <code>get_count()</code>, а изменение внутреннего счётчика происходит внутри объекта. В Python <code>_secret</code> — соглашение о защищённости, а <code>__count</code> — механизм переименования (name mangling), <strong>не криптографическая защита</strong>.</div></div>
+<div class="story-card"><h3>Сценарий на уровне алгоритма</h3><p><strong>Инициализация</strong> → <strong>событие</strong> → <strong>изменение атрибута</strong> → <strong>проверка условия</strong> → <strong>решение</strong>. Вместо свободно расположенных переменных и функций вся логика живёт в классе.</p><div class="two-points"><div><span class="mini-label">Пример метода действия</span><p><code>self.__events += 1</code> меняет состояние объекта.</p></div><div><span class="mini-label">Пример метода решения</span><p><code>return "ALERT" if self.__events >= 5 else "OK"</code> считывает это состояние и возвращает вердикт.</p></div></div></div></section>
+<section id="diagrams" class="section"><div class="section-heading"><span class="section-index">02</span><h2>Визуальные схемы</h2></div><p class="section-intro">SVG-диаграммы помогают увидеть, где хранятся данные и почему важны граничные значения.</p><div class="concept-grid"><div class="story-card"><h3>Инкапсуляция состояния</h3><div class="diagram"><svg viewBox="0 0 700 310" role="img" aria-label="Публичный интерфейс передает команды объекту, а закрытый атрибут меняется внутри класса">
+<defs><linearGradient id="panel" x2="1" y2="1"><stop stop-color="#123a51"/><stop offset="1" stop-color="#14354b"/></linearGradient><marker id="arrow" orient="auto" markerWidth="8" markerHeight="8" refX="6" refY="3"><path d="M0 0 L6 3 L0 6 Z" fill="#48e0cb"/></marker></defs>
+<rect x="8" y="12" width="204" height="275" rx="18" fill="#0e3141" stroke="#346b7a"/><text x="110" y="53" fill="#a5c2d1" font-size="19" text-anchor="middle">Снаружи</text><rect x="34" y="90" width="153" height="58" rx="12" fill="#294a60"/><text x="110" y="126" text-anchor="middle" font-size="20" fill="#fff" font-family="monospace">counter.add()</text><rect x="34" y="171" width="153" height="58" rx="12" fill="#294a60"/><text x="110" y="205" text-anchor="middle" font-size="16" fill="#fff" font-family="monospace">get_count()</text>
+<path class="flow" d="M216 119 C275 119 281 119 335 119" stroke="#48e0cb" stroke-width="4" fill="none" marker-end="url(#arrow)"/>
+<rect x="339" y="12" width="350" height="275" rx="19" fill="url(#panel)" stroke="#4ab9b3" stroke-width="2"/><text x="514" y="48" text-anchor="middle" font-size="21" fill="#e5ffff" font-weight="700">Класс / объект</text><rect x="360" y="68" width="307" height="95" rx="12" fill="#164963" stroke="#5fb0c0"/><text x="513" y="99" fill="#bceefa" text-anchor="middle" font-size="17">Публичные методы</text><text x="513" y="127" text-anchor="middle" font-size="17" font-family="monospace" fill="#fff">add() · get_count()</text><path class="flow" d="M515 166 V210" stroke="#ffc76f" stroke-width="3" marker-end="url(#arrow)"/><rect x="390" y="215" width="244" height="52" rx="10" fill="#163240" stroke="#eeb866"/><text x="513" y="246" text-anchor="middle" font-size="19" fill="#ffd08f" font-family="monospace">__count = 0,1,…</text></svg></div><p class="diagram-caption">Внешний код обращается к методу, а объект сам управляет атрибутом. Пунктир обозначает вызов.</p></div><div class="story-card"><h3>Пороговая логика риска</h3><div class="diagram"><svg viewBox="0 0 700 310" role="img" aria-label="Шкала уровня риска: 0–2 NORMAL, 3–5 WARNING, 6 и выше CRITICAL">
+<rect x="12" y="12" width="676" height="286" rx="16" fill="#0e2b3c" stroke="#284f63"/><text x="34" y="52" fill="#b6cad8" font-size="19">RiskCounter.status()</text><g transform="translate(39,86)"><rect width="590" height="78" rx="10" fill="#19384b"/><rect x="8" y="8" width="235" height="62" rx="7" fill="#196c67"/><rect x="249" y="8" width="220" height="62" rx="7" fill="#a76e2b"/><rect x="476" y="8" width="106" height="62" rx="7" fill="#a54447"/><text x="125" y="45" fill="#e2fff6" text-anchor="middle" font-size="19">NORMAL</text><text x="357" y="45" fill="#fff1d9" text-anchor="middle" font-size="19">WARNING</text><text x="530" y="45" fill="#fff" text-anchor="middle" font-size="15">CRITICAL</text><g fill="#d3e8ef" font-size="17" text-anchor="middle"><text x="23" y="110">0</text><text x="104" y="110">1</text><text x="184" y="110">2</text><text x="263" y="110">3</text><text x="342" y="110">4</text><text x="422" y="110">5</text><text x="502" y="110">6</text></g><path class="float" d="M490 2 l12 -24 l12 24 Z" fill="#fff"/><text x="501" y="-27" font-size="17" fill="#fff" text-anchor="middle">6 событий</text></g><text x="40" y="268" fill="#a9c4d1" font-size="17">Пороговые значения включены в следующий диапазон.</text></svg></div><p class="diagram-caption">0–2 → NORMAL, 3–5 → WARNING, начиная с 6 → CRITICAL. Важны именно включённые границы.</p></div></div></section>
+<section id="labs" class="section"><div class="section-heading"><span class="section-index">03</span><h2>Интерактивная лаборатория</h2></div><p class="section-intro">Нажимайте, меняйте параметры и наблюдайте состояние без запуска Python. Это визуальная JS-модель логики, а реальные решения представлены ниже.</p>
+<div class="lab-grid"><div class="lab-panel"><h3>01 / SecurityCounter</h3><p>Добавляйте события. На пятом событии возникнет состояние ALERT.</p><div class="counter-value" id="counter-number">0</div><span id="counter-status" class="pill" aria-live="polite">OK</span><div class="threshold" id="counter-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="buttonrow"><button id="plus-event">+ Событие</button><button id="minus-event" class="secondary">− Одно</button><button id="reset-event" class="secondary">Сбросить</button></div></div>
+<div class="lab-panel"><h3>02 / Проверка доступа</h3><p>Три независимые политики: сессия, доступ по времени, сессия с MFA.</p><div class="mini-controls"><label class="field">Session ID<input id="sim-id" value="SID-001" autocomplete="off"></label><label class="field">Роль<select id="sim-role"><option>user</option><option>admin</option><option>guest</option></select></label><label class="field">Минуты<input id="sim-time" type="number" value="5"></label></div><label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:.85rem"><input id="sim-mfa" type="checkbox" checked> MFA пройдена</label><div class="status-list" id="access-results" aria-live="polite"></div></div>
+<div class="lab-panel wide"><h3>03 / SecretVault: что увидит пользователь</h3><p>Проверьте маскирование коротких и длинных строк, а также разницу между user и admin. Для ≤2 символов в визуализации, как и в текстовом условии, выводятся ***.</p><div class="mini-controls"><label class="field">Имя хранилища<input id="vault-name" value="MainVault"></label><label class="field">Учебный секрет<input id="vault-secret" value="supersecret123" autocomplete="off"></label><label class="field">Роль<select id="vault-role"><option value="user">user</option><option value="admin">admin</option></select></label></div><div class="vault-result" id="vault-result" aria-live="polite"></div><p class="small" style="margin-top:8px">Не вводите настоящие пароли или токены в учебный тренажёр.</p></div></div></section>
+<section id="trainers" class="section"><div class="section-heading"><span class="section-index">04</span><h2>Два тренажёра кода</h2></div><p class="section-intro">Решения для <code>SecurityCounter</code> и <code>Session</code>. В каждом примере полный исполняемый код и пояснение его поведения.</p><details id="trainer-Т1" class="task-card" open data-topic="счётчик · порог">
+       <summary><span class="task-no">Тренажёр 1</span><span class="task-title">SecurityCounter — накопление событий</span><span class="task-brief">Счётчик событий безопасности с порогом тревоги 5.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>Счётчик событий безопасности с порогом тревоги 5.</p></div><div><span class="mini-label">Ключевая идея</span><p>Состояние объекта изменяется через методы; внешнему коду достаточно интерфейса.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="trainer-Т1" aria-label="Скопировать код Тренажёр 1">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class SecurityCounter:
+    def __init__(self):
+        self.count = 0
+
+    def add_event(self):
+        self.count += 1
+
+    def get_count(self):
+        return self.count
+
+    def is_alert(self):
+        return &quot;ALERT&quot; if self.count &gt;= 5 else &quot;OK&quot;
+
+counter = SecurityCounter()
+for _ in range(5):
+    counter.add_event()
+print(counter.get_count())
+print(counter.is_alert())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>5
+ALERT</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Конструктор устанавливает нулевое состояние. Метод add_event() отвечает за изменение, get_count() возвращает число, is_alert() сравнивает его с порогом.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> При 4 событиях — OK; при 5 — ALERT.</div>
+         
+       </div>
+     </details>
+<details id="trainer-Т2" class="task-card" open data-topic="сессии · логика И">
+       <summary><span class="task-no">Тренажёр 2</span><span class="task-title">Session — валидация сессии</span><span class="task-brief">Два обязательных условия: непустой идентификатор и разрешённая роль.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>Два обязательных условия: непустой идентификатор и разрешённая роль.</p></div><div><span class="mini-label">Ключевая идея</span><p>Проверка «И»: ложность любого условия делает сессию недопустимой.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="trainer-Т2" aria-label="Скопировать код Тренажёр 2">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class Session:
+    def __init__(self, session_id, user_role):
+        self.session_id = session_id
+        self.user_role = user_role
+
+    def is_valid(self):
+        if self.session_id != &quot;&quot; and self.user_role in (&quot;user&quot;, &quot;admin&quot;):
+            return &quot;YES&quot;
+        return &quot;NO&quot;
+
+session = Session(&quot;SID-001&quot;, &quot;user&quot;)
+print(session.is_valid())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>YES</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Оператор in компактно проверяет две допустимые роли. Строка session_id должна быть непустой, а роль — одной из двух разрешённых.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> Проверьте Session(&quot;&quot;, &quot;admin&quot;) → NO и Session(&quot;123&quot;, &quot;guest&quot;) → NO.</div>
+         
+       </div>
+     </details></section>
+<section id="solutions" class="section"><div class="section-heading"><span class="section-index">05</span><h2>Практика: задания 1–20</h2></div><p class="section-intro">Все 20 заданий сгруппированы по исходной нумерации. Нажмите на карточку для раскрытия. Можно искать название, класс, метод или термин.</p>
+<div class="task-toolbar"><div class="search-wrap"><input id="search-tasks" type="search" placeholder="Найти класс или задачу…" aria-label="Поиск по заданиям"></div><div class="toolbar"><button id="expand-all" type="button">Раскрыть все</button><button id="collapse-all" type="button">Свернуть все</button></div><span class="count-line" id="found-count">24 карточки</span></div>
+<details id="task-1" class="task-card" open data-topic="счётчик">
+       <summary><span class="task-no">Задание 1</span><span class="task-title">Счётчик подозрительных запросов</span><span class="task-brief">RequestCounter: три события → значение 3.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>RequestCounter: три события → значение 3.</p></div><div><span class="mini-label">Ключевая идея</span><p>Простейшая инкапсуляция счётчика через методы.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-1" aria-label="Скопировать код Задание 1">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class RequestCounter:
+    def __init__(self):
+        self.__count = 0
+
+    def add(self):
+        self.__count += 1
+
+    def get_count(self):
+        return self.__count
+
+counter = RequestCounter()
+for _ in range(3):
+    counter.add()
+print(counter.get_count())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>3</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>__count не меняется напрямую извне: add() управляет приращением, get_count() — чтением.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> Новый объект начинает с 0; каждый вызов add() увеличивает результат на 1.</div>
+         
+       </div>
+     </details>
+<details id="task-2" class="task-card"  data-topic="порог">
+       <summary><span class="task-no">Задание 2</span><span class="task-title">Порог срабатывания антивируса</span><span class="task-brief">MalwareCounter: при 3 обнаружениях статус ALERT.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>MalwareCounter: при 3 обнаружениях статус ALERT.</p></div><div><span class="mini-label">Ключевая идея</span><p>Логика порога в методе status().</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-2" aria-label="Скопировать код Задание 2">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class MalwareCounter:
+    def __init__(self):
+        self.__detections = 0
+
+    def add_detection(self):
+        self.__detections += 1
+
+    def status(self):
+        return &quot;OK&quot; if self.__detections &lt; 3 else &quot;ALERT&quot;
+
+monitor = MalwareCounter()
+for _ in range(3):
+    monitor.add_detection()
+print(monitor.status())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>ALERT</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Три вызова добавления приводят к значению 3, а не меньше 3, значит выбирается ALERT.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> При 2 обнаружениях → OK; при 3 → ALERT.</div>
+         
+       </div>
+     </details>
+<details id="task-3" class="task-card"  data-topic="состояние · сброс">
+       <summary><span class="task-no">Задание 3</span><span class="task-title">Сброс счётчика ошибок</span><span class="task-brief">ErrorCounter: инкремент, сброс и чтение.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>ErrorCounter: инкремент, сброс и чтение.</p></div><div><span class="mini-label">Ключевая идея</span><p>Сброс реализуем отдельным методом.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-3" aria-label="Скопировать код Задание 3">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class ErrorCounter:
+    def __init__(self):
+        self.__count = 0
+
+    def add_error(self):
+        self.__count += 1
+
+    def reset(self):
+        self.__count = 0
+
+    def get_count(self):
+        return self.__count
+
+counter = ErrorCounter()
+counter.add_error()
+counter.add_error()
+counter.reset()
+print(counter.get_count())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>0</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>После двух ошибок счётчик равен 2. Метод reset() обнуляет его, поэтому get_count() возвращает 0.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> Повторный reset() также оставляет 0.</div>
+         
+       </div>
+     </details>
+<details id="task-4" class="task-card"  data-topic="лимит">
+       <summary><span class="task-no">Задание 4</span><span class="task-title">Ограничение числа попыток</span><span class="task-brief">AttemptTracker: можно пробовать, пока попыток меньше трёх.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>AttemptTracker: можно пробовать, пока попыток меньше трёх.</p></div><div><span class="mini-label">Ключевая идея</span><p>Двоичный результат YES/NO по порогу.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-4" aria-label="Скопировать код Задание 4">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class AttemptTracker:
+    def __init__(self):
+        self.__attempts = 0
+
+    def add_attempt(self):
+        self.__attempts += 1
+
+    def can_try(self):
+        return &quot;YES&quot; if self.__attempts &lt; 3 else &quot;NO&quot;
+
+tracker = AttemptTracker()
+tracker.add_attempt()
+tracker.add_attempt()
+print(tracker.can_try())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>YES</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>После двух попыток 2 &lt; 3, значит можно попробовать ещё раз. После третьей попытки ответ изменится на NO.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> При ровно 3 попытках → NO.</div>
+         
+       </div>
+     </details>
+<details id="task-5" class="task-card" open data-topic="IDS · пороги">
+       <summary><span class="task-no">Задание 5</span><span class="task-title">Уровень активности IDS</span><span class="task-brief">IdsMonitor: LOW, MEDIUM или HIGH.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>IdsMonitor: LOW, MEDIUM или HIGH.</p></div><div><span class="mini-label">Ключевая идея</span><p>Многоуровневая классификация по двум границам.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-5" aria-label="Скопировать код Задание 5">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class IdsMonitor:
+    def __init__(self):
+        self.__events = 0
+
+    def add_event(self):
+        self.__events += 1
+
+    def level(self):
+        if self.__events &lt; 3:
+            return &quot;LOW&quot;
+        if self.__events &lt;= 5:
+            return &quot;MEDIUM&quot;
+        return &quot;HIGH&quot;
+
+ids = IdsMonitor()
+for _ in range(4):
+    ids.add_event()
+print(ids.level())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>MEDIUM</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Сначала исключаем значения меньше 3, затем проверяем диапазон 3–5. Всё, что больше 5, относится к HIGH.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> 2 → LOW; 3 и 5 → MEDIUM; 6 → HIGH.</div>
+         
+       </div>
+     </details>
+<details id="task-6" class="task-card"  data-topic="сессия">
+       <summary><span class="task-no">Задание 6</span><span class="task-title">Проверка идентификатора сессии</span><span class="task-brief">WebSession: непустой session_id → VALID.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>WebSession: непустой session_id → VALID.</p></div><div><span class="mini-label">Ключевая идея</span><p>Валидируем минимальное состояние объекта.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-6" aria-label="Скопировать код Задание 6">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class WebSession:
+    def __init__(self, session_id):
+        self.session_id = session_id
+
+    def is_valid(self):
+        return &quot;VALID&quot; if self.session_id != &quot;&quot; else &quot;INVALID&quot;
+
+session_id = input()
+session = WebSession(session_id)
+print(session.is_valid())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>Ввод: abc123  →  VALID</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>input() читает строку. Метод возвращает VALID только при непустом значении.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> Пустая строка → INVALID; строка из пробелов формально не пуста (по тексту задания).</div>
+         
+       </div>
+     </details>
+<details id="task-7" class="task-card"  data-topic="роль">
+       <summary><span class="task-no">Задание 7</span><span class="task-title">Проверка допустимой роли</span><span class="task-brief">RoleCheck: разрешены только user и admin.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>RoleCheck: разрешены только user и admin.</p></div><div><span class="mini-label">Ключевая идея</span><p>Контроль принадлежности к списку разрешённых ролей.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-7" aria-label="Скопировать код Задание 7">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class RoleCheck:
+    def __init__(self, role):
+        self.role = role
+
+    def allowed(self):
+        return &quot;YES&quot; if self.role in (&quot;user&quot;, &quot;admin&quot;) else &quot;NO&quot;
+
+role = input()
+check = RoleCheck(role)
+print(check.allowed())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>Ввод: admin  →  YES</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Роли сравниваются точно, включая регистр. Все другие значения дают NO.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> guest → NO; User → NO.</div>
+         
+       </div>
+     </details>
+<details id="task-8" class="task-card"  data-topic="API · токен">
+       <summary><span class="task-no">Задание 8</span><span class="task-title">Валидность API-сессии</span><span class="task-brief">ApiSession: токен должен быть непустым, active — True.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>ApiSession: токен должен быть непустым, active — True.</p></div><div><span class="mini-label">Ключевая идея</span><p>Комбинация строкового и логического условия.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-8" aria-label="Скопировать код Задание 8">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class ApiSession:
+    def __init__(self, token, active):
+        self.token = token
+        self.active = active
+
+    def is_valid(self):
+        if self.token != &quot;&quot; and self.active is True:
+            return &quot;YES&quot;
+        return &quot;NO&quot;
+
+session = ApiSession(&quot;token-123&quot;, True)
+print(session.is_valid())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>YES</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Параметр active — именно логическое значение True/False, а не строка &quot;True&quot;.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> ApiSession(&quot;&quot;, True) → NO; ApiSession(&quot;abc&quot;, False) → NO.</div>
+         
+       </div>
+     </details>
+<details id="task-9" class="task-card"  data-topic="время">
+       <summary><span class="task-no">Задание 9</span><span class="task-title">Проверка временного доступа</span><span class="task-brief">TemporaryAccess: нужны имя пользователя и оставшееся время &gt; 0.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>TemporaryAccess: нужны имя пользователя и оставшееся время &gt; 0.</p></div><div><span class="mini-label">Ключевая идея</span><p>Проверяем составное условие.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-9" aria-label="Скопировать код Задание 9">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class TemporaryAccess:
+    def __init__(self, user, minutes_left):
+        self.user = user
+        self.minutes_left = minutes_left
+
+    def is_active(self):
+        if self.user != &quot;&quot; and self.minutes_left &gt; 0:
+            return &quot;ACTIVE&quot;
+        return &quot;EXPIRED&quot;
+
+user = input()
+minutes = int(input())
+access = TemporaryAccess(user, minutes)
+print(access.is_active())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>Ввод: alice / 10  →  ACTIVE</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>int(input()) превращает текстовое число минут в целое. Ровно 0 минут — уже EXPIRED.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> Пустое имя при 10 минутах → EXPIRED.</div>
+         
+       </div>
+     </details>
+<details id="task-10" class="task-card"  data-topic="MFA">
+       <summary><span class="task-no">Задание 10</span><span class="task-title">Сессия с проверкой MFA</span><span class="task-brief">SecureSession: для SECURE нужны идентификатор и пройденная MFA.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>SecureSession: для SECURE нужны идентификатор и пройденная MFA.</p></div><div><span class="mini-label">Ключевая идея</span><p>Проверка двух факторов в учебной модели.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-10" aria-label="Скопировать код Задание 10">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class SecureSession:
+    def __init__(self, session_id, mfa_passed):
+        self.session_id = session_id
+        self.mfa_passed = mfa_passed
+
+    def is_secure(self):
+        if self.session_id != &quot;&quot; and self.mfa_passed is True:
+            return &quot;SECURE&quot;
+        return &quot;CHECK&quot;
+
+session = SecureSession(&quot;SID-10&quot;, True)
+print(session.is_secure())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>SECURE</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Даже если MFA пройдена, пустой идентификатор даёт CHECK. Нужны оба условия.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> SecureSession(&quot;SID&quot;, False) → CHECK.</div>
+         
+       </div>
+     </details>
+<details id="task-11" class="task-card" open data-topic="счётчик · лимит">
+       <summary><span class="task-no">Задание 11</span><span class="task-title">Счётчик подключений с блокировкой</span><span class="task-brief">ConnectionGuard: 5 подключений → 5 и LIMIT.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>ConnectionGuard: 5 подключений → 5 и LIMIT.</p></div><div><span class="mini-label">Ключевая идея</span><p>Счётчик с методом чтения и порогом блокировки.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-11" aria-label="Скопировать код Задание 11">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class ConnectionGuard:
+    def __init__(self):
+        self.__connections = 0
+
+    def add_connection(self):
+        self.__connections += 1
+
+    def status(self):
+        return &quot;OK&quot; if self.__connections &lt; 4 else &quot;LIMIT&quot;
+
+    def get_count(self):
+        return self.__connections
+
+guard = ConnectionGuard()
+for _ in range(5):
+    guard.add_connection()
+print(guard.get_count())
+print(guard.status())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>5
+LIMIT</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Достижение порога 4 включает LIMIT; пятый вызов увеличивает счётчик до 5, не изменяя статус.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> 3 → OK; 4 → LIMIT.</div>
+         
+       </div>
+     </details>
+<details id="task-12" class="task-card"  data-topic="инвариант">
+       <summary><span class="task-no">Задание 12</span><span class="task-title">Счётчик событий с уменьшением</span><span class="task-brief">ThreatCounter: resolve() не уводит счётчик ниже нуля.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>ThreatCounter: resolve() не уводит счётчик ниже нуля.</p></div><div><span class="mini-label">Ключевая идея</span><p>Охраняем инвариант состояния.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-12" aria-label="Скопировать код Задание 12">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class ThreatCounter:
+    def __init__(self):
+        self.__count = 0
+
+    def add(self):
+        self.__count += 1
+
+    def resolve(self):
+        if self.__count &gt; 0:
+            self.__count -= 1
+
+    def get_count(self):
+        return self.__count
+
+counter = ThreatCounter()
+for _ in range(3):
+    counter.add()
+counter.resolve()
+print(counter.get_count())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>2</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Условие &gt; 0 запрещает отрицательные значения. Было 3, одна угроза устранена, осталось 2.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> Если 0, вызов resolve() оставляет 0.</div>
+         
+       </div>
+     </details>
+<details id="task-13" class="task-card"  data-topic="brute force">
+       <summary><span class="task-no">Задание 13</span><span class="task-title">Блокировка после серии событий</span><span class="task-brief">BruteForceMonitor: после трёх ошибок BLOCK; после reset() WATCH.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>BruteForceMonitor: после трёх ошибок BLOCK; после reset() WATCH.</p></div><div><span class="mini-label">Ключевая идея</span><p>Порог плюс сброс внутреннего состояния.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-13" aria-label="Скопировать код Задание 13">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class BruteForceMonitor:
+    def __init__(self):
+        self.__fails = 0
+
+    def add_fail(self):
+        self.__fails += 1
+
+    def verdict(self):
+        return &quot;WATCH&quot; if self.__fails &lt; 3 else &quot;BLOCK&quot;
+
+    def reset(self):
+        self.__fails = 0
+
+monitor = BruteForceMonitor()
+for _ in range(3):
+    monitor.add_fail()
+print(monitor.verdict())
+monitor.reset()
+print(monitor.verdict())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>BLOCK
+WATCH</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Три ошибки пересекают порог BLOCK. Сброс возвращает счётчик к нулю — снова WATCH.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> 2 ошибки → WATCH, 3 → BLOCK.</div>
+         
+       </div>
+     </details>
+<details id="task-14" class="task-card"  data-topic="роль · admin">
+       <summary><span class="task-no">Задание 14</span><span class="task-title">Проверка типа сессии</span><span class="task-brief">AdminSession: администраторская сессия требует session_id и роль admin.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>AdminSession: администраторская сессия требует session_id и роль admin.</p></div><div><span class="mini-label">Ключевая идея</span><p>Более узкое разрешение по роли.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-14" aria-label="Скопировать код Задание 14">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class AdminSession:
+    def __init__(self, session_id, role):
+        self.session_id = session_id
+        self.role = role
+
+    def is_admin_session(self):
+        if self.session_id != &quot;&quot; and self.role == &quot;admin&quot;:
+            return &quot;YES&quot;
+        return &quot;NO&quot;
+
+session = AdminSession(&quot;SID-14&quot;, &quot;admin&quot;)
+print(session.is_admin_session())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>YES</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>user здесь не подходит, хотя эта роль допустима в обычной Session.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> AdminSession(&quot;SID&quot;, &quot;user&quot;) → NO.</div>
+         
+       </div>
+     </details>
+<details id="task-15" class="task-card"  data-topic="время · роль">
+       <summary><span class="task-no">Задание 15</span><span class="task-title">Проверка времени и роли</span><span class="task-brief">TimedSession: требуется роль user/admin и время &gt; 0.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>TimedSession: требуется роль user/admin и время &gt; 0.</p></div><div><span class="mini-label">Ключевая идея</span><p>Пересечение множества разрешённых ролей и временного ограничения.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-15" aria-label="Скопировать код Задание 15">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class TimedSession:
+    def __init__(self, role, minutes_left):
+        self.role = role
+        self.minutes_left = minutes_left
+
+    def can_continue(self):
+        if self.role in (&quot;user&quot;, &quot;admin&quot;) and self.minutes_left &gt; 0:
+            return &quot;YES&quot;
+        return &quot;NO&quot;
+
+session = TimedSession(&quot;user&quot;, 5)
+print(session.can_continue())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>YES</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>При нуле минут доступ не продлевается, даже у пользователя с разрешённой ролью.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> TimedSession(&quot;admin&quot;, 0) → NO.</div>
+         
+       </div>
+     </details>
+<details id="task-16" class="task-card" open data-topic="шифрование">
+       <summary><span class="task-no">Задание 16</span><span class="task-title">Проверка защищённого канала</span><span class="task-brief">SecureChannel: id, флаг шифрования и разрешённая роль.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>SecureChannel: id, флаг шифрования и разрешённая роль.</p></div><div><span class="mini-label">Ключевая идея</span><p>Логическое И из трёх условий.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-16" aria-label="Скопировать код Задание 16">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class SecureChannel:
+    def __init__(self, channel_id, encrypted, role):
+        self.channel_id = channel_id
+        self.encrypted = encrypted
+        self.role = role
+
+    def is_valid(self):
+        if (self.channel_id != &quot;&quot; and self.encrypted is True
+                and self.role in (&quot;user&quot;, &quot;admin&quot;)):
+            return &quot;VALID&quot;
+        return &quot;INVALID&quot;
+
+channel = SecureChannel(&quot;CH-16&quot;, True, &quot;user&quot;)
+print(channel.is_valid())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>VALID</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Все три условия обязательны: идентификатор, шифрование и роль.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> SecureChannel(&quot;CH&quot;, False, &quot;admin&quot;) → INVALID.</div>
+         
+       </div>
+     </details>
+<details id="task-17" class="task-card"  data-topic="порог · риск">
+       <summary><span class="task-no">Задание 17</span><span class="task-title">Счётчик с двумя порогами</span><span class="task-brief">RiskCounter: 6 событий → CRITICAL.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>RiskCounter: 6 событий → CRITICAL.</p></div><div><span class="mini-label">Ключевая идея</span><p>Несколько интервалов на шкале риска.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-17" aria-label="Скопировать код Задание 17">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class RiskCounter:
+    def __init__(self):
+        self.__count = 0
+
+    def add(self):
+        self.__count += 1
+
+    def status(self):
+        if self.__count &lt; 3:
+            return &quot;NORMAL&quot;
+        if self.__count &lt;= 5:
+            return &quot;WARNING&quot;
+        return &quot;CRITICAL&quot;
+
+risk = RiskCounter()
+for _ in range(6):
+    risk.add()
+print(risk.status())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>CRITICAL</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Сначала отсекаются значения 0–2, затем 3–5, оставшиеся 6 и выше — CRITICAL.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> 2 → NORMAL; 3 → WARNING; 5 → WARNING; 6 → CRITICAL.</div>
+         
+       </div>
+     </details>
+<details id="task-18" class="task-card"  data-topic="логин · блокировка">
+       <summary><span class="task-no">Задание 18</span><span class="task-title">Сессия с внутренним счётчиком ошибок</span><span class="task-brief">LoginSession: id должен быть непустым, ошибок — меньше 3.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>LoginSession: id должен быть непустым, ошибок — меньше 3.</p></div><div><span class="mini-label">Ключевая идея</span><p>Состояние попыток участвует в валидации сессии.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-18" aria-label="Скопировать код Задание 18">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class LoginSession:
+    def __init__(self, session_id):
+        self.session_id = session_id
+        self.__fails = 0
+
+    def add_fail(self):
+        self.__fails += 1
+
+    def is_valid(self):
+        if self.session_id != &quot;&quot; and self.__fails &lt; 3:
+            return &quot;YES&quot;
+        return &quot;NO&quot;
+
+session = LoginSession(&quot;SID-18&quot;)
+session.add_fail()
+session.add_fail()
+print(session.is_valid())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>YES</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>При 2 ошибках сессия допустима, при 3 — уже нет. Идентификатор также должен быть непустым.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> С пустым id результат NO даже без ошибок.</div>
+         
+       </div>
+     </details>
+<details id="task-19" class="task-card"  data-topic="сеть · безопасность">
+       <summary><span class="task-no">Задание 19</span><span class="task-title">Контроль сетевой сессии</span><span class="task-brief">NetworkSession: id, роль и число предупреждений &lt; 3.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>NetworkSession: id, роль и число предупреждений &lt; 3.</p></div><div><span class="mini-label">Ключевая идея</span><p>Комбинируем идентичность пользователя с накопительным риском.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-19" aria-label="Скопировать код Задание 19">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class NetworkSession:
+    def __init__(self, session_id, user_role):
+        self.session_id = session_id
+        self.user_role = user_role
+        self.__alerts = 0
+
+    def add_alert(self):
+        self.__alerts += 1
+
+    def get_alerts(self):
+        return self.__alerts
+
+    def is_valid(self):
+        if (self.session_id != &quot;&quot;
+                and self.user_role in (&quot;user&quot;, &quot;admin&quot;)
+                and self.__alerts &lt; 3):
+            return &quot;YES&quot;
+        return &quot;NO&quot;
+
+session = NetworkSession(&quot;SID-19&quot;, &quot;user&quot;)
+session.add_alert()
+session.add_alert()
+print(session.get_alerts())
+print(session.is_valid())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>2
+YES</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Два предупреждения не превышают разрешённый порог; доступ ещё разрешён. Третье переключает результат на NO.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> 3 предупреждения → NO.</div>
+         
+       </div>
+     </details>
+<details id="task-20" class="task-card" open data-topic="мониторинг · сессия">
+       <summary><span class="task-no">Задание 20</span><span class="task-title">Защищённый монитор событий</span><span class="task-brief">SecurityMonitor: валидность сессии отдельно от статуса 5 событий.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>SecurityMonitor: валидность сессии отдельно от статуса 5 событий.</p></div><div><span class="mini-label">Ключевая идея</span><p>Два независимых метода могут описывать один объект с разных сторон.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="task-20" aria-label="Скопировать код Задание 20">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class SecurityMonitor:
+    def __init__(self, session_id, role):
+        self.session_id = session_id
+        self.role = role
+        self.__events = 0
+
+    def add_event(self):
+        self.__events += 1
+
+    def get_count(self):
+        return self.__events
+
+    def is_valid(self):
+        if self.session_id != &quot;&quot; and self.role in (&quot;user&quot;, &quot;admin&quot;):
+            return &quot;YES&quot;
+        return &quot;NO&quot;
+
+    def status(self):
+        return &quot;OK&quot; if self.__events &lt; 5 else &quot;ALERT&quot;
+
+monitor = SecurityMonitor(&quot;SID-20&quot;, &quot;admin&quot;)
+for _ in range(5):
+    monitor.add_event()
+print(monitor.is_valid())
+print(monitor.get_count())
+print(monitor.status())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>YES
+5
+ALERT</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>Даже при ALERT сессия остаётся формально валидной: is_valid() проверяет id и роль, а status() — число событий.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> Статус при 4 → OK; при 5 → ALERT.</div>
+         
+       </div>
+     </details></section>
+<section id="selfchecks" class="section"><div class="section-heading"><span class="section-index">06</span><h2>Самопроверки 2–3</h2></div><p class="section-intro">На предоставленных изображениях читаются задания самопроверки № 2 (<code>Token</code>) и № 3 (<code>SecretVault</code>). Условие самопроверки № 1 не показано, поэтому оно не выдумывается.</p><details id="self-2" class="task-card" open data-topic="самопроверка · токен">
+       <summary><span class="task-no">Самопроверка 2</span><span class="task-title">Token — время жизни токена</span><span class="task-brief">Token: minutes_left &gt; 0 означает ACTIVE.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>Token: minutes_left &gt; 0 означает ACTIVE.</p></div><div><span class="mini-label">Ключевая идея</span><p>Отдельная проверка времени жизни объекта.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="self-2" aria-label="Скопировать код Самопроверка 2">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class Token:
+    def __init__(self, user, minutes_left):
+        self.user = user
+        self.minutes_left = minutes_left
+
+    def is_active(self):
+        if self.minutes_left &gt; 0:
+            return &quot;ACTIVE&quot;
+        return &quot;EXPIRED&quot;
+
+print(Token(&quot;alice&quot;, 10).is_active())
+print(Token(&quot;bob&quot;, 0).is_active())
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>ACTIVE
+EXPIRED</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>В задании для Token проверяется только minutes_left, а не пустота имени; не добавляйте условие из TemporaryAccess.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> -1 и 0 → EXPIRED, 1 → ACTIVE.</div>
+         
+       </div>
+     </details>
+<details id="self-3" class="task-card" open data-topic="инкапсуляция · секрет">
+       <summary><span class="task-no">Самопроверка 3</span><span class="task-title">SecretVault — секрет за интерфейсом</span><span class="task-brief">SecretVault: публичное имя, атрибут _secret, маскировка и выдача администратору.</span><span class="chevron" aria-hidden="true">⌄</span></summary>
+       <div class="task-body">
+         <div class="two-points"><div><span class="mini-label">Что требуется</span><p>SecretVault: публичное имя, атрибут _secret, маскировка и выдача администратору.</p></div><div><span class="mini-label">Ключевая идея</span><p>Проверка границ доступа с помощью методов.</p></div></div>
+         <div class="code-head"><strong>Полное решение на Python</strong><button class="copy-btn" type="button" data-copy="self-3" aria-label="Скопировать код Самопроверка 3">⧉ &nbsp;Копировать</button></div>
+         <pre class="code-pre" tabindex="0"><code class="python-code">class SecretVault:
+    def __init__(self, name, secret):
+        self.name = name
+        self._secret = secret
+
+    def mask_secret(self):
+        if len(self._secret) &lt;= 2:
+            return &quot;***&quot;
+        return self._secret[:2] + &quot;*&quot; * (len(self._secret) - 2)
+
+    def reveal_secret(self, is_admin):
+        if is_admin:
+            return self._secret
+        return &quot;Доступ запрещён&quot;
+
+name = input()
+secret = input()
+role = input()
+
+vault = SecretVault(name, secret)
+print(&quot;Хранилище:&quot;, vault.name)
+print(vault.mask_secret())
+print(vault.reveal_secret(role == &quot;admin&quot;))
+</code></pre>
+         <div class="answer-grid"><div class="output-box"><span class="mini-label">Результат / пример</span><pre>Ввод: MainVault / supersecret123 / user
+Хранилище: MainVault
+su************
+Доступ запрещён</pre></div><div class="reason-box"><span class="mini-label">Разбор</span><p>В условии короткий секрет (≤2 символов) описан как «***», но в примере для AB на снимке показано «**». В коде строго соблюдён текстовый пункт; чтобы воспроизвести пример, замените &quot;***&quot; на &quot;**&quot;.</p></div></div>
+         <div class="edge"><strong>Проверь границу:</strong> Вариант Tokens / AB / admin: по тексту маска ***, секрет AB. В скриншоте маска **.</div>
+          <div class="warn" role="note"><strong>Расхождение на скриншотах:</strong> В тексте упражнения для секрета длиной до двух символов задано <code>"***"</code>, но пример с <code>AB</code> показывает <code>**</code>. Решение реализует текстовое требование. Для варианта по примеру замените три звёздочки двумя.</div>
+       </div>
+     </details></section>
+<section id="mistakes" class="section"><div class="section-heading"><span class="section-index">07</span><h2>Разбор типичных ошибок</h2></div><div class="story-card"><h3>① Забыли <code>self</code></h3><p>Метод экземпляра должен принимать <code>self</code> первым аргументом. При вызове <code>obj.add()</code> Python подставляет ссылку на <code>obj</code> автоматически.</p><h3>② Перепутали <code>&lt;</code> и <code>&lt;=</code></h3><p>«Меньше трёх» — это строго <code>&lt; 3</code>. При значении 3 уже выполняется ветка блокировки. В заданиях 5 и 17 диапазон от 3 до 5 включительно.</p><h3>③ Смешали строку и булево значение</h3><p><code>"True"</code> — строка, а <code>True</code> — логическое значение. Для флагов MFA и шифрования используется именно <code>True</code>/<code>False</code>.</p><h3>④ Приняли соглашения Python за полноценную защиту</h3><p>Запись <code>_secret</code> сигнализирует разработчикам, что атрибут внутренний, но не запрещает доступ к нему на уровне языка. Для реальной защиты нужны проверка полномочий на сервере, хеширование паролей, криптографические протоколы и безопасное хранение секретов.</p><h3>⑤ Добавили лишнюю проверку</h3><p>Класс <code>Token</code> из самопроверки № 2 должен проверять только минуты, а <code>TemporaryAccess</code> из задачи № 9 — и непустое имя, и минуты. Даже похожие классы имеют разные требования.</p></div></section>
+<section id="quiz" class="section"><div class="section-heading"><span class="section-index">08</span><h2>Проверь понимание</h2></div><p class="section-intro">Четыре коротких контрольных ситуации. Раскройте ответ после самостоятельного рассуждения.</p><div class="quiz">
+<details><summary>Почему <code>RiskCounter</code> при 5 событиях выдаёт WARNING?</summary><p>Потому что WARNING охватывает интервал от 3 до 5 включительно. CRITICAL начинается с 6.</p></details>
+<details><summary>Что вернёт <code>Session("", "admin").is_valid()</code>?</summary><p>NO: разрешённая роль не компенсирует отсутствие идентификатора сессии.</p></details>
+<details><summary>Должен ли <code>SecurityMonitor</code> возвращать NO при 5 событиях?</summary><p>Нет. При пяти событиях метод status() вернёт ALERT, но is_valid() по условию смотрит только на session_id и role.</p></details>
+<details><summary>Можно ли считать <code>_secret</code> реально защищённым?</summary><p>Нет. Одинарное подчёркивание — соглашение об интерфейсе; оно не обеспечивает защиту информации в памяти.</p></details></div></section>
+<footer class="footer">Учебный материал к занятию 10 «Объектно-ориентированная логика защиты: классы и инкапсуляция». Исходные задания восстановлены по предоставленным фотографиям. Примеры Python проверены на синтаксис и запуск. В браузере JavaScript моделирует поведение объектов, но сам Python выполняется отдельно (например, в Jupyter).</footer>
+</main></div><script>
+(()=>{const $=s=>document.querySelector(s);const $$=s=>[...document.querySelectorAll(s)];
+const all=$$('.task-card');
+function setCounter(v){let n=Math.max(0,v);$('#counter-number').textContent=n;let mode=n>=5?'ALERT':'OK';let el=$('#counter-status');el.textContent=mode;el.className='pill '+(n>=5?'danger':'');$$('#counter-bars span').forEach((x,i)=>{x.className=(i<n?'active ':'')+(i>=4&&i<n?'alarm':'')});window.counterValue=n}
+window.counterValue=0;setCounter(0);$('#plus-event').addEventListener('click',()=>setCounter(window.counterValue+1));$('#minus-event').addEventListener('click',()=>setCounter(window.counterValue-1));$('#reset-event').addEventListener('click',()=>setCounter(0));
+function access(){let id=$('#sim-id').value,role=$('#sim-role').value,min=Number($('#sim-time').value),mfa=$('#sim-mfa').checked;let roleOK=['user','admin'].includes(role);let checks=[['Сессия',id!==''&&roleOK],['По времени',min>0&&roleOK],['С MFA',id!==''&&mfa]];let list=$('#access-results');list.textContent='';checks.forEach(([name,pass])=>{let d=document.createElement('div'),s=document.createElement('span'),strong=document.createElement('strong');s.className='mini-label';s.textContent=name;strong.textContent=pass?'РАЗРЕШЕНО':'ОТКАЗ';strong.style.color=pass?'#077e72':'#b54e37';d.append(s,strong);list.append(d)})}
+$$('#sim-id,#sim-role,#sim-time,#sim-mfa').forEach(i=>i.addEventListener(i.type==='checkbox'?'change':'input',access));access();
+function vault(){let v=$('#vault-secret').value,role=$('#vault-role').value;let mask=v.length<=2?'***':v.slice(0,2)+'*'.repeat(v.length-2);$('#vault-result').textContent='Хранилище: '+$('#vault-name').value+'\n'+mask+'\n'+(role==='admin'?v:'Доступ запрещён')}
+$$('#vault-secret,#vault-role,#vault-name').forEach(i=>i.addEventListener('input',vault));vault();
+$$('.copy-btn').forEach(b=>b.addEventListener('click',async()=>{let code=document.getElementById(b.dataset.copy).querySelector('.python-code').textContent;let old=b.textContent;try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(code)}else{let t=document.createElement('textarea');t.value=code;t.style.position='fixed';t.style.opacity='0';document.body.append(t);t.select();if(!document.execCommand('copy'))throw Error('copy failed');t.remove()}b.textContent='✓ Скопировано';setTimeout(()=>b.textContent=old,1600)}catch(e){b.textContent='Выделите код вручную';setTimeout(()=>b.textContent=old,2200)}}));
+$('#expand-all').onclick=()=>all.forEach(d=>{if(!d.classList.contains('hidden'))d.open=true});$('#collapse-all').onclick=()=>all.forEach(d=>d.open=false);
+$('#search-tasks').addEventListener('input',e=>{let q=e.target.value.toLocaleLowerCase('ru').trim();let visible=0;all.forEach(d=>{let match=!(q&&!d.textContent.toLocaleLowerCase('ru').includes(q));d.classList.toggle('hidden',!match);if(match)visible++});$('#found-count').textContent=visible+' из '+all.length+' карточек'});$('#found-count').textContent=all.length+' из '+all.length+' карточек';
+function progress(){let range=document.documentElement.scrollHeight-window.innerHeight;$('#page-progress').style.width=(range>0?Math.max(0,Math.min(100,window.scrollY/range*100)):100)+'%'}window.addEventListener('scroll',progress,{passive:true});window.addEventListener('resize',progress);progress();
+})();
+</script></body></html>
