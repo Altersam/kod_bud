@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071629">
+<meta name="description" content="Занятие 11: криптографически стойкая случайность и работа с байтами. Большая интерактивная лекция по Python: PRNG, CSPRNG, MT19937, bytes, XOR, Base64, энтропия, secrets, пароли и безопасность токенов.">
+<title>Занятие 11 · Криптографическая случайность, байты и secrets — Python для кибербезопасности</title>
+<style>
+:root{--bg:#f1f6fa;--paper:#fff;--ink:#152b43;--muted:#526a81;--dim:#6f8397;--border:#dce6ef;--deep:#071629;--deep2:#0f2a44;--cyan:#0fc5cc;--mint:#59e0c5;--purple:#8e83f5;--gold:#ffc477;--red:#dd5e70;--shadow:0 13px 34px rgba(17,53,84,.07);--radius:19px}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:26px}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.72;font-size:16px}
+body,button,input,select,textarea{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}button,input,select,textarea{font-size:inherit}button{cursor:pointer}button:disabled{opacity:.5;cursor:not-allowed}
+a{color:#007b89;text-underline-offset:3px}a:hover{color:#005d6d}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid #feaf5b;outline-offset:3px}h1,h2,h3,h4,p{margin-top:0}h1,h2,h3{line-height:1.18;letter-spacing:-.035em}h2{font-size:clamp(1.7rem,3vw,2.6rem);margin-bottom:13px}h3{font-size:1.23rem}h4{margin-bottom:8px}p{margin-bottom:12px}code,pre,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}p code,li code,td code,summary code{background:#e7f2f7;border:1px solid #dcecf1;padding:1px 5px;border-radius:5px;color:#0b6480;font-size:.89em}strong{font-weight:800}img,svg{max-width:100%}::selection{background:#70dace;color:#082b35}
+#read-progress{height:4px;position:fixed;top:0;left:0;background:linear-gradient(90deg,var(--cyan),var(--purple));width:0%;z-index:50;transition:width .12s}
+.hero{position:relative;background:radial-gradient(ellipse at 75% 15%,#174b5a,transparent 38%),radial-gradient(ellipse at 25% 92%,#172c69,transparent 40%),linear-gradient(120deg,#071629,#0d2541 78%);color:#f5fcff;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:40px 40px;mask-image:linear-gradient(90deg,transparent 15%,#000 100%);pointer-events:none}
+.hero-inner{max-width:1400px;margin:auto;padding:85px 36px 80px;position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.65fr);align-items:center;gap:35px}
+.overline{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;font-weight:850;color:var(--cyan)}.hero h1{font-size:clamp(2.6rem,5.3vw,5.1rem);max-width:810px;margin:17px 0 20px}.hero h1 span{color:var(--mint)}.hero p{max-width:680px;color:#c9dfed;font-size:1.12rem;line-height:1.65}.hero-mini{display:flex;flex-wrap:wrap;gap:9px;margin:22px 0 24px}.hero-mini span{border:1px solid #426a81;background:#ffffff08;border-radius:999px;padding:5px 11px;color:#dcf7fb;font-size:.81rem}.hero-buttons{display:flex;gap:11px;flex-wrap:wrap}.primary,.outline{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:11px;padding:11px 17px;font-weight:800;font-size:.92rem;border:1px solid transparent}.primary{background:var(--mint);color:#0a3240}.primary:hover{color:#061f2b;background:#a1ffe2}.outline{border-color:#53758e;background:#ffffff0b;color:#e4f1fb}.outline:hover{color:white;background:#ffffff20}.hero-meta{margin-top:28px;font-size:.78rem;color:#acc5d5}.hero-visual{padding:0}.hero-visual svg{width:100%;height:auto;filter:drop-shadow(0 14px 35px #0004)}
+.layout{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:250px minmax(0,1fr);gap:35px;padding:32px 26px 100px}
+.side{align-self:start;position:sticky;top:20px;height:calc(100vh - 40px);overflow:auto;border:1px solid var(--border);border-radius:17px;background:#fff;padding:17px 11px;box-shadow:var(--shadow);scrollbar-width:thin}.side-label{font-size:.71rem;letter-spacing:.14em;text-transform:uppercase;color:#8da0af;font-weight:900;margin:13px 12px 8px}.side-brand{margin:5px 12px 17px;font-size:1.08rem;font-weight:950;letter-spacing:-.03em}.side-brand small{display:block;font-size:.74rem;color:#7d8fa1;font-weight:500;letter-spacing:0}.navlink{display:flex;align-items:flex-start;gap:9px;border-radius:9px;padding:9px 10px;font-size:.83rem;line-height:1.43;text-decoration:none;color:#52677a;transition:background .15s,color .15s}.navlink b{color:#7b9ba6;font-weight:800;min-width:21px}.navlink:hover{background:#eaf7f6;color:#0f6d78}.navlink.active{background:#e6f7f5;color:#0a6973;font-weight:750}.navlink.active b{color:#0e9194}.side-note{border-top:1px solid #e6edf2;padding:15px 12px;color:#738a9b;font-size:.75rem;margin-top:10px}.content{min-width:0}.section{margin-bottom:77px;scroll-margin-top:25px}.section-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}.sec-no{display:grid;place-items:center;min-width:45px;height:45px;border-radius:14px;background:#ddf6f5;color:#0b8f92;font-weight:950;letter-spacing:-.03em}.section-head h2{margin:0}.intro{max-width:880px;font-size:1.05rem;color:var(--muted)}.kicker{color:#048d99;text-transform:uppercase;font-weight:850;letter-spacing:.12em;font-size:.71rem;display:block;margin-bottom:7px}
+.card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin:17px 0}.card.tinted{background:linear-gradient(135deg,#edf9fa,#f6f4ff)}.card.dark{color:#e6f6ff;background:#0e2942;border-color:#244f6b}.card.dark p{color:#c3d9ea}.card.dark h3{color:white}.card h3{margin-bottom:8px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.grid2>.card,.grid3>.card{margin:0}.small{font-size:.89rem;color:var(--muted)}.muted{color:var(--muted)}.highlight{color:#028d93}.big-number{font-size:2.2rem;font-weight:950;letter-spacing:-.04em;line-height:1.05;color:#0e7e91}.math{padding:18px 22px;background:#0f2942;border-radius:13px;color:#e4fcfb;font:1.2rem/1.7 ui-monospace,Consolas,monospace;overflow-wrap:anywhere;text-align:center;margin:16px 0}.math small{display:block;font:normal .8rem/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#bad5e3;margin-top:7px}.notice{border-left:4px solid #07acb3;background:#e9fafa;padding:14px 17px;border-radius:0 12px 12px 0;margin:17px 0;font-size:.93rem;color:#245667}.notice.warn{border-color:#e9a94d;background:#fff5e3;color:#695223}.notice.danger{border-color:#e16f79;background:#fff1f2;color:#74343e}.notice strong{color:inherit}.analogy{background:linear-gradient(100deg,#fffaf0,#f7f9ff);border:1px solid #f3dba8;border-radius:15px;padding:19px 21px;margin:19px 0}.analogy .analogy-head{font-weight:900;color:#916218;margin-bottom:7px}.example-line{font-size:.91rem;color:#557487}.micro{font-size:.79rem;color:#7890a0}.tagrow{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.tag{font-size:.74rem;font-weight:800;color:#167784;border:1px solid #bfe3e5;background:#e9faf8;padding:3px 8px;border-radius:999px}.tag.red{color:#a94250;background:#fff0f1;border-color:#f4cbce}.tag.violet{color:#5d4bb8;background:#f1edff;border-color:#dbd3ff}.tag.gold{color:#99661d;background:#fff6df;border-color:#f8e3ad}
+.tablewrap{overflow:auto;border:1px solid #dfeaf0;border-radius:14px;background:white;margin:18px 0}table{border-collapse:collapse;width:100%;min-width:570px;font-size:.89rem}th,td{padding:12px 14px;border-bottom:1px solid #e7edf1;text-align:left;vertical-align:top}th{background:#eaf5f8;font-size:.8rem;color:#2f5369}tr:last-child td{border-bottom:0}tbody tr:nth-child(even){background:#fafcfd}.good{color:#008b7f;font-weight:800}.bad{color:#c44557;font-weight:800}
+.codeblock{border:1px solid #2c4b61;border-radius:15px;overflow:hidden;margin:19px 0;background:#071b2c;box-shadow:0 10px 20px #0d20331b}.codebar{display:flex;justify-content:space-between;align-items:center;gap:9px;background:#112c42;color:#e0f4fb;padding:10px 15px}.codebar span{font-size:.77rem;font-weight:800;letter-spacing:.04em}.copy{border:1px solid #4e7585;background:#214b64;color:#e7ffff;border-radius:8px;padding:6px 10px;font-size:.76rem;font-weight:850}.copy:hover{background:#11777e}.codeblock pre{font:13.5px/1.67 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;white-space:pre;overflow:auto;margin:0;padding:19px;color:#d8ecf7;tab-size:4}.codeblock code{font:inherit}.code-explain{font-size:.85rem;color:#c7e3eb;padding:11px 18px;border-top:1px solid #2a4356;background:#0c2336}.code-explain code{color:#8cf3df}.mini-result{border-radius:11px;background:#edf8f5;color:#226957;padding:12px 15px;margin:10px 0;font-size:.91rem}.mini-result code{background:#dff3f0;color:#0a746f}
+.sim{background:linear-gradient(120deg,#0c233c,#102e46);border:1px solid #1e4a66;border-radius:20px;padding:23px;color:#eaf8fe;box-shadow:0 16px 26px #0f3b5515;margin:20px 0}.sim h3{color:#fff;margin:0 0 7px}.sim p{color:#b5d2e3}.sim-head{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start;margin-bottom:14px}.sim-label{font-size:.66rem;letter-spacing:.15em;color:#70dfd9;text-transform:uppercase;font-weight:900}.sim-badge{background:#1e4d5c;border:1px solid #357984;color:#9dfbea;border-radius:999px;padding:4px 10px;font-size:.73rem;font-weight:900}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:14px 0}.field{display:flex;flex-direction:column;gap:6px;min-width:140px;flex:1;font-size:.81rem;color:#b5d5e6;font-weight:700}.field input,.field select,.field textarea{width:100%;border:1px solid #4b6d83;border-radius:9px;padding:10px 11px;background:#081c30;color:#e4fbff;outline-color:#5be0cf;min-width:0}.field input[type=range]{padding:0;accent-color:#59e0c5}.field input[type=checkbox]{accent-color:#44d5c9;width:auto}.field label{display:flex;align-items:center;gap:7px}.btn{background:#5de1c8;border:0;color:#0e303b;font-size:.86rem;font-weight:900;border-radius:9px;padding:10px 15px;min-height:41px}.btn:hover{background:#a3fceb}.btn.ghost{background:#244c64;color:#e3fbff}.btn.ghost:hover{background:#33778a}.btn.danger{background:#e27a83;color:#320e18}.sim-output{background:#061827;border:1px solid #25495f;color:#b6fce9;padding:13px;border-radius:11px;min-height:50px;font:13.5px/1.64 ui-monospace,Consolas,monospace;overflow-wrap:anywhere;white-space:pre-wrap}.sim-caption{color:#abc3d2;font-size:.81rem;margin-top:9px}.tape{display:flex;gap:5px;flex-wrap:wrap;margin:14px 0}.tape .cell{display:inline-flex;align-items:center;justify-content:center;border:1px solid #4d7187;background:#133e57;color:#bdf7ef;border-radius:7px;padding:6px 8px;min-width:31px;font:12px ui-monospace,Consolas,monospace;transition:transform .2s,background .2s}.tape .cell:hover{transform:translateY(-3px);background:#235a69}.tape .cell.hi{background:#0c837e;border-color:#49cab9;color:white}.bits{display:flex;gap:4px;flex-wrap:wrap}.bit{min-width:33px;text-align:center;background:#143d54;border:1px solid #436d85;border-radius:6px;padding:8px 2px;color:#9df2f4;font:17px/1 ui-monospace,Consolas,monospace}.bit.on{color:#0b2536;background:#6be8d0;border-color:#9cfbef;font-weight:900}.xor-row{display:grid;grid-template-columns:85px 1fr;gap:8px;align-items:center;margin:9px 0}.xor-row label{font-size:.81rem;color:#b5d8e5;font-weight:750}.xor-equation{font-weight:800;color:#ffcb87;margin-top:11px;font-size:.92rem}.svgbox{padding:8px;border-radius:15px;background:#0a2037;border:1px solid #32536e;margin:15px 0}.svgbox svg{display:block;width:100%;height:auto}.svg-caption{font-size:.77rem;color:#b0cedc;padding:0 14px 12px}.svg-flow{stroke-dasharray:8 8;animation:dash 2.5s linear infinite}.svg-pulse{transform-box:fill-box;transform-origin:center;animation:heart 2.8s ease-in-out infinite}.svg-float{animation:float 4.8s ease-in-out infinite}@keyframes dash{to{stroke-dashoffset:-32}}@keyframes heart{50%{opacity:.45;transform:scale(.94)}}@keyframes float{50%{transform:translateY(-7px)}}
+.meter{background:#173c50;border-radius:999px;height:15px;overflow:hidden;margin-top:10px;border:1px solid #315974}.meter>span{height:100%;width:0%;display:block;background:linear-gradient(90deg,#db6f87,#ffd17a,#51e2ba);border-radius:999px;transition:width .4s}.mini-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.metric{border-radius:10px;padding:13px 11px;background:#173950;border:1px solid #345872}.metric strong{display:block;font-size:1.22rem;color:#a2f8e6;line-height:1.35;overflow-wrap:anywhere}.metric span{font-size:.72rem;color:#bdd6e4}.histogram{display:flex;gap:7px;align-items:end;height:126px;padding:10px 0 0;justify-content:space-around;border-bottom:1px solid #43677c}.hist-bar{display:flex;flex-direction:column;justify-content:end;align-items:center;flex:1;min-width:0;height:100%;gap:4px}.hist-bar span{background:linear-gradient(0deg,#3275a4,#71e1cd);min-height:4px;width:75%;border-radius:6px 6px 0 0;transition:height .35s}.hist-bar small{color:#a8d3e0;font-size:.68rem}.timeline{border-left:2px solid #bfe1e4;margin:19px 0 22px 18px;padding-left:24px}.timeline-item{position:relative;padding:0 0 24px}.timeline-item:last-child{padding-bottom:0}.timeline-item::before{content:"";position:absolute;left:-32px;top:5px;background:#21b7ae;border:4px solid #e5fbf6;border-radius:50%;width:16px;height:16px}.timeline-item strong{display:block;font-size:1.05rem;margin-bottom:5px}
+.accordion{border:1px solid var(--border);background:white;border-radius:13px;margin:10px 0;overflow:hidden}.accordion>summary{padding:16px 19px;list-style:none;cursor:pointer;font-weight:800;color:#284454;display:flex;justify-content:space-between;gap:15px}.accordion>summary::-webkit-details-marker{display:none}.accordion>summary::after{content:"＋";color:#06a7ac;font-size:1.2rem}.accordion[open]>summary::after{content:"−"}.accordion[open]>summary{border-bottom:1px solid var(--border)}.accordion>.details-inner{padding:15px 18px 20px;font-size:.94rem}.quiz-q{border-bottom:1px solid #dae7ec;padding:18px 0}.quiz-q:last-child{border-bottom:0}.quiz-q h3{margin:0 0 11px;font-size:1rem}.quiz-options{display:grid;gap:7px}.quiz-options label{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid #dce9ee;border-radius:10px;background:#f9fcfd;cursor:pointer;font-size:.9rem}.quiz-options label:has(input:checked){background:#e7f9f5;border-color:#79d1c5}.quiz-options input{margin-top:5px;accent-color:#0aa8a9}.quiz-feedback{font-size:.86rem;color:#176b66;margin-top:9px;min-height:23px}.check-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px}.quiz-score{font-weight:900;font-size:1.02rem;color:#0b6d72}.footer{color:#afc6d7;background:#0b1d30;padding:46px 34px}.footer-inner{max-width:1150px;margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer a{color:#8de9e0}.footer small{display:block;color:#91b0c1}.back-top{position:fixed;bottom:18px;right:18px;z-index:20;background:#12415b;color:white;border:none;border-radius:12px;min-width:47px;height:47px;box-shadow:0 6px 17px #0003;font-size:1.3rem}.back-top:hover{background:#0c8d93}
+@media(max-width:1040px){.layout{grid-template-columns:210px minmax(0,1fr);gap:23px;padding:23px 17px 80px}.hero-inner{padding:64px 26px}.hero-visual{max-width:350px}.grid3{grid-template-columns:1fr 1fr}}
+@media(max-width:740px){.hero-inner{grid-template-columns:1fr;padding:68px 21px 50px}.hero h1{font-size:clamp(2.45rem,10vw,3.6rem)}.hero-visual{max-width:460px;justify-self:center}.layout{display:block;padding:22px 14px 75px}.side{position:relative;top:auto;height:auto;display:flex;gap:7px;overflow:auto;padding:9px;margin-bottom:32px;white-space:nowrap}.side-brand,.side-label,.side-note{display:none}.navlink{padding:9px 10px;border:1px solid #e3edf1;white-space:nowrap}.navlink b{min-width:auto}.section{margin-bottom:65px}.section-head{gap:10px}.sec-no{min-width:38px;height:38px}.grid2,.grid3{grid-template-columns:1fr}.card,.sim{padding:18px}.mini-grid{grid-template-columns:1fr 1fr}.controls{gap:10px}.field{min-width:130px}.codeblock pre{font-size:12px}.hero-meta{max-width:360px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="read-progress" aria-hidden="true"></div>
+<header class="hero" id="top">
+<div class="hero-inner">
+<div>
+<div class="overline">Python для кибербезопасности · занятие № 11</div>
+<h1>Когда <span>случайность</span> становится вопросом безопасности</h1>
+<p>Большая интерактивная лекция о генераторах случайных чисел, байтах, XOR, энтропии и безопасных токенах. От понятных аналогий — к инженерным решениям на Python.</p>
+<div class="hero-mini"><span>PRNG ≠ CSPRNG</span><span>bytes · XOR · Base64</span><span>Энтропия</span><span>os.urandom · secrets</span><span>Токены и пароли</span></div>
+<div class="hero-buttons"><a class="primary" href="#intro">Начать лекцию ↗</a><a class="outline" href="#map">Карта понятий</a><a class="outline" href="#cheatsheet">Шпаргалка Python</a></div>
+<div class="hero-meta">19 слайдов исходной лекции → расширенный учебник · без сторонних библиотек · работает на GitHub Pages и локально</div>
+</div>
+<div class="hero-visual" aria-label="Анимированная модель потока случайных битов">
+<svg viewBox="0 0 510 485" role="img" aria-labelledby="hero-svg-title"><title id="hero-svg-title">Из системного источника энтропии формируется безопасный поток битов</title><defs><linearGradient id="gh" x1="0" x2="1"><stop stop-color="#41cddd"/><stop offset="1" stop-color="#9b82ff"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<circle cx="255" cy="240" r="177" fill="none" stroke="#285069" stroke-width="1.5" stroke-dasharray="6 11" class="svg-flow"/>
+<circle cx="255" cy="240" r="133" fill="none" stroke="#205d79" stroke-width="2" stroke-dasharray="4 16"/>
+<circle cx="255" cy="240" r="88" fill="#0a3d50" stroke="#42d4cf" stroke-width="3" filter="url(#glow)" class="svg-pulse"/>
+<circle cx="255" cy="240" r="65" fill="none" stroke="#78f0df" opacity=".28"/>
+<text x="255" y="216" text-anchor="middle" fill="#a6ffea" font-size="14" font-family="monospace">SECURE</text><text x="255" y="248" text-anchor="middle" fill="white" font-size="31" font-weight="800" font-family="monospace">101101</text><text x="255" y="271" text-anchor="middle" fill="#b6d7e5" font-size="12">CSPRNG</text>
+<g class="svg-float"><rect x="22" y="75" width="138" height="61" rx="13" fill="#163550" stroke="#477a88"/><text x="39" y="100" fill="#7ee9e1" font-size="11" font-weight="800">СИСТЕМА</text><text x="39" y="119" fill="white" font-size="15" font-family="monospace">os.urandom()</text></g>
+<g class="svg-float"><rect x="342" y="62" width="143" height="70" rx="13" fill="#17324f" stroke="#526ba2"/><text x="359" y="88" fill="#e6bbff" font-size="11" font-weight="800">PYTHON API</text><text x="359" y="113" fill="white" font-size="18" font-family="monospace">secrets</text></g>
+<g class="svg-float"><rect x="38" y="367" width="150" height="66" rx="13" fill="#163550" stroke="#477a88"/><text x="54" y="391" fill="#88efda" font-size="12" font-weight="750">Безопасный токен</text><text x="54" y="412" fill="white" font-size="14" font-family="monospace">b7e9…d4f1</text></g>
+<g class="svg-float"><rect x="319" y="372" width="160" height="66" rx="13" fill="#163550" stroke="#477a88"/><text x="335" y="396" fill="#88efda" font-size="12" font-weight="750">Ключ 256 бит</text><text x="335" y="416" fill="white" font-size="13" font-family="monospace">32 случайных байта</text></g>
+<path d="M151 135 Q197 170 211 187M349 135 Q310 175 304 188M200 305 Q170 345 158 362M316 304 Q350 346 352 368" fill="none" stroke="url(#gh)" stroke-width="3" stroke-dasharray="8 8" class="svg-flow"/>
+<g fill="#c7fcf2" font-size="14" font-family="monospace" opacity=".8"><text x="200" y="72">0</text><text x="420" y="203">1</text><text x="69" y="272">1</text><text x="245" y="470">0</text><text x="407" y="333">1</text></g></svg>
+</div>
+</div>
+</header>
+<div class="layout">
+<nav class="side" aria-label="Навигация по лекции">
+<div class="side-brand">CYBER / 11 <small>Интерактивный учебник</small></div>
+<div class="side-label">Фундамент</div>
+<a class="navlink" href="#intro"><b>00</b> Что мы защищаем</a>
+<a class="navlink" href="#map"><b>01</b> Карта понятий</a>
+<a class="navlink" href="#prng"><b>02</b> PRNG и CSPRNG</a>
+<a class="navlink" href="#attacks"><b>03</b> Атаки и MT19937</a>
+<a class="navlink" href="#history"><b>04</b> Реальные уязвимости</a>
+<div class="side-label">Данные и математика</div>
+<a class="navlink" href="#bytes"><b>05</b> str, bytes, bytearray</a>
+<a class="navlink" href="#xor"><b>06</b> Битовый XOR</a>
+<a class="navlink" href="#encoding"><b>07</b> HEX, Base64, URL-safe</a>
+<a class="navlink" href="#entropy"><b>08</b> Энтропия Шеннона</a>
+<div class="side-label">Безопасная разработка</div>
+<a class="navlink" href="#system"><b>09</b> Случайность от ОС</a>
+<a class="navlink" href="#secrets"><b>10</b> Модуль secrets</a>
+<a class="navlink" href="#passwords"><b>11</b> Генератор паролей</a>
+<a class="navlink" href="#timing"><b>12</b> Безопасное сравнение</a>
+<a class="navlink" href="#case"><b>13</b> Кейс: сброс пароля</a>
+<div class="side-label">Повторение</div>
+<a class="navlink" href="#mistakes"><b>14</b> Ошибки и аналогии</a>
+<a class="navlink" href="#cheatsheet"><b>15</b> Шпаргалка Python</a>
+<a class="navlink" href="#quiz"><b>16</b> Контроль понимания</a>
+<div class="side-note">Все симуляторы работают в браузере без сервера. Примеры Python можно скопировать и запустить отдельно.</div>
+</nav>
+<main class="content">
+<section class="section" id="intro">
+<div class="section-head"><span class="sec-no">00</span><h2>Одна ссылка — и чужой аккаунт</h2></div>
+<p class="intro">Представьте: сайт отправляет пользователю письмо со ссылкой для сброса пароля. Адрес содержит «случайный» код. Откуда взялось это число? И можно ли его угадать?</p>
+<div class="card tinted">
+<span class="kicker">Ситуация</span><h3>Случайно выглядеть — недостаточно</h3>
+<p>Если адрес <code>example.org/reset?token=...</code> можно предсказать, злоумышленник получит возможность подобрать рабочую ссылку. Даже очень длинный набор символов может быть бесполезен, если он создаётся из воспроизводимой последовательности.</p>
+<div class="grid3" style="margin-top:18px"><div><div class="big-number">01</div><strong>Непредсказуемость</strong><p class="small">Нельзя вычислить следующий секрет по предыдущим.</p></div><div><div class="big-number">02</div><strong>Достаточное пространство</strong><p class="small">Угадывание должно быть практически неосуществимым.</p></div><div><div class="big-number">03</div><strong>Правильное хранение</strong><p class="small">Секрет нельзя выдавать через логи или повторно использовать.</p></div></div>
+</div>
+<div class="analogy"><div class="analogy-head">🧩 Аналогия: замок и ключ</div><p><b>Длинный токен</b> похож на сложную форму ключа. <b>CSPRNG</b> отвечает за то, чтобы нельзя было угадать, какой ключ изготовят следующим. А защита сервера — за то, чтобы ключ не оставили на столе. Нужны все три свойства.</p></div>
+<div class="notice"><b>Главный вопрос лекции:</b> чем отличается случайность для игры в кости от случайности для ключа шифрования? Ответ определяет выбор модулей Python.</div>
+</section>
+<section class="section" id="map">
+<div class="section-head"><span class="sec-no">01</span><h2>Карта понятий: от энтропии до токена</h2></div>
+<p class="intro">Лекция объединяет две линии: <b>откуда берётся непредсказуемость</b> и <b>как эта непредсказуемость представляется в байтах и строках</b>.</p>
+<div class="svgbox"><svg viewBox="0 0 900 370" role="img" aria-label="Схема: системная энтропия через CSPRNG и secrets к случайным байтам и токенам, далее к HEX и Base64"><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7adfd4"/></marker></defs>
+<g font-family="Arial,sans-serif" text-anchor="middle"><rect x="24" y="42" width="222" height="86" rx="14" fill="#143e59" stroke="#39858f"/><text x="135" y="77" font-size="20" fill="white" font-weight="700">Источники ОС</text><text x="135" y="103" font-size="14" fill="#aad3df">сбор энтропии</text>
+<rect x="336" y="42" width="230" height="86" rx="14" fill="#0c5e69" stroke="#64e7d7"/><text x="451" y="77" font-size="22" fill="white" font-weight="800">CSPRNG</text><text x="451" y="103" font-size="13" fill="#bcf7f1">непредсказуемый поток</text>
+<rect x="656" y="42" width="222" height="86" rx="14" fill="#343568" stroke="#988cec"/><text x="767" y="76" font-size="22" fill="white" font-weight="800">secrets</text><text x="767" y="102" font-size="13" fill="#d9d4ff">удобный Python API</text>
+<rect x="336" y="240" width="230" height="94" rx="14" fill="#143e59" stroke="#39858f"/><text x="451" y="274" font-size="19" fill="white" font-weight="750">Случайные байты</text><text x="451" y="301" font-size="13" fill="#b6d6e5">128 / 256 бит</text>
+<rect x="656" y="240" width="222" height="94" rx="14" fill="#143e59" stroke="#39858f"/><text x="767" y="273" font-size="21" fill="white" font-weight="750">HEX / Base64</text><text x="767" y="301" font-size="13" fill="#b6d6e5">только представление</text>
+<rect x="24" y="240" width="222" height="94" rx="14" fill="#152e47" stroke="#42627e"/><text x="135" y="274" font-size="20" fill="white" font-weight="750">random</text><text x="135" y="301" font-size="13" fill="#f9c8bc">НЕ для секретов</text></g>
+<g fill="none" stroke="#7adfd4" stroke-width="3" marker-end="url(#arr)"><path d="M246 84H332" class="svg-flow"/><path d="M566 84H652" class="svg-flow"/><path d="M767 132V234" class="svg-flow"/><path d="M656 286H572" class="svg-flow"/></g><path d="M135 134V237" stroke="#df8896" stroke-width="2" stroke-dasharray="5 7"/><text x="151" y="191" fill="#efa9b4" font-size="12">иная цель</text><text x="451" y="190" text-anchor="middle" fill="#8ccdcf" font-size="15">os.urandom() / байтовый поток</text></svg><div class="svg-caption">Анимированные стрелки показывают логический поток данных; схема упрощена: конкретная реализация CSPRNG зависит от операционной системы.</div></div>
+<div class="grid2"><div class="card"><span class="kicker">Линия 1</span><h3>Как получить секрет</h3><p>Системный источник случайности → криптографически стойкий генератор → нужное количество случайных байтов.</p></div><div class="card"><span class="kicker">Линия 2</span><h3>Как передать секрет</h3><p>Байты → HEX или Base64 → строка, которую удобно хранить в базе или передавать в URL. <b>Кодирование не добавляет защиты.</b></p></div></div>
+</section>
+<section class="section" id="prng">
+<div class="section-head"><span class="sec-no">02</span><h2>PRNG vs CSPRNG: похожие числа, разная гарантия</h2></div>
+<p class="intro">Псевдослучайный генератор (PRNG) создаёт последовательность по алгоритму и начальному состоянию <i>seed</i>. Криптографически стойкий генератор (CSPRNG) тоже обычно алгоритмический, но спроектирован так, чтобы его выход нельзя было практически предсказать.</p>
+<div class="grid2"><div class="card"><span class="tag red">PRNG</span><h3>Mersenne Twister, <code>random</code></h3><p>Очень удобен для моделирования, игр, статистики и воспроизводимых экспериментов.</p><p><b>Пример:</b> задайте <code>random.seed(42)</code> и получите ту же последовательность в том же окружении.</p><p class="small">Большой период ≠ защита от восстановления состояния. У MT19937 период 2<sup>19937</sup> − 1, но это не делает его криптостойким.</p></div><div class="card"><span class="tag">CSPRNG</span><h3>Системный генератор, <code>secrets</code></h3><p>Создаёт значения, которые должны оставаться непредсказуемыми для противника даже при знании алгоритма и наблюдении других результатов.</p><p><b>Пример:</b> токен сброса пароля, ключ или криптографический nonce (с учётом требований протокола).</p><p class="small">Безопасность требует правильного начального состояния, защиты состояния и корректной реализации.</p></div></div>
+<div class="analogy"><div class="analogy-head">🎲 Аналогия: кино и реальная жеребьёвка</div><p>Запись бросков кубика на видео выглядит случайной, но если начать воспроизведение сначала, результат будет тем же. Это похоже на PRNG с известным seed. Для выдачи пропуска в серверную нужна не «убедительная запись», а результат, который нельзя заранее вычислить.</p></div>
+<div class="sim" id="sim-prng"><div class="sim-head"><div><div class="sim-label">Лаборатория 01 · детерминизм</div><h3>Воспроизведи последовательность</h3><p>Здесь используется учебный LCG — <b>не Mersenne Twister</b>. Идея та же: одинаковый seed даёт одинаковый поток.</p></div><span class="sim-badge">Интерактивно</span></div><div class="controls"><label class="field">Seed<input id="seed-value" type="number" min="0" max="999999999" value="42"></label><button class="btn" id="prng-run" type="button">Получить 8 чисел</button><button class="btn ghost" id="prng-repeat" type="button">Повторить с тем же seed</button><button class="btn ghost" id="prng-secure" type="button">Сравнить с CSPRNG</button></div><div class="sim-output" id="prng-out" aria-live="polite">Нажмите «Получить 8 чисел».</div><p class="sim-caption" id="prng-note">Учебный LCG иллюстрирует детерминизм, но не воспроизводит алгоритм Python random.</p></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · воспроизводимость ≠ секретность</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import random
+import secrets
+
+random.seed(42)
+print([random.randint(0, 9) for _ in range(5)])
+
+random.seed(42)
+print([random.randint(0, 9) for _ in range(5)])  # точно такой же список
+
+# Для секретов:
+print(secrets.token_hex(16))  # 16 случайных байтов = 128 бит</code></pre><div class="code-explain">Вызовы <code>random.seed()</code> полезны для воспроизводимости теста, но опасны при генерации токенов.</div></div>
+<div class="notice"><strong>Важно:</strong> PRNG не обязательно «плохой» или статистически слабый. MT19937 хорош для ряда незащищённых задач. Но криптостойкость — отдельное свойство, которое не выводится из равномерности или длины периода.</div>
+</section>
+<section class="section" id="attacks">
+<div class="section-head"><span class="sec-no">03</span><h2>Как противник использует предсказуемость</h2></div>
+<p class="intro">Атакующий часто не знает пароль пользователя. Ему достаточно получить несколько результатов слабого генератора и восстановить способ получения следующего значения.</p>
+<div class="timeline"><div class="timeline-item"><strong>Шаг 1. Приложение создаёт токен</strong><p>Вместо безопасного генератора разработчик берёт <code>random</code>, иногда дополнительно задавая seed из времени.</p></div><div class="timeline-item"><strong>Шаг 2. Часть выходов становится наблюдаемой</strong><p>Например, случайные значения видны в идентификаторах, ссылках, игровых результатах или ответах API.</p></div><div class="timeline-item"><strong>Шаг 3. Атакующий строит модель состояния</strong><p>Если алгоритм и достаточные выходные данные известны, возможна реконструкция состояния генератора — по крайней мере в определённых сценариях.</p></div><div class="timeline-item"><strong>Шаг 4. Будущие секреты становятся предсказуемыми</strong><p>Сервер продолжает работать, но «случайные» результаты могут оказаться известны заранее.</p></div></div>
+<div class="card dark"><span class="kicker">MT19937 · разбор тезиса со слайда</span><h3>Почему часто упоминают число 624?</h3><p>У стандартного Mersenne Twister есть состояние, состоящее из <b>624 32-битных слов</b> (с дополнительным индексом). При наблюдении достаточного количества последовательных полных 32-битных выходов можно обратить операцию <i>tempering</i> и реконструировать состояние. После этого становятся предсказуемыми последующие результаты.</p><div class="svgbox"><svg viewBox="0 0 860 195" role="img" aria-label="Наблюдаем 624 выхода, обращаем tempering, получаем внутреннее состояние, предсказываем следующие выходы"><g font-family="Arial,sans-serif" text-anchor="middle"><rect x="15" y="46" width="190" height="95" rx="13" fill="#1c4b68" stroke="#5abed0"/><text x="110" y="79" font-size="19" fill="white" font-weight="700">624 выхода</text><text x="110" y="105" font-size="13" fill="#afe2eb">полные 32 бита</text><rect x="235" y="46" width="176" height="95" rx="13" fill="#214b67" stroke="#5abed0"/><text x="323" y="80" font-size="17" fill="white" font-weight="700">Untemper</text><text x="323" y="105" font-size="13" fill="#afe2eb">обратная функция</text><rect x="440" y="46" width="193" height="95" rx="13" fill="#0b6974" stroke="#68e4d1"/><text x="536" y="80" font-size="18" fill="white" font-weight="700">Состояние</text><text x="536" y="106" font-size="13" fill="#c1f9f1">MT19937</text><rect x="663" y="46" width="183" height="95" rx="13" fill="#56375a" stroke="#c9a6ce"/><text x="754" y="80" font-size="17" fill="white" font-weight="700">Следующее</text><text x="754" y="106" font-size="13" fill="#f5cee5">предсказуемо</text></g><g stroke="#77e4da" stroke-width="3" class="svg-flow"><path d="M205 93H233M411 93H438M633 93H661"/></g></svg><div class="svg-caption">Схема концептуальная. Не любые 624 результата Python API достаточно: важно, чтобы были известны именно подходящие последовательные 32-битные выходы.</div></div><p class="small" style="color:#c0d7e4">Практический вывод: замена <code>random</code> на <code>secrets</code> — обязательное архитектурное решение для секретов, а не «косметическая» правка.</p></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · безопасная иллюстрация проблемы seed</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import random
+
+# Учебный пример: один и тот же seed → один и тот же результат
+first = random.Random(2026)
+second = random.Random(2026)
+
+print([first.getrandbits(32) for _ in range(4)])
+print([second.getrandbits(32) for _ in range(4)])
+# Списки совпадут полностью.</code></pre></div>
+<div class="notice warn">Угадать <i>seed</i> и восстановить состояние MT19937 — разные атаки. Важно понимать обе, но не смешивать их: для восстановления состояния seed может быть неизвестен.</div>
+</section>
+<section class="section" id="history">
+<div class="section-head"><span class="sec-no">04</span><h2>История: когда слабая случайность ломала безопасность</h2></div>
+<p class="intro">В криптографии ошибка выбора генератора может сделать бессмысленной математику даже очень стойкого алгоритма.</p>
+<div class="grid2"><div class="card"><span class="tag red">Историческая уязвимость</span><h3>Debian OpenSSL · CVE-2008-0166</h3><p>В одном из патчей Debian генерация случайных чисел OpenSSL потеряла важный источник энтропии. Число возможных ключей сильно сократилось: появилось пространство предсказуемых ключей.</p><div class="analogy" style="margin-bottom:0"><div class="analogy-head">Аналогия</div><p>Представьте сейф с триллионами возможных комбинаций — но фабрика случайно выпускает замки только с маленьким списком кодов.</p></div></div><div class="card"><span class="tag red">Класс проблем</span><h3>Веб-токены из слабых PRNG</h3><p>Исторически в веб-приложениях встречались предсказуемые токены, основанные на генераторах общего назначения, временных отметках и слабом начальном состоянии.</p><p>При определённых условиях злоумышленник сужает перебор, предсказывает сессионные идентификаторы или ссылки восстановления доступа.</p><div class="notice warn" style="margin-bottom:0">Это описание класса ошибок, а не утверждение, что любая версия конкретной CMS уязвима.</div></div></div>
+<div class="card"><h3>Четыре вопроса при аудите безопасности</h3><div class="grid2"><div><b>Откуда энтропия?</b><p class="small">Источник должен подходить для криптографии.</p></div><div><b>Что видно атакующему?</b><p class="small">Не выдавайте внутреннее состояние и секреты в ответах.</p></div><div><b>Сколько бит неопределённости?</b><p class="small">Длина строки сама по себе ничего не доказывает.</p></div><div><b>Как используется результат?</b><p class="small">Срок жизни, однократность, проверка и хранение важны не меньше.</p></div></div></div>
+</section>
+<section class="section" id="bytes">
+<div class="section-head"><span class="sec-no">05</span><h2>str, bytes и bytearray: что компьютер хранит на самом деле</h2></div>
+<p class="intro">До криптографии нужно разобраться в данных. Компьютер обрабатывает биты, а Python предлагает разные типы для человека и для бинарного мира.</p>
+<div class="grid3"><div class="card"><span class="kicker">str</span><h3>Человеческий текст</h3><p>Последовательность символов Unicode. Строка неизменяема.</p><p class="small">Пример: <code>"Привет"</code>. Для получения байтов требуется кодировка, обычно UTF‑8.</p></div><div class="card"><span class="kicker">bytes</span><h3>Бинарные данные</h3><p>Неизменяемая последовательность чисел от 0 до 255.</p><p class="small">Подходит для хешей, ключей, сетевых пакетов, шифртекста, файлов.</p></div><div class="card"><span class="kicker">bytearray</span><h3>Изменяемые байты</h3><p>Похож на <code>bytes</code>, но отдельные байты можно заменять на месте.</p><p class="small">Полезен для обработки буферов и построения бинарных сообщений.</p></div></div>
+<div class="analogy"><div class="analogy-head">📦 Аналогия: смысл, коробка и пластилин</div><p><b>str</b> — слово, которое мы понимаем. <b>bytes</b> — коробки с числами, в которых хранится закодированное слово. <b>bytearray</b> — те же коробки, но содержимое можно переставлять. Кодировка объясняет, как перейти от смысла к конкретным числам.</p></div>
+<div class="sim" id="sim-bytes"><div class="sim-head"><div><span class="sim-label">Лаборатория 02 · Unicode → UTF‑8 → HEX → биты</span><h3>Исследователь байтов</h3><p>Напишите слово или символ. Смотрите, почему «один символ» не обязательно равен одному байту.</p></div><span class="sim-badge">Интерактивно</span></div><div class="controls"><label class="field" style="flex:3">Текст<input id="bytes-text" type="text" value="Привет 🔐" maxlength="70" spellcheck="false"></label><button class="btn ghost" id="bytes-ascii" type="button">A</button><button class="btn ghost" id="bytes-rus" type="button">Я</button><button class="btn ghost" id="bytes-emoji" type="button">🔐</button></div><div class="mini-grid"><div class="metric"><strong id="bytes-chars">—</strong><span>Кодовых точек Unicode</span></div><div class="metric"><strong id="bytes-len">—</strong><span>Байт UTF‑8</span></div><div class="metric"><strong id="bytes-hex">—</strong><span>Длина HEX (символы)</span></div></div><div class="tape" id="byte-tape" aria-label="Значения байтов"></div><div class="sim-output" id="bytes-out" aria-live="polite"></div><div class="sim-caption">В этой визуализации «символы» считаются как кодовые точки Unicode. Комбинируемые символы и эмодзи могут занимать несколько кодовых точек даже при отображении одним знаком.</div></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · типы и кодировки</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>text = "Привет 🔐"        # str: символы Unicode
+raw = text.encode("utf-8")  # bytes: двоичные данные
+
+print(text, type(text))
+print(raw, type(raw))
+print(len(text), len(raw))   # количество символов и байтов различается
+print(raw.hex())            # печатный HEX без изменения данных
+print(raw.decode("utf-8")) # bytes → str
+
+buffer = bytearray(b"Hello")
+buffer[0] = 0x68            # H (0x48) → h (0x68)
+print(buffer)               # bytearray(b'hello')
+
+b1 = b"\x00\xffA"
+b2 = bytes([0, 255, 65])
+b3 = bytes.fromhex("00ff41")
+print(b1 == b2 == b3)      # True</code></pre><div class="code-explain">Переход <code>str → bytes</code> выполняется через <code>encode()</code>, обратный — через <code>decode()</code>. Для криптографических функций формат данных должен быть определён явно.</div></div>
+<div class="notice warn"><b>Тонкость UTF‑8:</b> для ASCII один символ часто кодируется одним байтом; для кириллицы обычно двумя, а для многих эмодзи — четырьмя или больше байтами. Число байтов определяется кодировкой, а не количеством видимых символов.</div>
+</section>
+<section class="section" id="xor">
+<div class="section-head"><span class="sec-no">06</span><h2>XOR: операция, которая отменяет сама себя</h2></div>
+<p class="intro">Побитовое исключающее ИЛИ (XOR, <code>^</code>) возвращает 1, когда биты различаются, и 0, когда равны. Эта операция часто встречается внутри криптографических алгоритмов.</p>
+<div class="grid2"><div class="card"><h3>Таблица истинности</h3><div class="tablewrap" style="margin:0"><table style="min-width:0"><thead><tr><th>A</th><th>B</th><th>A XOR B</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></tbody></table></div></div><div class="card"><h3>Почему XOR обратим</h3><div class="math">(A ⊕ K) ⊕ K = A<small>K ⊕ K = 0, а A ⊕ 0 = A</small></div><p>Чтобы отменить XOR с ключом, достаточно выполнить XOR с тем же ключом ещё раз. Это математическое свойство, а не гарантия защищённого шифрования.</p></div></div>
+<div class="analogy"><div class="analogy-head">💡 Аналогия: переключатель света</div><p>Представьте восемь лампочек, каждая либо горит (1), либо выключена (0). Бит ключа 1 <b>переключает</b> лампу, 0 — оставляет как была. Применение одного и того же переключателя дважды возвращает исходную картину.</p></div>
+<div class="sim" id="sim-xor"><div class="sim-head"><div><span class="sim-label">Лаборатория 03 · побитовая математика</span><h3>XOR под микроскопом</h3><p>Измените число или ключ и проследите каждый из восьми битов. Нажмите на биты ключа, чтобы переключить их.</p></div><span class="sim-badge">Интерактивно</span></div><div class="controls"><label class="field">Исходный байт A (0–255)<input type="number" id="xor-a" min="0" max="255" value="65"></label><label class="field">Байт ключа K (0–255)<input type="number" id="xor-k" min="0" max="255" value="42"></label><button class="btn ghost" id="xor-random" type="button">Случайный ключ</button></div>
+<div class="xor-row"><label>A · исходный</label><div class="bits" id="xor-bits-a"></div></div><div class="xor-row"><label>K · ключ</label><div class="bits" id="xor-bits-k"></div></div><div class="xor-row"><label>C = A ⊕ K</label><div class="bits" id="xor-bits-c"></div></div><div class="xor-row"><label>C ⊕ K</label><div class="bits" id="xor-bits-back"></div></div><div class="xor-equation" id="xor-result">A ⊕ K = C; C ⊕ K = A</div></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · XOR для одинаковых по длине буферов</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import secrets
+
+def xor_bytes(a: bytes, b: bytes) -> bytes:
+    if len(a) != len(b):
+        raise ValueError("Буферы должны иметь одинаковую длину")
+    return bytes(x ^ y for x, y in zip(a, b))
+
+message = b"HELLO"
+key = secrets.token_bytes(len(message))
+
+ciphertext = xor_bytes(message, key)
+restored = xor_bytes(ciphertext, key)
+print(restored == message)  # True</code></pre><div class="code-explain">Демонстрация свойства XOR. В реальном приложении не следует самостоятельно конструировать шифрование из XOR: используйте стандартные проверенные криптографические протоколы.</div></div>
+<div class="notice danger"><strong>Критическое отличие:</strong> просто XOR с повторяющимся паролем не является безопасным шифром. «Одноразовый блокнот» (OTP) требует действительно случайного ключа не короче сообщения, строгой секретности ключа и <b>однократного</b> использования. Повторное использование ключа опасно.</div>
+</section>
+<section class="section" id="encoding">
+<div class="section-head"><span class="sec-no">07</span><h2>HEX и Base64: как упаковать бинарные данные в текст</h2></div>
+<p class="intro">Веб-адреса, JSON и сообщения не всегда удобно передают произвольные байты. Поэтому данные кодируют в строку. Это не изменяет их секретности: любой может декодировать результат.</p>
+<div class="grid3"><div class="card"><span class="tag">HEX</span><h3>16 символов алфавита</h3><p>Каждый байт представлен <b>двумя</b> шестнадцатеричными цифрами.</p><p class="small"><code>0x41 → 41</code>, <code>0xff → ff</code>. 16 байтов становятся 32 символами.</p></div><div class="card"><span class="tag violet">Base64</span><h3>6 бит на символ</h3><p>Три байта обычно превращаются в четыре символа Base64; в конце может быть выравнивание <code>=</code>.</p><p class="small">Удобно для текстовых протоколов и файловых вложений.</p></div><div class="card"><span class="tag gold">URL-safe Base64</span><h3>Для адресной строки</h3><p>Алфавит Base64 с заменами <code>+</code> → <code>-</code> и <code>/</code> → <code>_</code>. В токенах завершающие <code>=</code> часто убирают.</p><p class="small">Не путать с URL-кодированием и шифрованием.</p></div></div>
+<div class="sim" id="sim-encoding"><div class="sim-head"><div><span class="sim-label">Лаборатория 04 · кодировщик в браузере</span><h3>Один текст — три представления</h3><p>Сначала текст превращается в байты UTF‑8, затем в HEX или Base64. Нажмите «Декодировать», чтобы получить исходный текст.</p></div><span class="sim-badge">Интерактивно</span></div><div class="controls"><label class="field" style="flex:3">Исходный текст<input id="encoding-input" maxlength="160" type="text" value="Безопасность · Python 🔐"></label><button class="btn ghost" id="encoding-demo" type="button">Тест: Python</button><button class="btn" id="encoding-check" type="button">Декодировать</button></div><div class="grid2"><div><div class="sim-label">UTF‑8 → HEX</div><div class="sim-output" id="encoding-hex">—</div></div><div><div class="sim-label">UTF‑8 → BASE64</div><div class="sim-output" id="encoding-b64">—</div></div><div><div class="sim-label">URL-SAFE BASE64</div><div class="sim-output" id="encoding-url">—</div></div><div><div class="sim-label">ВОССТАНОВЛЕННЫЙ ТЕКСТ</div><div class="sim-output" id="encoding-restored">Нажмите «Декодировать»</div></div></div><div class="sim-caption">Данные кодируются и декодируются локально с помощью Web API браузера.</div></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · все три представления</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import base64
+
+raw = bytes(range(16))
+
+hex_text = raw.hex()             # '000102...0f'
+hex_back = bytes.fromhex(hex_text)
+
+base64_text = base64.b64encode(raw).decode("ascii")
+base64_back = base64.b64decode(base64_text)
+
+url_text = base64.urlsafe_b64encode(raw).decode("ascii")
+url_back = base64.urlsafe_b64decode(url_text)
+
+assert raw == hex_back == base64_back == url_back
+print(hex_text)
+print(base64_text)
+print(url_text)</code></pre></div>
+<div class="grid2"><div class="card"><h3>Кодирование</h3><p>Делает данные удобными для хранения или передачи. Ключ не нужен. Например, любой получатель Base64 может восстановить байты.</p></div><div class="card"><h3>Шифрование</h3><p>Скрывает содержание от тех, кто не обладает ключом. В практических протоколах применяют проверенные схемы, например AES‑GCM, с соблюдением требований к nonce и управлению ключами.</p></div></div>
+<div class="notice warn"><b>Критическая ошибка:</b> хранить пароль как Base64 — почти то же, что хранить его открытым текстом. Пароли пользователей обычно проверяют через специальный алгоритм хеширования паролей с солью и параметрами замедления, а не через обратимое кодирование.</div>
+</section>
+<section class="section" id="entropy">
+<div class="section-head"><span class="sec-no">08</span><h2>Энтропия Шеннона: сколько вариантов у противника?</h2></div>
+<p class="intro">Энтропия измеряет неопределённость вероятностного источника. Для криптографии особенно важно не путать <b>идеальную модель случайного выбора</b> с паролями, которые люди придумывают сами.</p>
+<div class="math">H(X) = −Σ pᵢ · log₂(pᵢ)<small>Энтропия Шеннона для исходов с вероятностями pᵢ</small></div>
+<p>Если каждый из <b>N</b> символов выбирается независимо и равновероятно, а длина пароля <b>L</b> символов, то количество комбинаций равно <b>Nᴸ</b>, а энтропия всей строки:</p>
+<div class="math">H = L · log₂(N)<small>Применимо именно к равномерной независимой случайной генерации</small></div>
+<div class="grid3"><div class="card"><span class="kicker">PIN из 4 цифр</span><div class="big-number">13,29</div><p class="small">бит при равномерном выборе: 10⁴ = 10 000 вариантов</p></div><div class="card"><span class="kicker">PIN из 6 цифр</span><div class="big-number">19,93</div><p class="small">бит при равномерном выборе: 10⁶ = 1 000 000 вариантов</p></div><div class="card"><span class="kicker">Токен 16 случайных байтов</span><div class="big-number">128</div><p class="small">бит: 2¹²⁸ вариантов при корректном криптографическом генераторе</p></div></div>
+<div class="analogy"><div class="analogy-head">📚 Аналогия: угадай книгу в библиотеке</div><p>Если 16 книг равновероятны, нужно в среднем больше вопросов, чем если одна книга встречается в 90% случаев. <b>Энтропия учитывает не только число исходов, но и вероятности.</b> Поэтому «длинный пароль» вроде <code>aaaaaaaaaaaa</code> не получает автоматически высокую реальную стойкость.</p></div>
+<div class="sim" id="sim-entropy"><div class="sim-head"><div><span class="sim-label">Лаборатория 05 · математика неопределённости</span><h3>Калькулятор энтропии</h3><p>Выберите алфавит и длину <b>случайно генерируемой</b> строки. Ниже покажем ёмкость пространства вариантов.</p></div><span class="sim-badge">Интерактивно</span></div><div class="controls"><label class="field">Алфавит<select id="entropy-alphabet"><option value="10">Цифры (10)</option><option value="26">Строчные латинские (26)</option><option value="52">Буквы a–z, A–Z (52)</option><option value="62" selected>Буквы и цифры (62)</option><option value="94">Печатные ASCII без пробела (94)</option><option value="256">Произвольные байты (256)</option></select></label><label class="field">Длина: <span id="entropy-len-label">20</span><input id="entropy-len" type="range" min="1" max="48" value="20"></label></div><div class="mini-grid"><div class="metric"><strong id="entropy-bits">—</strong><span>Бит энтропии (идеальная модель)</span></div><div class="metric"><strong id="entropy-options">—</strong><span>Число комбинаций</span></div><div class="metric"><strong id="entropy-strength">—</strong><span>Качественная оценка</span></div></div><div class="meter"><span id="entropy-meter"></span></div><p class="sim-caption">Шкала — иллюстрация размера пространства поиска, не сертификат безопасности и не оценка конкретного человеческого пароля.</p><div class="controls" style="margin-top:19px"><label class="field" style="flex:3">Текст для анализа частот символов<input id="shannon-text" type="text" maxlength="300" value="ABRACADABRA"></label></div><div class="sim-output" id="shannon-out"></div><p class="sim-caption">Вычисленное по частотам символов значение — <b>эмпирическая энтропия на символ</b>. Оно не оценивает защищённость токена или пароля от угадывания: короткий образец и структура языка дают искажения.</p></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · энтропия на символ в данных</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>from collections import Counter
+from math import log2
+
+def shannon_entropy(text: str) -> float:
+    if not text:
+        return 0.0
+    counts = Counter(text)
+    n = len(text)
+    return -sum(
+        (count / n) * log2(count / n)
+        for count in counts.values()
+    )
+
+print(shannon_entropy("AAAA"))  # -0.0 (эквивалент 0)
+print(shannon_entropy("ABCD"))  # 2.0 бита/символ
+
+# Идеальный равномерный случайный токен:
+length, alphabet_size = 20, 62
+print(length * log2(alphabet_size))  # ≈ 119.08 бит</code></pre><div class="code-explain">Функция измеряет разнообразие символов <b>наблюдаемой строки</b>, а не истинную мин-энтропию источника и не устойчивость пароля к словарным атакам.</div></div>
+<div class="notice"><b>Для 256-битного ключа</b> важно, чтобы ключ действительно генерировался как 32 криптографически случайных байта. Запись «256 бит» сама по себе ничего не говорит, если исходные данные предсказуемы.</div>
+</section>
+<section class="section" id="system">
+<div class="section-head"><span class="sec-no">09</span><h2>Откуда берётся криптографическая случайность в ОС?</h2></div>
+<p class="intro">Операционная система собирает непредсказуемые события из доступных источников, поддерживает защищённое внутреннее состояние генератора и предоставляет приложениям случайные байты через системные интерфейсы.</p>
+<div class="svgbox"><svg viewBox="0 0 880 300" role="img" aria-label="Системные события и энтропия поступают в ядро ОС и CSPRNG, который выдаёт случайные байты для Python"><g font-family="Arial,sans-serif" text-anchor="middle"><rect x="16" y="36" width="176" height="61" rx="12" fill="#20435d" stroke="#5ca4b5"/><text x="104" y="62" fill="white" font-weight="700" font-size="16">Источники</text><text x="104" y="80" fill="#b6d9e5" font-size="12">события и шум</text><rect x="16" y="125" width="176" height="60" rx="12" fill="#20435d" stroke="#5ca4b5"/><text x="104" y="152" fill="white" font-weight="700" font-size="15">Внутренние</text><text x="104" y="170" fill="#b6d9e5" font-size="12">системные сигналы</text><rect x="264" y="68" width="283" height="145" rx="17" fill="#0d5b69" stroke="#70e7d7" stroke-width="2"/><text x="405" y="105" fill="white" font-weight="750" font-size="21">Генератор ОС</text><text x="405" y="135" fill="#cbfef3" font-size="15">состояние + CSPRNG</text><text x="405" y="165" fill="#d0f0ed" font-size="14">системные API</text><text x="405" y="188" fill="#b9e2e6" font-size="12">getrandom / BCryptGenRandom</text><rect x="625" y="50" width="233" height="65" rx="13" fill="#20445f" stroke="#64d8cb"/><text x="741" y="79" fill="white" font-size="17" font-weight="700">os.urandom(n)</text><text x="741" y="97" fill="#d0ebeb" font-size="12">n случайных байтов</text><rect x="625" y="164" width="233" height="65" rx="13" fill="#27395f" stroke="#a29cf1"/><text x="741" y="190" fill="white" font-size="18" font-weight="700">secrets</text><text x="741" y="209" fill="#e5dffe" font-size="12">токены, выбор, сравнение</text></g><g stroke="#86ebd8" stroke-width="3" fill="none" class="svg-flow"><path d="M192 67Q238 68 260 114M192 155Q238 157 260 163M547 114Q577 84 622 84M547 167Q588 195 622 195"/></g><text x="440" y="266" text-anchor="middle" fill="#a9cddc" font-size="13">Приложение не должно пытаться «улучшить» случайность временем, PID или mousemove.</text></svg><div class="svg-caption">Наглядная модель. Точные источники и механизмы меняются между ОС, версиями ядра и аппаратными платформами.</div></div>
+<div class="grid2"><div class="card"><h3>Linux: системный генератор</h3><p>Современный Python для получения системной случайности использует соответствующий интерфейс ОС; на Linux при наличии <code>getrandom()</code> вызов <code>os.urandom()</code> ждёт начальной инициализации пула случайности.</p><p class="small">Историческое противопоставление <code>/dev/random</code> и <code>/dev/urandom</code> нельзя безоговорочно переносить на все современные ядра.</p></div><div class="card"><h3>Windows: криптографический API</h3><p>Современные версии Python используют системный криптографический источник Windows, например <code>BCryptGenRandom()</code>, а не самостоятельно написанный генератор.</p><p class="small">В приложении Python предпочтительнее пользоваться готовыми функциями <code>secrets</code>, а не управлять системными вызовами вручную.</p></div></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · случайные байты операционной системы</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import os
+
+key_material = os.urandom(32)  # 32 байта = 256 бит
+print(type(key_material))     # &lt;class 'bytes'&gt;
+print(len(key_material))      # 32
+
+# В учебном примере можно вывести представление:
+print(key_material.hex())
+
+# В реальных системах НЕ журналируйте секретные ключи!</code></pre></div>
+<div class="notice warn"><b>Важно для безопасности:</b> качество случайности оценивают по источнику и алгоритму, а не тестом «выглядит хаотично». Нельзя взять предсказуемую строку и сделать её криптостойкой простым кодированием в HEX или Base64.</div>
+</section>
+<section class="section" id="secrets">
+<div class="section-head"><span class="sec-no">10</span><h2>Модуль secrets: один правильный инструмент для большинства задач</h2></div>
+<p class="intro">Python предлагает высокоуровневый модуль <code>secrets</code> для токенов, паролей, случайного выбора и безопасного сравнения. Он опирается на криптографический генератор ОС.</p>
+<div class="tablewrap"><table><thead><tr><th>Функция</th><th>Результат</th><th>Когда использовать</th></tr></thead><tbody><tr><td><code>secrets.token_bytes(32)</code></td><td><code>bytes</code> из 32 случайных байтов</td><td>Секретное бинарное значение; 256 бит при надёжном источнике.</td></tr><tr><td><code>secrets.token_hex(16)</code></td><td>HEX-строка из 32 символов</td><td>Токены, представленные обычным текстом.</td></tr><tr><td><code>secrets.token_urlsafe(32)</code></td><td>URL-safe Base64 без завершающего <code>=</code></td><td>Ссылки, web-токены, коды восстановления.</td></tr><tr><td><code>secrets.choice(alphabet)</code></td><td>Один случайный элемент</td><td>Генерация символов пароля.</td></tr><tr><td><code>secrets.randbelow(n)</code></td><td>Число от 0 до n−1 включительно</td><td>Равномерный безопасный выбор индекса.</td></tr><tr><td><code>secrets.randbits(k)</code></td><td>Случайное число из k бит</td><td>Бинарные маски и протокольные значения.</td></tr><tr><td><code>secrets.compare_digest(a,b)</code></td><td><code>True</code> или <code>False</code></td><td>Сравнение секретных строк и байтов с меньшим риском утечки через время.</td></tr></tbody></table></div>
+<div class="analogy"><div class="analogy-head">🧰 Аналогия: безопасная мастерская</div><p><code>os.urandom()</code> выдаёт «сырьё» — хорошие случайные байты. <code>secrets</code> — готовые инструменты: сделать токен для ссылки, выбрать символ пароля, получить число в диапазоне. Используйте готовый инструмент вместо самодельного механизма.</p></div>
+<div class="sim" id="sim-token"><div class="sim-head"><div><span class="sim-label">Лаборатория 06 · токены</span><h3>Генератор токенов в браузере</h3><p>Это <b>браузерная демонстрация</b> с <code>crypto.getRandomValues()</code>. В настоящем Python-приложении генерируйте серверные токены через <code>secrets</code>.</p></div><span class="sim-badge">CSPRNG браузера</span></div><div class="controls"><label class="field">Количество случайных байтов<select id="token-length"><option value="8">8 байтов · 64 бита (только демонстрация)</option><option value="16">16 байтов · 128 бит</option><option value="24">24 байта · 192 бита</option><option value="32" selected>32 байта · 256 бит</option></select></label><label class="field">Формат<select id="token-format"><option value="hex">HEX</option><option value="b64">Base64</option><option value="url" selected>URL-safe Base64</option></select></label><button class="btn" id="token-generate" type="button">Сгенерировать</button><button class="btn ghost" id="token-copy" type="button">Копировать</button></div><div class="sim-output" id="token-output" aria-live="polite">Нажмите «Сгенерировать».</div><div class="mini-grid" style="margin-top:12px"><div class="metric"><strong id="token-bits">256</strong><span>Бит случайности</span></div><div class="metric"><strong id="token-length-output">—</strong><span>Символов в представлении</span></div><div class="metric"><strong id="token-recommend">CSPRNG</strong><span>Источник значений</span></div></div><p class="sim-caption" id="token-note">Длина текстового токена не равна числу случайных бит. Пример: 32 случайных байта имеют 256 бит, даже если записаны 64 HEX-символами.</p></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · практическое API модуля secrets</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import secrets
+import string
+
+raw = secrets.token_bytes(32)       # bytes, 256 бит
+hex_token = secrets.token_hex(16)   # str, 32 HEX-символа
+url_token = secrets.token_urlsafe(32)  # str, примерно 43 символа
+
+alphabet = string.ascii_letters + string.digits
+password = "".join(secrets.choice(alphabet) for _ in range(20))
+
+index = secrets.randbelow(10)       # одно из чисел 0..9
+mask = secrets.randbits(12)         # число с не более чем 12 битами
+
+# Сравнивать секреты лучше не простым ==:
+expected = "A1b2C3"
+received = "A1b2C3"
+print(secrets.compare_digest(expected, received))  # True</code></pre></div>
+<div class="notice"><b>Правило выбора:</b> <code>random</code> — для симуляций; <code>secrets</code> — для паролей и токенов; <code>os.urandom()</code> — когда нужны именно случайные байты; <code>secrets.compare_digest()</code> — при сравнении чувствительных значений.</div>
+</section>
+<section class="section" id="passwords">
+<div class="section-head"><span class="sec-no">11</span><h2>Генератор стойких паролей: длина важнее «магии символов»</h2></div>
+<p class="intro">Сила случайно созданного пароля определяется пространством возможных строк и корректностью генератора. Потребность во всех типах символов — вопрос конкретной политики, а не универсальное условие криптостойкости.</p>
+<div class="grid2"><div class="card"><span class="kicker">Хорошая стратегия</span><h3>Равномерный выбор</h3><p>Определите набор допустимых символов. Выбирайте каждый символ через <code>secrets.choice()</code>. При длине 20 и алфавите из 62 символов идеальная модель даёт около 119 бит.</p></div><div class="card"><span class="kicker">Когда нужен каждый тип</span><h3>Политика состава</h3><p>Иногда сервис требует хотя бы одну цифру, заглавную букву и специальный символ. Это можно реализовать: обязательно выбрать по одному каждого типа, добавить остальные и перемешать с криптостойким выбором индекса.</p></div></div>
+<div class="sim" id="sim-password"><div class="sim-head"><div><span class="sim-label">Лаборатория 07 · парольная политика</span><h3>Соберите пароль безопасно</h3><p>Выберите длину и наборы символов. Браузер использует Web Crypto; Python-решение приведено ниже.</p></div><span class="sim-badge">CSPRNG браузера</span></div><div class="controls"><label class="field">Длина <span id="password-len-label">20</span><input type="range" id="password-len" min="8" max="48" value="20"></label><div class="field"><span>Алфавит</span><label><input type="checkbox" class="password-group" value="lower" checked> a–z (26)</label><label><input type="checkbox" class="password-group" value="upper" checked> A–Z (26)</label><label><input type="checkbox" class="password-group" value="digits" checked> 0–9 (10)</label><label><input type="checkbox" class="password-group" value="special" checked> !@#$%… (12)</label></div><div class="field"><span>Политика</span><label><input id="password-each" type="checkbox"> хотя бы по одному из каждого выбранного набора</label></div></div><div class="controls"><button class="btn" id="password-generate" type="button">Создать пароль</button><button class="btn ghost" id="password-copy" type="button">Копировать</button><button class="btn ghost" id="password-hide" type="button">Скрыть / показать</button></div><div class="sim-output" id="password-output" aria-live="polite">Нажмите «Создать пароль».</div><div class="meter"><span id="password-meter"></span></div><p class="sim-caption" id="password-info">Оценка по формуле L·log₂(N) применима к независимому равномерному выбору из общего алфавита. При обязательных категориях распределение другое: это ориентир, а не точный расчёт энтропии.</p></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · вариант A: простой и равномерный</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import secrets
+import string
+
+alphabet = string.ascii_letters + string.digits
+length = 20
+
+password = "".join(secrets.choice(alphabet) for _ in range(length))
+print(password)
+
+# Для равномерного выбора из N символов:
+# количество вариантов = N ** length
+# оценка энтропии = length * log2(N)</code></pre><div class="code-explain">Это простой безопасный базовый генератор при достаточной длине и правильном хранении полученного пароля.</div></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · вариант B: обязательные группы + Fisher–Yates</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import secrets
+import string
+from math import ceil, log2
+
+SPECIAL = "!@#$%^&amp;*_-+"
+GROUPS = [string.ascii_lowercase,
+          string.ascii_uppercase,
+          string.digits,
+          SPECIAL]
+
+def generate_password(entropy_bits=128):
+    alphabet = "".join(GROUPS)
+    length = max(len(GROUPS), ceil(entropy_bits / log2(len(alphabet))))
+
+    # Гарантируем хотя бы один символ из каждой группы.
+    pool = [secrets.choice(group) for group in GROUPS]
+    pool += [secrets.choice(alphabet) for _ in range(length - len(pool))]
+
+    # Fisher–Yates: случайная перестановка без modulo bias.
+    for i in range(len(pool) - 1, 0, -1):
+        j = secrets.randbelow(i + 1)
+        pool[i], pool[j] = pool[j], pool[i]
+    return "".join(pool)
+
+print(generate_password())</code></pre><div class="code-explain">Уточнение к слайду: формула <code>L·log₂(N)</code> здесь даёт <b>ориентир сверху</b> для полного равномерного алфавита, но не точное значение энтропии результата алгоритма с обязательными группами.</div></div>
+<div class="analogy"><div class="analogy-head">🔐 Аналогия: выигрышный билет</div><p>Если билет выбирается из гигантского набора независимо и непредсказуемо, угадать его трудно. Но если организатор всегда печатает похожие билеты, их длина не спасает. Поэтому популярные слова с заменами <code>a → @</code> и <code>o → 0</code> могут быть слабыми, даже если выглядят «сложно».</p></div>
+<div class="notice warn"><b>Практика эксплуатации:</b> используйте менеджер паролей и многофакторную аутентификацию. Для серверного хранения паролей применяйте специализированные адаптивные хеш-функции (например, Argon2id), соль и актуальные параметры стоимости. Случайный токен и пароль пользователя — разные сущности.</div>
+</section>
+<section class="section" id="timing">
+<div class="section-head"><span class="sec-no">12</span><h2>Сравнение секретов и атаки по времени</h2></div>
+<p class="intro">Даже если токен хорошо сгенерирован, его можно проверить небезопасным способом. Типичный наивный алгоритм прекращает сравнение при первом несовпадении, а время проверки иногда выдаёт информацию.</p>
+<div class="card tinted"><h3>В чём проблема раннего выхода?</h3><p>Пусть сервер сравнивает полученную строку с эталоном символ за символом. Если первый символ неверен, проверка короткая; если совпало много символов, чуть дольше. При подходящих условиях и большом количестве измерений злоумышленник может использовать статистику времени.</p><div class="analogy"><div class="analogy-head">🕵️ Аналогия: секретарь у двери</div><p>Вместо ответа «пропуск неверный» секретарь каждый раз говорит: «Первые три цифры правильные, на четвёртой ошибка». По сути, раннее время окончания проверки может непреднамеренно подсказать похожую информацию.</p></div></div>
+<div class="sim" id="sim-timing"><div class="sim-head"><div><span class="sim-label">Лаборатория 08 · принцип без реальных замеров</span><h3>Визуальный след сравнения</h3><p>Сдвигайте позицию первой ошибки. Мы показываем <b>логическую</b> длину сравнения, а не измеряем тайминги браузера.</p></div><span class="sim-badge">Модель</span></div><div class="controls"><label class="field">Позиция первой ошибки: <span id="timing-position-label">1</span><input type="range" min="1" max="12" value="1" id="timing-position"></label><button class="btn ghost" id="timing-run" type="button">Показать сравнение</button></div><div class="sim-output" id="timing-output">Введите позицию ошибки.</div><div class="tape" id="timing-tape"></div><div class="sim-caption">Зелёные позиции — сравнили; серые — не успели сравнить. <code>compare_digest()</code> уменьшает зависимость времени от содержимого при корректных типах и протоколе, но не защищает от всех побочных каналов или различий длины и типа.</div></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · compare_digest вместо наивного посимвольного сравнения</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import secrets
+
+expected = secrets.token_hex(16)
+received = expected  # только для демонстрации
+
+if secrets.compare_digest(received, expected):
+    print("Токен совпал")
+else:
+    print("Токен неверен")</code></pre></div>
+<div class="notice"><b>Граница применимости:</b> безопасное сравнение — лишь один слой защиты. Ограничение частоты попыток, отсутствие утечек в логах, проверка срока жизни, правильное хранение токенов и TLS остаются необходимыми.</div>
+</section>
+<section class="section" id="case">
+<div class="section-head"><span class="sec-no">13</span><h2>Кейс-задача: безопасная ссылка сброса пароля</h2></div>
+<p class="intro">Соединим все темы в один законченный сценарий. Пользователь просит восстановить доступ — система создаёт непредсказуемый токен и подтверждает его, не раскрывая внутреннее состояние.</p>
+<div class="svgbox"><svg viewBox="0 0 880 267" role="img" aria-label="Пользователь просит сброс пароля, сервер создаёт случайный токен, хеширует, отправляет ссылку, проверяет и помечает как использованный"><g font-family="Arial,sans-serif" text-anchor="middle"><rect x="15" y="46" width="175" height="100" rx="13" fill="#244662" stroke="#6cd0d0"/><text x="102" y="76" fill="white" font-size="18" font-weight="700">Запрос</text><text x="102" y="104" fill="#b7dceb" font-size="13">восстановить</text><text x="102" y="124" fill="#b7dceb" font-size="13">пароль</text><rect x="235" y="46" width="190" height="100" rx="13" fill="#0d666e" stroke="#6eead8"/><text x="330" y="74" fill="white" font-size="18" font-weight="700">Сервер</text><text x="330" y="104" fill="#d0fef4" font-size="13">secrets.token_urlsafe</text><text x="330" y="124" fill="#d0fef4" font-size="13">32 случайных байта</text><rect x="470" y="46" width="180" height="100" rx="13" fill="#263e67" stroke="#b4a4ff"/><text x="560" y="76" fill="white" font-size="17" font-weight="700">Хеш токена</text><text x="560" y="104" fill="#d6d9ff" font-size="13">срок действия</text><text x="560" y="124" fill="#d6d9ff" font-size="13">в базе</text><rect x="694" y="46" width="171" height="100" rx="13" fill="#244662" stroke="#6cd0d0"/><text x="780" y="76" fill="white" font-size="17" font-weight="700">Ссылка</text><text x="780" y="104" fill="#b7dceb" font-size="13">доставлена</text><text x="780" y="124" fill="#b7dceb" font-size="13">пользователю</text><rect x="235" y="191" width="420" height="59" rx="13" fill="#0c3e54" stroke="#67d7ca"/><text x="445" y="215" fill="white" font-size="17" font-weight="700">Проверка → срок → однократность</text><text x="445" y="236" fill="#bfe7e5" font-size="12">сравнение digest и удаление после успеха</text></g><g stroke="#89e9df" stroke-width="3" class="svg-flow"><path d="M191 96H232M426 96H468M651 96H692M780 148Q775 221 659 220" fill="none"/></g></svg><div class="svg-caption">Это учебная схема. В реальной инфраструктуре дополнительно нужны HTTPS, защита от злоупотреблений, доставка по подтверждённому каналу, мониторинг и атомарная фиксация использования токена.</div></div>
+<div class="timeline"><div class="timeline-item"><strong>1. Создание</strong><p>Сервер генерирует 32 криптографически случайных байта и кодирует их в URL-safe текст. Размер исходного пространства — 2²⁵⁶, а не «длина URL в символах».</p></div><div class="timeline-item"><strong>2. Хранение</strong><p>В базе сохраняется хеш токена с привязкой к пользователю, сроком действия и статусом использования. Исходный секрет не сохраняется в открытом виде.</p></div><div class="timeline-item"><strong>3. Доставка</strong><p>Ссылка отправляется по проверенному каналу. Не показывайте токены в обычных логах или аналитике и контролируйте утечки через Referer и сторонние ресурсы.</p></div><div class="timeline-item"><strong>4. Проверка</strong><p>Сервер вычисляет хеш полученного токена и сравнивает его с сохранённым, проверяет срок действия и однократность. После применения запись должна стать недействительной.</p></div></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · мини-модель жизненного цикла токена</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import hashlib
+import secrets
+from datetime import datetime, timedelta, timezone
+
+# Учебное хранилище в памяти (не production БД)
+reset_store = {}
+
+def issue_reset_token(user_id: int) -> str:
+    token = secrets.token_urlsafe(32)  # 256 случайных бит
+    token_hash = hashlib.sha256(token.encode("ascii")).digest()
+    reset_store[user_id] = {
+        "hash": token_hash,
+        "expires_at": datetime.now(timezone.utc) + timedelta(minutes=15),
+    }
+    return token  # в реальности отправить по защищённому каналу
+
+def verify_and_consume(user_id: int, token: str) -> bool:
+    record = reset_store.get(user_id)
+    if record is None:
+        return False
+    if datetime.now(timezone.utc) >= record["expires_at"]:
+        reset_store.pop(user_id, None)
+        return False
+
+    supplied_hash = hashlib.sha256(token.encode("utf-8")).digest()
+    valid = secrets.compare_digest(supplied_hash, record["hash"])
+    if valid:
+        reset_store.pop(user_id, None)  # однократное использование
+    return valid
+
+# Мини-проверка:
+code = issue_reset_token(123)
+print(verify_and_consume(123, code))  # True
+print(verify_and_consume(123, code))  # False: уже использован</code></pre><div class="code-explain">Это <b>учебный прототип</b>. Для production нужны БД, атомарное использование токена, rate limiting, защита от перечисления пользователей, HTTPS, безопасная доставка и полноценный процесс смены пароля.</div></div>
+<div class="card"><h3>Почему здесь не надо «шифровать токен»?</h3><p>Серверу необязательно расшифровывать токен. Он должен подтвердить, что предъявленное значение совпадает с выданным ранее. Достаточно стойкого случайного токена и безопасной проверки его хеша. Это уменьшает ущерб от некоторых утечек базы.</p><p class="small">Указание SHA‑256 относится к хешированию <b>высокоэнтропийного случайного токена</b>. Для хранения человеческих паролей так делать нельзя: им нужен специализированный алгоритм хеширования паролей.</p></div>
+</section>
+<section class="section" id="mistakes">
+<div class="section-head"><span class="sec-no">14</span><h2>Шесть популярных заблуждений</h2></div>
+<p class="intro">Эти ошибки встречаются не только у начинающих разработчиков. Они помогают заметить проблемный дизайн ещё до появления кода.</p>
+<details class="accordion" open><summary>«Если число выглядит хаотично, оно подходит для безопасности»</summary><div class="details-inner"><b>Нет.</b> Статистическая случайность и криптографическая непредсказуемость — разные характеристики. PRNG может проходить статистические тесты и всё же быть полностью восстановимым из наблюдений.</div></details>
+<details class="accordion"><summary>«Очень большой период MT19937 делает его стойким»</summary><div class="details-inner"><b>Нет.</b> Период показывает, когда повторится последовательность при корректном обходе состояний. Он не гарантирует невозможности предсказания следующего значения.</div></details>
+<details class="accordion"><summary>«64 HEX-символа — это 64 байта случайности»</summary><div class="details-inner"><b>Нет.</b> Два HEX-символа кодируют один байт. 64 HEX-символа, полученные из 32 случайных байтов, несут 256 бит исходной случайности.</div></details>
+<details class="accordion"><summary>«Base64 можно использовать вместо шифрования»</summary><div class="details-inner"><b>Нет.</b> Base64 — обратимая упаковка двоичных данных в текст. Декодирование общедоступно и не требует секретного ключа.</div></details>
+<details class="accordion"><summary>«Любой пароль с большими буквами, цифрами и знаками безопасен»</summary><div class="details-inner"><b>Не обязательно.</b> <code>Qwerty123!</code> содержит разные типы символов, но предсказуем из-за шаблона. Главные факторы — случайность способа создания, длина, отсутствие повторного использования и качество хранения.</div></details>
+<details class="accordion"><summary>«secrets.compare_digest решает всю проблему аутентификации»</summary><div class="details-inner"><b>Нет.</b> Он лишь снижает риск утечки информации во времени сравнения. Аутентификация также требует защиты транспорта, ограничения попыток, сроков действия, логирования событий без секретов и корректной работы с состоянием.</div></details>
+</section>
+<section class="section" id="cheatsheet">
+<div class="section-head"><span class="sec-no">15</span><h2>Шпаргалка Python: что использовать и когда</h2></div>
+<p class="intro">Короткая опорная таблица для повторения. Полные примеры находятся выше; здесь — команды, которые действительно пригодятся в проектах.</p>
+<div class="tablewrap"><table><thead><tr><th>Задача</th><th>Команда Python</th><th>Комментарий</th></tr></thead><tbody>
+<tr><td>Случайное число в игре</td><td><code>random.randint(1, 6)</code></td><td>Не для секретов.</td></tr>
+<tr><td>Бинарный криптосекрет</td><td><code>secrets.token_bytes(32)</code></td><td>32 байта, 256 бит.</td></tr>
+<tr><td>Токен в HEX</td><td><code>secrets.token_hex(16)</code></td><td>128 бит, обычно 32 HEX-символа.</td></tr>
+<tr><td>Токен для URL</td><td><code>secrets.token_urlsafe(32)</code></td><td>32 случайных байта → ≈43 URL-safe символа.</td></tr>
+<tr><td>Безопасный выбор элемента</td><td><code>secrets.choice(seq)</code></td><td>Для непустой последовательности.</td></tr>
+<tr><td>Случайный индекс</td><td><code>secrets.randbelow(n)</code></td><td>0 ≤ x &lt; n.</td></tr>
+<tr><td>Сравнение секретов</td><td><code>secrets.compare_digest(a, b)</code></td><td>Используйте совместимые типы.</td></tr>
+<tr><td>Строка → UTF‑8</td><td><code>text.encode("utf-8")</code></td><td>Получаются <code>bytes</code>.</td></tr>
+<tr><td>UTF‑8 → строка</td><td><code>raw.decode("utf-8")</code></td><td>Данные должны быть корректно закодированы.</td></tr>
+<tr><td>Байты → HEX</td><td><code>raw.hex()</code></td><td>Представление, не шифрование.</td></tr>
+<tr><td>HEX → байты</td><td><code>bytes.fromhex(text)</code></td><td>Обратимая операция.</td></tr>
+<tr><td>Байты → Base64</td><td><code>base64.b64encode(raw)</code></td><td>Результат типа <code>bytes</code>.</td></tr>
+<tr><td>Base64 → байты</td><td><code>base64.b64decode(text)</code></td><td>Декодирует представление.</td></tr>
+<tr><td>XOR двух чисел</td><td><code>a ^ b</code></td><td>Битовая операция.</td></tr>
+<tr><td>Случайные байты напрямую</td><td><code>os.urandom(32)</code></td><td>Для низкоуровневой работы.</td></tr>
+</tbody></table></div>
+<div class="codeblock"><div class="codebar"><span>PYTHON · компактное резюме всей лекции</span><button class="copy" type="button">⧉ Копировать</button></div><pre><code>import base64
+import os
+import random
+import secrets
+
+# 1. Для тестирования: удобно и воспроизводимо
+random.seed(42)
+print(random.randint(1, 6))
+
+# 2. Для безопасности: безопасный источник случайности
+raw = os.urandom(32)
+token = secrets.token_urlsafe(32)
+
+# 3. Бинарное и текстовое представление
+hex_text = raw.hex()
+b64_text = base64.urlsafe_b64encode(raw).decode("ascii")
+assert bytes.fromhex(hex_text) == raw
+assert base64.urlsafe_b64decode(b64_text) == raw
+
+# 4. XOR обратим
+assert (65 ^ 42) ^ 42 == 65
+
+# 5. Секреты сравниваются через compare_digest
+assert secrets.compare_digest("abc", "abc")</code></pre></div>
+</section>
+<section class="section" id="quiz">
+<div class="section-head"><span class="sec-no">16</span><h2>Проверь понимание: восемь инженерных решений</h2></div>
+<p class="intro">Это не экзамен, а способ убедиться, что после лекции можно выбрать правильный API и объяснить последствия неправильного выбора.</p>
+<div class="card" id="quiz-card"><div id="quiz-questions">
+<div class="quiz-q" data-answer="b"><h3>1. Чем прежде всего различаются PRNG и CSPRNG?</h3><div class="quiz-options"><label><input type="radio" name="q1" value="a"> CSPRNG всегда использует исключительно аппаратный шум.</label><label><input type="radio" name="q1" value="b"> CSPRNG рассчитан на криптографическую непредсказуемость результатов.</label><label><input type="radio" name="q1" value="c"> PRNG выдаёт только маленькие числа.</label></div><div class="quiz-feedback" data-explain="CSPRNG тоже может быть алгоритмическим; критично свойство непредсказуемости при корректной реализации."></div></div>
+<div class="quiz-q" data-answer="c"><h3>2. Что выбрать для токена сброса пароля в Python?</h3><div class="quiz-options"><label><input type="radio" name="q2" value="a"> <code>random.seed(time.time())</code></label><label><input type="radio" name="q2" value="b"> <code>random.randint()</code></label><label><input type="radio" name="q2" value="c"> <code>secrets.token_urlsafe(32)</code></label></div><div class="quiz-feedback" data-explain="secrets создаёт токен на основе криптографического источника ОС; число 32 обозначает байты исходной случайности."></div></div>
+<div class="quiz-q" data-answer="a"><h3>3. Какое число случайных бит содержится в 16 криптографически случайных байтах?</h3><div class="quiz-options"><label><input type="radio" name="q3" value="a"> 128 бит</label><label><input type="radio" name="q3" value="b"> 16 бит</label><label><input type="radio" name="q3" value="c"> 32 бита</label></div><div class="quiz-feedback" data-explain="Один байт содержит 8 бит: 16 × 8 = 128."></div></div>
+<div class="quiz-q" data-answer="b"><h3>4. Что произойдёт после Base64-кодирования пароля?</h3><div class="quiz-options"><label><input type="radio" name="q4" value="a"> Пароль будет надёжно зашифрован.</label><label><input type="radio" name="q4" value="b"> Пароль можно будет декодировать без знания ключа.</label><label><input type="radio" name="q4" value="c"> Энтропия пароля гарантированно вырастет.</label></div><div class="quiz-feedback" data-explain="Base64 меняет представление, а не уровень защиты и не случайность источника."></div></div>
+<div class="quiz-q" data-answer="c"><h3>5. Что делает оператор <code>^</code> в Python для целых чисел?</h3><div class="quiz-options"><label><input type="radio" name="q5" value="a"> Возводит в степень.</label><label><input type="radio" name="q5" value="b"> Кодирует Base64.</label><label><input type="radio" name="q5" value="c"> Выполняет побитовый XOR.</label></div><div class="quiz-feedback" data-explain="В Python степень записывается **, а ^ — это XOR: (A ^ K) ^ K == A."></div></div>
+<div class="quiz-q" data-answer="a"><h3>6. Когда корректна формула <code>H = L·log₂(N)</code>?</h3><div class="quiz-options"><label><input type="radio" name="q6" value="a"> Если каждый символ выбирается независимо и равновероятно из N вариантов.</label><label><input type="radio" name="q6" value="b"> Для любого пароля, который пользователь придумал сам.</label><label><input type="radio" name="q6" value="c"> Только для ключей AES.</label></div><div class="quiz-feedback" data-explain="Формула описывает модель равномерного независимого генератора; человеческие привычки меняют распределение."></div></div>
+<div class="quiz-q" data-answer="b"><h3>7. Почему MT19937 не подходит для токенов, хотя у него огромный период?</h3><div class="quiz-options"><label><input type="radio" name="q7" value="a"> У него слишком короткие числа.</label><label><input type="radio" name="q7" value="b"> По достаточным наблюдениям выходов состояние может быть восстановлено.</label><label><input type="radio" name="q7" value="c"> Он всегда выдаёт нули.</label></div><div class="quiz-feedback" data-explain="Период и статистические свойства не дают стойкости против реконструкции внутреннего состояния."></div></div>
+<div class="quiz-q" data-answer="c"><h3>8. Какая защита нужна дополнительно к хорошей случайности токена?</h3><div class="quiz-options"><label><input type="radio" name="q8" value="a"> Просто больше символов Base64.</label><label><input type="radio" name="q8" value="b"> Seed от текущего времени.</label><label><input type="radio" name="q8" value="c"> Срок действия, однократность, ограничение попыток и защита транспорта.</label></div><div class="quiz-feedback" data-explain="Безопасность — свойство системы: корректная генерация сама по себе не защищает доставку, хранение и проверку."></div></div>
+</div><div class="check-row"><button class="btn" style="background:#0a6b77;color:white" id="quiz-check" type="button">Проверить ответы</button><button class="btn ghost" style="background:#e5f1f4;color:#19516a" id="quiz-reset" type="button">Начать заново</button><span class="quiz-score" id="quiz-score" aria-live="polite"></span></div></div>
+<div class="card tinted"><span class="kicker">Финальный вывод</span><h3>Безопасность начинается не со шифра, а с правильного источника и жизненного цикла секрета</h3><p>Непредсказуемая генерация, корректная работа с байтами, безопасное представление данных, разумная длина токенов и грамотная серверная проверка работают вместе. Если хотя бы одно звено ломается, сильные алгоритмы могут не помочь.</p></div>
+<div class="card"><h3>Дополнительное чтение: официальная документация</h3><div class="grid2"><div><p><a href="https://docs.python.org/3/library/secrets.html" target="_blank" rel="noopener">Python: secrets</a><br><span class="small">API безопасной генерации и сравнения.</span></p><p><a href="https://docs.python.org/3/library/random.html" target="_blank" rel="noopener">Python: random</a><br><span class="small">Почему генератор для симуляций — не криптосистема.</span></p></div><div><p><a href="https://docs.python.org/3/library/os.html#os.urandom" target="_blank" rel="noopener">Python: os.urandom()</a><br><span class="small">Системная случайность и платформенные особенности.</span></p><p><a href="https://docs.python.org/3/library/base64.html" target="_blank" rel="noopener">Python: base64</a><br><span class="small">Представление двоичных данных в тексте.</span></p></div></div></div>
+</section>
+</main>
+</div>
+<footer class="footer"><div class="footer-inner"><div><b style="font-size:1.15rem;color:#e2fcfd">CYBER / 11 · Python для кибербезопасности</b><small>Расширенный учебный материал по 19 слайдам лекции.</small><small>Демонстрации не исполняют Python в браузере; код запускается в Python 3 отдельно.</small></div><div><a href="#top">Вернуться к началу ↑</a><small>Один HTML-файл · HTML + CSS + SVG + JavaScript · без внешних зависимостей</small></div></div></footer>
+<button id="back-top" class="back-top" type="button" aria-label="Наверх" title="Наверх">↑</button>
+<script>
+'use strict';
+(() => {
+  const $ = id => document.getElementById(id);
+  const fmt = n => Number(n).toLocaleString('ru-RU', {maximumFractionDigits: 2});
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder('utf-8', {fatal: true});
+  const hex = data => Array.from(data, n => n.toString(16).padStart(2, '0')).join('');
+  const bytesToBase64 = bytes => btoa(Array.from(bytes, b => String.fromCharCode(b)).join(''));
+  const toUrlBase64 = bytes => bytesToBase64(bytes).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const base64ToBytes = input => {
+    const base64 = input.replace(/-/g, '+').replace(/_/g, '/');
+    const padded = base64 + '='.repeat((4 - base64.length % 4) % 4);
+    return Uint8Array.from(atob(padded), c => c.charCodeAt(0));
+  };
+  const randomBytes = size => {
+    if (!globalThis.crypto || typeof globalThis.crypto.getRandomValues !== 'function') {
+      throw new Error('Web Crypto недоступен. Откройте страницу в современном браузере по HTTPS или локально.');
+    }
+    const result = new Uint8Array(size);
+    crypto.getRandomValues(result);
+    return result;
+  };
+  // Unbiased selection from [0, upper), using rejection sampling over a 32-bit word.
+  const secureIndex = upper => {
+    if (!Number.isInteger(upper) || upper <= 0 || upper > 4294967296) {
+      throw new RangeError('Неверное число вариантов');
+    }
+    const max = 4294967296;
+    const limit = Math.floor(max / upper) * upper;
+    const word = new Uint32Array(1);
+    do { crypto.getRandomValues(word); } while (word[0] >= limit);
+    return word[0] % upper;
+  };
+  async function copyText(value) {
+    if (!value) return false;
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(value);
+        return true;
+      }
+    } catch (_) { /* local file protocol can block Clipboard API */ }
+    const temporary = document.createElement('textarea');
+    temporary.value = value;
+    temporary.setAttribute('readonly', '');
+    temporary.style.cssText = 'position:fixed;opacity:0;left:-9999px;';
+    document.body.append(temporary);
+    temporary.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (_) { /* no permission */ }
+    temporary.remove();
+    return ok;
+  }
+  async function doCopy(button, value) {
+    const original = button.textContent;
+    const worked = await copyText(value);
+    button.textContent = worked ? '✓ Скопировано' : 'Выделите и скопируйте';
+    setTimeout(() => { button.textContent = original; }, 1800);
+  }
+  // All Python examples are static source files: copy, do not execute in JS.
+  document.querySelectorAll('.codeblock .copy').forEach(btn => {
+    btn.addEventListener('click', () => doCopy(btn, btn.closest('.codeblock').querySelector('code').textContent));
+  });
+  // Deterministic, small teaching LCG. This is deliberately NOT MT19937.
+  function lcg(seed, count) {
+    let state = Number(seed) >>> 0;
+    const result = [];
+    for (let i = 0; i < count; i++) {
+      state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+      result.push(state % 10000);
+    }
+    return result;
+  }
+  function prngRun(mode) {
+    const seed = Number($('seed-value').value || 0);
+    try {
+      if (mode === 'secure') {
+        const words = new Uint32Array(8);
+        if (!globalThis.crypto?.getRandomValues) throw new Error('Web Crypto недоступен');
+        crypto.getRandomValues(words);
+        $('prng-out').textContent = Array.from(words, x => x.toString(16).padStart(8, '0')).join('  ');
+        $('prng-note').textContent = 'Выход Web Crypto (32-битные числа в HEX): новый поток при каждом запросе. Это другой тип вывода и другое API, чем учебный LCG.';
+      } else {
+        $('prng-out').textContent = lcg(seed, 8).map(x => x.toString().padStart(4, '0')).join('  ');
+        $('prng-note').textContent = mode === 'repeat' ? 'СОВПАЛО: с тем же seed учебный генератор выдаёт идентичную последовательность.' : 'Запомните последовательность и нажмите «Повторить с тем же seed».';
+      }
+    } catch (e) { $('prng-out').textContent = e.message; }
+  }
+  $('prng-run').addEventListener('click', () => prngRun('run'));
+  $('prng-repeat').addEventListener('click', () => prngRun('repeat'));
+  $('prng-secure').addEventListener('click', () => prngRun('secure'));
+  prngRun('run');
+
+  // Unicode and byte arrays. Avoid innerHTML with user-supplied text.
+  function updateBytes() {
+    const input = $('bytes-text').value;
+    const values = encoder.encode(input);
+    $('bytes-chars').textContent = fmt([...input].length);
+    $('bytes-len').textContent = fmt(values.length);
+    $('bytes-hex').textContent = fmt(values.length * 2);
+    const tape = $('byte-tape');
+    tape.replaceChildren();
+    values.slice(0, 48).forEach((v, i) => {
+      const cell = document.createElement('span');
+      cell.className = 'cell' + (i % 4 === 0 ? ' hi' : '');
+      cell.textContent = v.toString(16).padStart(2, '0').toUpperCase();
+      cell.title = `Байт ${i + 1}, десятичное значение ${v}, биты ${v.toString(2).padStart(8, '0')}`;
+      tape.append(cell);
+    });
+    if (values.length > 48) {
+      const extra = document.createElement('span'); extra.className = 'cell'; extra.textContent = `+${values.length - 48} ещё`; tape.append(extra);
+    }
+    $('bytes-out').textContent = 'HEX: ' + hex(values) + '\nБиты: ' + Array.from(values.slice(0, 16), x => x.toString(2).padStart(8, '0')).join(' ') + (values.length > 16 ? ' …' : '');
+  }
+  $('bytes-text').addEventListener('input', updateBytes);
+  [['bytes-ascii', 'A'], ['bytes-rus', 'Я'], ['bytes-emoji', '🔐']].forEach(([id, value]) => $(id).addEventListener('click', () => { $('bytes-text').value = value; updateBytes(); }));
+  updateBytes();
+
+  // Interactive XOR bit switches.
+  const byteClamp = v => Math.max(0, Math.min(255, Number.isFinite(+v) ? Math.round(+v) : 0));
+  function drawBits(target, value, editable) {
+    const parent = $(target);
+    parent.replaceChildren();
+    for (let power = 7; power >= 0; power--) {
+      const on = (value >>> power) & 1;
+      const el = document.createElement(editable ? 'button' : 'span');
+      el.className = 'bit' + (on ? ' on' : '');
+      el.textContent = String(on);
+      el.setAttribute('aria-label', `Бит ${power}: ${on}${editable ? '. Нажмите для переключения' : ''}`);
+      if (editable) {
+        el.type = 'button';
+        el.title = `Переключить бит ${power}`;
+        el.addEventListener('click', () => {
+          $('xor-k').value = Number($('xor-k').value) ^ (1 << power);
+          updateXor();
+        });
+      }
+      parent.append(el);
+    }
+  }
+  function updateXor() {
+    const a = byteClamp($('xor-a').value);
+    const k = byteClamp($('xor-k').value);
+    $('xor-a').value = a; $('xor-k').value = k;
+    const c = a ^ k;
+    drawBits('xor-bits-a', a, false);
+    drawBits('xor-bits-k', k, true);
+    drawBits('xor-bits-c', c, false);
+    drawBits('xor-bits-back', c ^ k, false);
+    $('xor-result').textContent = `${a} (0x${a.toString(16).padStart(2, '0')}) ⊕ ${k} (0x${k.toString(16).padStart(2, '0')}) = ${c} (0x${c.toString(16).padStart(2, '0')}); ${c} ⊕ ${k} = ${c ^ k}`;
+  }
+  ['xor-a', 'xor-k'].forEach(id => $(id).addEventListener('change', updateXor));
+  $('xor-random').addEventListener('click', () => { try { $('xor-k').value = randomBytes(1)[0]; updateXor(); } catch (e) { $('xor-result').textContent = e.message; } });
+  updateXor();
+
+  // Correct UTF-8 conversion to and from Base64; no server involved.
+  function updateEncoding() {
+    const bytes = encoder.encode($('encoding-input').value);
+    $('encoding-hex').textContent = hex(bytes) || '∅ (пустой ввод)';
+    $('encoding-b64').textContent = bytesToBase64(bytes) || '∅ (пустой ввод)';
+    $('encoding-url').textContent = toUrlBase64(bytes) || '∅ (пустой ввод)';
+    $('encoding-restored').textContent = 'Нажмите «Декодировать»';
+  }
+  $('encoding-input').addEventListener('input', updateEncoding);
+  $('encoding-demo').addEventListener('click', () => { $('encoding-input').value = 'Python'; updateEncoding(); });
+  $('encoding-check').addEventListener('click', () => {
+    try {
+      const coded = toUrlBase64(encoder.encode($('encoding-input').value));
+      const restored = decoder.decode(base64ToBytes(coded));
+      $('encoding-restored').textContent = (restored || '∅') + '\nСовпадение с исходным текстом: ' + (restored === $('encoding-input').value ? 'ДА ✓' : 'НЕТ ✕');
+    } catch (e) { $('encoding-restored').textContent = 'Ошибка: ' + e.message; }
+  });
+  updateEncoding();
+
+  // Uniform-model entropy and observed-symbol-frequency Shannon entropy.
+  function updateEntropy() {
+    const N = Number($('entropy-alphabet').value);
+    const L = Number($('entropy-len').value);
+    const H = L * Math.log2(N);
+    $('entropy-len-label').textContent = L;
+    $('entropy-bits').textContent = H.toFixed(2);
+    const total = BigInt(N) ** BigInt(L);
+    const exact = total.toString();
+    $('entropy-options').textContent = exact.length <= 17 ? total.toLocaleString('ru-RU') : '≈ 10^' + (L * Math.log10(N)).toFixed(1);
+    $('entropy-strength').textContent = H < 40 ? 'малое' : H < 80 ? 'умеренное' : H < 128 ? 'большое' : 'очень большое';
+    $('entropy-meter').style.width = Math.max(2, Math.min(100, H / 256 * 100)) + '%';
+    const arr = [...$('shannon-text').value];
+    if (!arr.length) { $('shannon-out').textContent = 'Пустой ввод: энтропия 0 бит/символ.'; return; }
+    const counts = new Map();
+    arr.forEach(c => counts.set(c, (counts.get(c) || 0) + 1));
+    let shannon = 0;
+    counts.forEach(n => { const p = n / arr.length; shannon -= p * Math.log2(p); });
+    $('shannon-out').textContent = `Наблюдаемых кодовых точек: ${arr.length}; различных: ${counts.size}\nЭмпирическая энтропия Шеннона: ${shannon.toFixed(3)} бит/символ\nДля сравнения: максимум при ${counts.size} равновероятных исходах = ${Math.log2(counts.size).toFixed(3)} бит/символ.`;
+  }
+  ['entropy-alphabet', 'entropy-len', 'shannon-text'].forEach(id => $(id).addEventListener('input', updateEntropy));
+  updateEntropy();
+
+  // Browser-based cryptographic token samples, NOT server-side credentials.
+  let lastToken = '';
+  function generateToken() {
+    const n = Number($('token-length').value);
+    const format = $('token-format').value;
+    try {
+      const raw = randomBytes(n);
+      lastToken = format === 'hex' ? hex(raw) : format === 'b64' ? bytesToBase64(raw) : toUrlBase64(raw);
+      $('token-output').textContent = lastToken;
+      $('token-bits').textContent = n * 8;
+      $('token-length-output').textContent = lastToken.length;
+      $('token-recommend').textContent = n >= 16 ? 'CSPRNG ✓' : 'Только демо';
+      $('token-note').textContent = `${n} байт = ${n * 8} бит. Представление: ${format === 'hex' ? 'HEX' : format === 'b64' ? 'Base64' : 'URL-safe Base64'}. Для серверных секретов используйте Python secrets и требования вашего протокола.`;
+    } catch (e) { lastToken = ''; $('token-output').textContent = e.message; }
+  }
+  $('token-generate').addEventListener('click', generateToken);
+  ['token-length', 'token-format'].forEach(id => $(id).addEventListener('change', generateToken));
+  $('token-copy').addEventListener('click', () => doCopy($('token-copy'), lastToken));
+  generateToken();
+
+  // Password composition: cryptographically uniform choice of each character,
+  // and unbiased Fisher–Yates for the optional required-group policy.
+  const groups = {
+    lower: 'abcdefghijklmnopqrstuvwxyz',
+    upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    digits: '0123456789',
+    special: '!@#$%^&*_-+'
+  };
+  let lastPassword = '';
+  let passwordVisible = true;
+  function generatePassword() {
+    const selected = Array.from(document.querySelectorAll('.password-group:checked')).map(input => groups[input.value]);
+    const length = Number($('password-len').value);
+    const requireAll = $('password-each').checked;
+    const alphabet = selected.join('');
+    $('password-len-label').textContent = length;
+    if (!selected.length) { lastPassword = ''; $('password-output').textContent = 'Выберите хотя бы одну группу символов.'; $('password-meter').style.width = '0%'; return; }
+    if (requireAll && length < selected.length) { lastPassword = ''; $('password-output').textContent = 'Длина меньше числа обязательных групп.'; return; }
+    try {
+      const pool = requireAll ? selected.map(group => group[secureIndex(group.length)]) : [];
+      while (pool.length < length) pool.push(alphabet[secureIndex(alphabet.length)]);
+      if (requireAll) {
+        for (let i = pool.length - 1; i > 0; i--) {
+          const j = secureIndex(i + 1);
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+      }
+      lastPassword = pool.join('');
+      passwordVisible = true;
+      $('password-output').textContent = lastPassword;
+      const upperBound = length * Math.log2(alphabet.length);
+      $('password-meter').style.width = Math.min(100, upperBound / 256 * 100) + '%';
+      $('password-info').textContent = `Алфавит: ${alphabet.length} символов. ${requireAll ? 'Политика обязательных групп: ' : 'Независимый равномерный выбор: '}L·log₂(N) ≈ ${upperBound.toFixed(1)} бит${requireAll ? ' (верхняя ориентировочная оценка; точная энтропия у этой схемы другая)' : ' (идеальная модель)'}. Генерация выполняется локально Web Crypto.`;
+    } catch (e) { lastPassword = ''; $('password-output').textContent = e.message; }
+  }
+  $('password-generate').addEventListener('click', generatePassword);
+  $('password-copy').addEventListener('click', () => doCopy($('password-copy'), lastPassword));
+  $('password-hide').addEventListener('click', () => { if (!lastPassword) return; passwordVisible = !passwordVisible; $('password-output').textContent = passwordVisible ? lastPassword : '●'.repeat(lastPassword.length); });
+  $('password-len').addEventListener('input', () => { $('password-len-label').textContent = $('password-len').value; });
+  generatePassword();
+
+  // Timing animation is conceptual, not a local side-channel benchmark.
+  function updateTiming() {
+    const mismatchedAt = Number($('timing-position').value);
+    $('timing-position-label').textContent = mismatchedAt;
+    const tape = $('timing-tape'); tape.replaceChildren();
+    for (let i = 1; i <= 12; i++) {
+      const cell = document.createElement('span');
+      cell.className = 'cell' + (i < mismatchedAt ? ' hi' : '');
+      cell.textContent = i === mismatchedAt ? '✕' : i < mismatchedAt ? '✓' : '·';
+      cell.title = i < mismatchedAt ? 'Совпало' : i === mismatchedAt ? 'Первое несовпадение' : 'Алгоритм не дошёл до этой позиции';
+      tape.append(cell);
+    }
+    $('timing-output').textContent = `Наивное сравнение: проверены позиции 1…${mismatchedAt}; первая ошибка в позиции ${mismatchedAt}.\nРанний выход раскрывает длину совпадающего префикса через число выполненных сравнений.\ncompare_digest предназначен для уменьшения такой зависимости.`;
+  }
+  $('timing-position').addEventListener('input', updateTiming);
+  $('timing-run').addEventListener('click', updateTiming);
+  updateTiming();
+
+  // Quiz: small formative assessment with rationale.
+  const questions = Array.from(document.querySelectorAll('.quiz-q'));
+  $('quiz-check').addEventListener('click', () => {
+    let correct = 0;
+    let answered = 0;
+    questions.forEach(q => {
+      const checked = q.querySelector('input:checked');
+      const feedback = q.querySelector('.quiz-feedback');
+      if (checked) answered++;
+      if (checked && checked.value === q.dataset.answer) correct++;
+      const label = !checked ? 'Ответ не выбран.' : checked.value === q.dataset.answer ? 'Верно.' : 'Неверно.';
+      feedback.textContent = `${label} ${feedback.dataset.explain}`;
+      feedback.style.color = checked && checked.value === q.dataset.answer ? '#147f73' : '#a45444';
+    });
+    $('quiz-score').textContent = `Верно: ${correct} из ${questions.length} · Отвечено: ${answered}`;
+  });
+  $('quiz-reset').addEventListener('click', () => {
+    questions.forEach(q => {
+      q.querySelectorAll('input').forEach(i => { i.checked = false; });
+      q.querySelector('.quiz-feedback').textContent = '';
+    });
+    $('quiz-score').textContent = '';
+  });
+
+  // Progress and active section link.
+  function updateProgress() {
+    const doc = document.documentElement;
+    const scrollable = doc.scrollHeight - window.innerHeight;
+    $('read-progress').style.width = (scrollable > 0 ? Math.min(100, Math.max(0, window.scrollY / scrollable * 100)) : 100) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive: true});
+  window.addEventListener('resize', updateProgress);
+  updateProgress();
+  const sideLinks = Array.from(document.querySelectorAll('.side .navlink'));
+  const linkById = new Map(sideLinks.map(link => [link.getAttribute('href').slice(1), link]));
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        sideLinks.forEach(link => link.classList.remove('active'));
+        linkById.get(entry.target.id)?.classList.add('active');
+      });
+    }, {rootMargin: '-15% 0px -65% 0px', threshold: 0});
+    document.querySelectorAll('main .section').forEach(sec => observer.observe(sec));
+  }
+  $('back-top').addEventListener('click', () => window.scrollTo({top: 0, behavior: window.matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth'}));
+})();
+</script>
+</body>
+</html>
