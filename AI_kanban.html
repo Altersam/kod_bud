@@ -23,15 +23,18 @@
 <div class="helper"><span>💡 Щёлкните по карточке, чтобы открыть объяснение и практику. Карточки можно перетаскивать мышью или перемещать кнопками.</span><span><strong id="saveIndicator" role="status" aria-live="polite">Проверяем сохранение…</strong> · общая доска хранится в Firebase Firestore</span></div></main>
 <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><div class="dialog"><div class="dialog-head"><div><div class="dialog-kicker" id="dialogKicker"></div><h2 id="dialogTitle">Тема</h2></div><button class="btn ghost" id="closeBtn" aria-label="Закрыть карточку">✕ Закрыть</button></div><div class="dialog-body" id="dialogContent"></div><div class="dialog-foot"><span class="note" id="dialogStatus">Карточка в бэклоге</span><div class="foot-buttons"><button class="btn" id="prevBtn">← Предыдущая</button><button class="btn" id="nextBtn">Следующая →</button><button class="btn primary" id="nextStatusBtn">Начать работу</button></div></div></div></div>
 <div class="overlay" id="loginOverlay" role="dialog" aria-modal="true" aria-labelledby="loginTitle"><form class="auth-dialog" id="loginForm"><h2 id="loginTitle">Вход преподавателя</h2><p>Только преподаватель может менять общую доску. Ученики видят обновления автоматически.</p><label>Электронная почта<input id="loginEmail" type="email" autocomplete="username" required placeholder="teacher@example.com"></label><label>Пароль<input id="loginPassword" type="password" autocomplete="current-password" required></label><div class="error" id="loginError" role="status"></div><div class="buttons"><button class="btn" type="button" id="loginCancel">Отмена</button><button class="btn primary" type="submit" id="loginSubmit">Войти</button></div></form></div>
-<!-- Firebase → Project settings → General → Your apps → SDK setup and configuration. -->
-<!-- UID преподавателя уже указан. Заполните только 4 поля из firebaseConfig. -->
+<!-- Публичная конфигурация Firebase Web App. Закрытые ключи/пароли здесь не хранятся. -->
+<!-- Доступ на запись дополнительно ограничивается опубликованными правилами Firestore. -->
 <script>
 window.ALTERNA_FIREBASE = {
   config: {
-    apiKey: 'REPLACE_ME_API_KEY',
-    authDomain: 'REPLACE_ME_PROJECT.firebaseapp.com',
-    projectId: 'REPLACE_ME_PROJECT',
-    appId: 'REPLACE_ME_APP_ID'
+    apiKey: 'AIzaSyAAgop5Xni8KSI6X5S9GUsvyXOIsJ2kxHQ',
+    authDomain: 'lfu-kanban-544b4.firebaseapp.com',
+    projectId: 'lfu-kanban-544b4',
+    storageBucket: 'lfu-kanban-544b4.firebasestorage.app',
+    messagingSenderId: '506142514351',
+    appId: '1:506142514351:web:cb477535354406977fc85a',
+    measurementId: 'G-T26PJZV1Y6'
   },
   teacherUid: 'ADftVB74DahT8InkCKJNyBu5F663'
 };
