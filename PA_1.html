@@ -16,8 +16,47 @@
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 @media print{body{background:#fff;color:#111;print-color-adjust:exact}.sidebar,.topbar,.reading-progress,.hero-art,.hero-buttons,.task-tabs,.code-actions,.lab-run,.example-btn,.quiz-footer-buttons,.bottom-navigation,.site-footer,.menu-button{display:none!important}.app-layout{display:block}.hero{background:#eef5f5;color:#123;min-height:auto;padding:25px}.hero h1{font-size:40px}.hero-intro,.section-heading p{color:#345}.section{padding:20px 12px;max-width:none}.surface,.task-card,.quiz-card,.ref-card{color:#132b31;break-inside:avoid;box-shadow:none}.task-card{page-break-inside:avoid}.task-panel{display:block!important}.lab-wrap{display:none}.code-content{color:#fff}.code-scroll{max-height:none}.task-top-desc{color:#e8f7f7}.quiz-details{display:block}.quiz-details>*{display:block}.source-tiles a{color:#111}.task-card{margin:15px 0}a[href]:after{content:none}}
 </style>
-</head>
-<body>
+<!-- KD_COURSE_HEAD -->
+<style id="kd-course-theme">
+/* KD design tokens are intentionally scoped: the original lesson CSS/JS is preserved. */
+.kd-wrap{font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:#e8f4f5;line-height:1.48;box-sizing:border-box}
+.kd-wrap *{box-sizing:border-box}.kd-wrap a{color:inherit}.kd-top,.kd-foot,.kd-enhance{isolation:isolate;position:relative}
+.kd-top{background:#081a27;color:#e9f4f5;border-bottom:2px solid #367e8c;box-shadow:0 9px 32px #091f2822;z-index:150;}
+.kd-topin{max-width:1370px;margin:auto;padding:11px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.kd-top a{display:inline-flex;align-items:center;gap:7px;text-decoration:none!important;font-size:13px!important;font-weight:650;padding:8px 12px;border-radius:11px;border:1px solid #355365!important;background:#102b3b;color:#e7f5f6!important;line-height:1.25}
+.kd-top a:hover{background:#1d4655;color:white!important}.kd-logo{display:inline-flex;align-items:center;gap:8px;font-weight:800;letter-spacing:-.02em;font-size:14px;margin-right:auto;color:#e9f4f5}.kd-logo svg{width:25px;height:25px;fill:none;stroke:#81dacd;stroke-width:1.8}
+.kd-counter{color:#a8c5cf;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:0 8px}
+.kd-top .kd-current{background:#226275;border-color:#3ba5b4;color:#fff!important}
+.kd-enhance{max-width:1190px;margin:38px auto 60px;padding:0 24px;color:#e7f2f5;}
+.kd-enhance a{color:#9de1db!important}.kd-enhance p{margin:0 0 13px;color:#c6dbe2}.kd-enhance h2,.kd-enhance h3{color:#f2f8fa;line-height:1.2;margin:0 0 15px;letter-spacing:-.03em}.kd-enhance h2{font-size:clamp(23px,3.4vw,36px)}.kd-enhance h3{font-size:19px}
+.kd-panel{background:linear-gradient(145deg,#102737,#0b1e2d);border:1px solid #254558;border-radius:23px;overflow:hidden;box-shadow:0 25px 65px #001e2a18}
+.kd-panelhead{padding:30px 31px 18px;display:flex;align-items:flex-start;justify-content:space-between;gap:22px;flex-wrap:wrap}
+.kd-eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:#8fd9d3;font-weight:780;margin-bottom:12px}.kd-lede{font-size:16px;color:#d0e2e7!important;max-width:840px}.kd-status{white-space:nowrap;background:#153e4b;border:1px solid #357e86;color:#abeee4;padding:8px 12px;border-radius:100px;font-size:12px;font-weight:750}
+.kd-goals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;padding:0 31px 20px}.kd-goal{background:#143141;border:1px solid #284858;padding:13px 14px;border-radius:13px;font-size:13px;color:#d5e9ed}.kd-goal:before{content:"✓";color:#82e0bf;font-weight:900;margin-right:7px}
+.kd-map{background:#091a27;padding:20px 26px;border-block:1px solid #294456;overflow-x:auto}.kd-map svg{display:block;width:100%;min-width:680px;height:auto;max-height:230px}.kd-map figcaption{font-size:12px;color:#99bec7;margin-top:8px}
+.kd-split{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:26px 31px}.kd-box{border:1px solid #294758;border-radius:17px;padding:22px;background:#132d3d;min-width:0}.kd-box strong{color:#f7d6a0}.kd-box p,.kd-box li{font-size:14px;line-height:1.7;color:#c9dde3}.kd-box code{color:#b3f0df}
+.kd-panel pre{background:#061521;border:1px solid #294554;color:#d5eef1;padding:21px;border-radius:15px;margin:0;white-space:pre;overflow:auto;font-size:13px;line-height:1.65;tab-size:4}.kd-panel pre code{color:inherit!important;font:inherit}
+.kd-lab{padding:0 31px 30px}.kd-labbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.kd-labbar h3{margin:0}.kd-copy{background:#1f6a73!important;color:white!important;border:1px solid #4aa0a9!important;border-radius:9px!important;padding:9px 13px!important;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:0!important}
+.kd-copy:hover{background:#25818a!important}.kd-output{padding:11px 16px;background:#102f36;color:#a8ebc8;border:1px solid #2a5a55;border-radius:0 0 13px 13px;font-size:13px;white-space:pre-wrap;word-break:break-word}.kd-output b{color:#d0f5ef}
+.kd-quiz{padding:25px 31px 29px;background:#102738;border-top:1px solid #2b4b5e}.kd-options{display:grid;grid-template-columns:1fr;gap:9px;margin:14px 0}.kd-option{display:block;width:100%;text-align:left!important;border:1px solid #315466!important;background:#1a3545!important;color:#e9f4f5!important;border-radius:11px!important;padding:11px 15px!important;font-size:14px!important;line-height:1.6!important;cursor:pointer}.kd-option:hover{border-color:#59abb3!important;background:#204757!important}.kd-option.kd-good{background:#174c42!important;border-color:#65bf94!important}.kd-option.kd-bad{background:#543035!important;border-color:#bc7380!important}.kd-feedback{padding:10px 13px;min-height:36px;font-size:14px;line-height:1.65;color:#cee6e9}
+.kd-complete{background:#c6eadf!important;color:#10352f!important;padding:12px 18px!important;font-size:14px!important;font-weight:800;border:0!important;border-radius:12px!important;cursor:pointer}
+.kd-complete:hover{background:#e0fff0!important}.kd-complete[aria-pressed="true"]{background:#2a765a!important;color:#e6fffa!important}.kd-resources{display:flex;flex-wrap:wrap;gap:9px;padding:18px 31px 28px;border-top:1px solid #294758}.kd-resources a{font-size:13px!important;border:1px solid #366275;border-radius:9px;padding:9px 12px;text-decoration:none!important;background:#133648}.kd-resources a:hover{background:#245568}
+.kd-foot{background:#091b28;color:#effafa;border-top:1px solid #2b5661;padding:25px 24px}.kd-footin{max-width:1170px;margin:auto;display:flex;align-items:center;gap:14px;justify-content:space-between;flex-wrap:wrap}.kd-foot h2{font-size:20px;margin:0 0 5px;color:#effafa}.kd-foot p{font-size:13px;color:#a2bec8;margin:0}.kd-foot a{display:inline-flex;align-items:center;justify-content:center;text-decoration:none!important;padding:11px 16px;border:1px solid #406a75!important;background:#163748;color:#e9f5f5!important;border-radius:11px;font-weight:750;font-size:14px!important}.kd-foot a:hover{background:#216079}.kd-foot a.kd-next{background:#a7ddcb;color:#123c38!important;border-color:#a7ddcb!important}
+@media(max-width:800px){.kd-topin{padding:10px 13px}.kd-logo{width:100%}.kd-top a{padding:8px;font-size:12px!important}.kd-enhance{padding:0 13px}.kd-goals{grid-template-columns:1fr;padding:0 18px 18px}.kd-panelhead{padding:23px 19px 15px}.kd-split{grid-template-columns:1fr;padding:18px;gap:12px}.kd-lab{padding:0 18px 20px}.kd-quiz{padding:20px 18px}.kd-resources{padding:18px}.kd-counter{display:none}.kd-map{padding:12px}}
+@media(max-width:780px){body:has(#kd-mission[data-kd-lesson="1"]) .grid2,body:has(#kd-mission[data-kd-lesson="1"]) .grid3,body:has(#kd-mission[data-kd-lesson="1"]) .grid4{grid-template-columns:minmax(0,1fr)!important}body:has(#kd-mission[data-kd-lesson="1"]) .surface{min-width:0;max-width:100%}body:has(#kd-mission[data-kd-lesson="1"]) .surface pre{max-width:100%;overflow:auto}}
+@media(prefers-reduced-motion:reduce){.kd-wrap *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+<!-- /KD_COURSE_HEAD --></head>
+<body><!-- KD_COURSE_TOP -->
+<div class="kd-wrap kd-top" aria-label="Навигация курса Код будущего"><div class="kd-topin">
+  <div class="kd-logo"><svg viewBox="0 0 28 28" role="img" aria-label="щит"><path d="M14 2 24 6v7c0 7-4 10-10 13C8 23 4 20 4 13V6z"/><path d="m9 14 3.4 3.4L19 10"/></svg><span>КОД БУДУЩЕГО <span style="color:#80b5c4;font-weight:500">/ SECURITY LAB</span></span></div>
+  <span class="kd-counter">ЗАНЯТИЕ 15 / 15</span>
+  <a href="index.html" aria-label="Оглавление курса">▦ Оглавление</a>
+  <a href="lesson_14.html" aria-label="Предыдущее занятие">← Назад</a>
+  <a class="kd-current" href="#kd-mission">⊕ Кейс урока</a>
+  <a href="index.html" aria-label="Следующее занятие">Вперёд →</a>
+ </div></div>
+<!-- /KD_COURSE_TOP -->
 <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
 <div class="app-layout">
   <aside class="sidebar" id="sidebar" aria-label="Навигация по занятию">
@@ -400,4 +439,72 @@
   window.addEventListener('beforeprint',()=>$$('.quiz-details').forEach(el=>{el.open=true;}));
 })();
 </script>
-</body></html>
+<!-- KD_COURSE_EXTRA -->
+<div class="kd-wrap kd-enhance" id="kd-mission" data-kd-lesson="15">
+ <div class="kd-panel">
+  <div class="kd-panelhead">
+   <div><div class="kd-eyebrow">Единый сквозной кейс / Портал «Сигнал» · миссия 15</div>
+   <h2>Безопасность на практике: Итог модуля</h2>
+   <p class="kd-lede">Итоговая проверка знаний и практики: моделирование угроз, разбор кода, защита данных и аргументация решений.</p></div>
+   <span class="kd-status">● Разбор → код → проверка</span>
+  </div>
+  <div class="kd-goals"><div class="kd-goal">Сопоставлять активы и угрозы</div><div class="kd-goal">Объяснять поведение Python-кода</div><div class="kd-goal">Проводить технический аудит</div></div>
+  <figure class="kd-map" style="margin:0"><svg viewBox="0 0 1080 214" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схема: от актива и угрозы к сигналу, защите и проверке"><defs><linearGradient id="kdgv" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#15394d"/><stop offset="1" stop-color="#112c3c"/></linearGradient></defs><rect x="8" y="18" rx="14" width="202" height="161" fill="url(#kdgv)" stroke="#335d70"/><rect x="22" y="34" rx="4" width="5" height="21" fill="#c3e8ff"/><text x="37" y="49" fill="#c3e8ff" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1">АКТИВ</text><text x="24" y="78" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">Учебная платформа</text><text x="24" y="102" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">«Сигнал»</text><text x="24" y="159" fill="#668e9e" font-family="monospace" font-size="12">01 / 05</text><line x1="212" y1="95" x2="217" y2="95" stroke="#6b9eaa" stroke-width="2" stroke-dasharray="3 3"/><path d="M213 90 l5 5 -5 5" fill="none" stroke="#6b9eaa" stroke-width="2"/><rect x="222" y="18" rx="14" width="202" height="161" fill="url(#kdgv)" stroke="#335d70"/><rect x="236" y="34" rx="4" width="5" height="21" fill="#f0bd92"/><text x="251" y="49" fill="#f0bd92" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1">УГРОЗА</text><text x="238" y="78" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">Накопленные</text><text x="238" y="102" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">ошибки реализации</text><text x="238" y="159" fill="#668e9e" font-family="monospace" font-size="12">02 / 05</text><line x1="426" y1="95" x2="431" y2="95" stroke="#6b9eaa" stroke-width="2" stroke-dasharray="3 3"/><path d="M427 90 l5 5 -5 5" fill="none" stroke="#6b9eaa" stroke-width="2"/><rect x="436" y="18" rx="14" width="202" height="161" fill="url(#kdgv)" stroke="#335d70"/><rect x="450" y="34" rx="4" width="5" height="21" fill="#e2d3a1"/><text x="465" y="49" fill="#e2d3a1" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1">СИГНАЛ</text><text x="452" y="78" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">Аномалии, слабые</text><text x="452" y="102" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">пароли и права</text><text x="452" y="159" fill="#668e9e" font-family="monospace" font-size="12">03 / 05</text><line x1="640" y1="95" x2="645" y2="95" stroke="#6b9eaa" stroke-width="2" stroke-dasharray="3 3"/><path d="M641 90 l5 5 -5 5" fill="none" stroke="#6b9eaa" stroke-width="2"/><rect x="650" y="18" rx="14" width="202" height="161" fill="url(#kdgv)" stroke="#335d70"/><rect x="664" y="34" rx="4" width="5" height="21" fill="#9be3d5"/><text x="679" y="49" fill="#9be3d5" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1">ЗАЩИТА</text><text x="666" y="78" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">Комплексная</text><text x="666" y="102" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">проверка: модель</text><text x="666" y="126" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">угроз, Python и</text><text x="666" y="159" fill="#668e9e" font-family="monospace" font-size="12">04 / 05</text><line x1="854" y1="95" x2="859" y2="95" stroke="#6b9eaa" stroke-width="2" stroke-dasharray="3 3"/><path d="M855 90 l5 5 -5 5" fill="none" stroke="#6b9eaa" stroke-width="2"/><rect x="864" y="18" rx="14" width="202" height="161" fill="url(#kdgv)" stroke="#335d70"/><rect x="878" y="34" rx="4" width="5" height="21" fill="#ccd3fc"/><text x="893" y="49" fill="#ccd3fc" font-family="Arial,sans-serif" font-size="13" font-weight="700" letter-spacing="1">ПРОВЕРКА</text><text x="880" y="78" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">Представить</text><text x="880" y="102" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">обоснованное,</text><text x="880" y="126" fill="#e3f3f6" font-family="Arial,sans-serif" font-size="16">воспроизводимое</text><text x="880" y="159" fill="#668e9e" font-family="monospace" font-size="12">05 / 05</text></svg><figcaption>Универсальная логика курса: защищаемый актив → потенциальная угроза → наблюдаемый сигнал → контроль → способ проверки. Сигнал сам по себе не доказывает атаку.</figcaption></figure>
+  <div class="kd-split">
+   <div class="kd-box"><h3>▣ Ситуация из практики</h3><p>В финале проекта требуется проверить несколько защитных механизмов вместе и объяснить, как получен каждый ответ.</p><p><strong>Актив:</strong> Учебная платформа «Сигнал». <strong>Угроза:</strong> Накопленные ошибки реализации.</p></div>
+   <div class="kd-box"><h3>◉ Разбираем причинно-следственную связь</h3><p>Сильный ответ содержит исходные данные, выбор алгоритма, ограничения и проверяемый результат. Итоговая аттестация объединяет все четырнадцать занятий.</p><p><strong>Что проверяем:</strong> Представить обоснованное, воспроизводимое решение.</p></div>
+  </div>
+  <div class="kd-lab"><div class="kd-labbar"><h3>⌘ Python · фрагмент для самостоятельной проверки</h3><button class="kd-copy" type="button" id="kd-copy-15">⧉ Скопировать код</button></div>
+  <pre><code id="kd-code-15">from collections import Counter
+events = [&quot;OK&quot;, &quot;FAIL&quot;, &quot;FAIL&quot;, &quot;BLOCKED&quot;, &quot;FAIL&quot;]
+c = Counter(events)
+print(&quot;Ошибок:&quot;, c[&quot;FAIL&quot;])
+print(&quot;Блокировок:&quot;, c[&quot;BLOCKED&quot;])
+</code></pre><div class="kd-output"><b>Ожидаемый результат:</b>
+Ошибок: 3
+Блокировок: 1</div>
+  <p style="font-size:12px;margin:12px 0 0;color:#a9c7d0">Код запускается в Python 3 и использует только стандартную библиотеку. Эксперименты выполняйте на учебных данных и в разрешённом окружении.</p></div>
+  <div class="kd-quiz"><div class="kd-eyebrow">Проверь понимание / Задание без оценки</div><h3>Какая структура технического решения наиболее полна?</h3>
+   <div class="kd-options" id="kd-answers-15"><button class="kd-option" type="button" data-kd-answer="0" onclick="kdLessonAnswer15(this,0)">Только название функции</button><button class="kd-option" type="button" data-kd-answer="1" onclick="kdLessonAnswer15(this,1)">Условие → модель угроз → алгоритм → проверка и ограничения</button><button class="kd-option" type="button" data-kd-answer="2" onclick="kdLessonAnswer15(this,2)">Только скриншот</button></div>
+   <div class="kd-feedback" id="kd-feedback-15" aria-live="polite">Выберите вариант, чтобы увидеть пояснение.</div>
+   <button type="button" class="kd-complete" id="kd-complete-15" aria-pressed="false">✓ Отметить урок пройденным</button>
+  </div>
+  <div class="kd-resources"><span style="flex-basis:100%;font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:#9fc6d0;font-weight:700">Достоверные источники и дальнейшее чтение</span><a href="https://docs.python.org/3/" target="_blank" rel="noopener noreferrer">Python Documentation ↗</a><a href="https://cheatsheetseries.owasp.org/" target="_blank" rel="noopener noreferrer">OWASP Cheat Sheet Series ↗</a><a href="https://www.nist.gov/cyberframework" target="_blank" rel="noopener noreferrer">NIST CSF ↗</a></div>
+ </div>
+</div>
+<script id="kd-script-15">
+(function(){
+ 'use strict';
+ var n=15, key='kod_bud_v3_done_'+n;
+ var q={"c": 1, "why": "Проверяемое решение объясняет постановку задачи, воспроизводимый алгоритм, результат и ограничения его применимости."};
+ var answered=false;
+ var btn=document.getElementById('kd-complete-'+n);
+ function updateState(){
+  var done=false; try{done=localStorage.getItem(key)==='1'}catch(e){}
+  btn.setAttribute('aria-pressed',String(done));
+  btn.textContent=done?'✓ Урок отмечен пройденным':'✓ Отметить урок пройденным';
+ }
+ window['kdLessonAnswer'+n]=function(node,index){
+  var all=document.querySelectorAll('#kd-answers-'+n+' .kd-option');
+  all.forEach(function(x){x.classList.remove('kd-good','kd-bad')});
+  node.classList.add(index===q.c?'kd-good':'kd-bad');
+  all[q.c].classList.add('kd-good');
+  document.getElementById('kd-feedback-'+n).textContent=(index===q.c?'Верно. ':'Верный ответ выделен. ')+q.why;
+ };
+ btn.addEventListener('click',function(){
+  try{localStorage.setItem(key,btn.getAttribute('aria-pressed')==='true'?'0':'1')}catch(e){}
+  updateState();
+ });
+ document.getElementById('kd-copy-'+n).addEventListener('click',function(e){
+  var b=e.currentTarget;var code=document.getElementById('kd-code-'+n).textContent;
+  function success(){b.textContent='✓ Скопировано';setTimeout(function(){b.textContent='⧉ Скопировать код'},2100)}
+  if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(code).then(success).catch(fallback)}
+  else fallback();
+  function fallback(){var ta=document.createElement('textarea');ta.value=code;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');success()}finally{ta.remove()}}
+ });
+ updateState();
+})();
+</script>
+<!-- /KD_COURSE_EXTRA --><!-- KD_COURSE_FOOT -->
+<footer class="kd-wrap kd-foot" aria-label="Навигация между уроками"><div class="kd-footin"><div><div class="kd-eyebrow">КОД БУДУЩЕГО / ЗАНЯТИЕ 15 ИЗ 15</div><h2>Модуль 1 завершён</h2><p>Принцип каждого урока: понять угрозу · написать безопасный код · проверить результат</p></div><div style="display:flex;gap:10px;flex-wrap:wrap"><a href="lesson_14.html">← Урок 14</a><a href="index.html">Все 15 занятий</a><a class="kd-next" href="index.html">К оглавлению →</a></div></div></footer>
+<!-- /KD_COURSE_FOOT --></body></html>

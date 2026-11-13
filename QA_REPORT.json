@@ -1,0 +1,116 @@
+{
+  "lessons_available": 15,
+  "lessons_missing": [],
+  "additional_files_untouched": [
+    "AI_img.html",
+    "AI_kanban.html"
+  ],
+  "legacy_original_saved": false,
+  "qa": {
+    "PA_1.html": {
+      "bytes": 122748,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_1.html": {
+      "bytes": 1081519,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_10.html": {
+      "bytes": 105462,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_11.html": {
+      "bytes": 150011,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_12.html": {
+      "bytes": 83102,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_13.html": {
+      "bytes": 97531,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_14.html": {
+      "bytes": 98793,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_2.html": {
+      "bytes": 147919,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_3.html": {
+      "bytes": 135417,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_4.html": {
+      "bytes": 103969,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_5.html": {
+      "bytes": 142067,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_6.html": {
+      "bytes": 108695,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_7.html": {
+      "bytes": 41081,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_8.html": {
+      "bytes": 39769,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    },
+    "lesson_9.html": {
+      "bytes": 39225,
+      "courseTop": 2,
+      "mission": 2,
+      "footer": 2,
+      "broken_local_links": []
+    }
+  }
+}
