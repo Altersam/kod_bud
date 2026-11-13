@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#112e35">
+<meta name="description" content="Интерактивное занятие 6: структуры данных Python и задачи кибербезопасности — теория, алгоритмы, визуализация, 11 задач, 2 теста и копируемые решения.">
+<title>Занятие 6 — Структуры данных Python и кибербезопасность</title>
+<style>
+:root{--bg:#f5f8fa;--surface:#fff;--ink:#132d39;--muted:#607884;--line:#dae6e8;--teal:#146d70;--mint:#00a89b;--cyan:#b5ebe7;--light:#eaf7f4;--navy:#102f38;--blue:#2b6fb3;--orange:#d67b2e;--good:#178a69;--bad:#b44b4f;--radius:18px;--shadow:0 10px 34px rgba(30,64,72,.055)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.65;font-size:15px}button,textarea,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #57c6ca;outline-offset:3px}a{color:#066f80;text-decoration-thickness:1px;text-underline-offset:3px}a:hover{color:#094d60}p{margin:0 0 12px}h1,h2,h3,h4{line-height:1.19;letter-spacing:-.025em}h1{font-size:clamp(36px,4.4vw,66px);font-weight:720;margin:12px 0 16px}h2{font-size:clamp(26px,2.6vw,38px);margin:0 0 14px}h3{font-size:22px;margin:0 0 12px}h4{font-size:16px;margin:0 0 10px}small,.muted{color:var(--muted)}.mono,code,pre,textarea.example-input{font-family:ui-monospace,Menlo,Consolas,"Liberation Mono",monospace}code{font-size:.94em;background:#e8f3f4;color:#155d68;border-radius:5px;padding:2px 5px}pre{white-space:pre-wrap;overflow-wrap:anywhere;margin:0}ul,ol{padding-left:22px}.shell{max-width:1600px;margin:auto;display:grid;grid-template-columns:256px minmax(0,1fr);gap:32px;padding:25px 34px 64px}.side{position:sticky;top:20px;align-self:start;height:calc(100vh - 40px);overflow:auto;scrollbar-width:thin}.brand{display:flex;gap:11px;align-items:center;margin:8px 0 24px;text-decoration:none;color:var(--ink)}.brandmark{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;color:#fff;background:linear-gradient(145deg,#0a4d63,#0aab9f);font-size:22px;box-shadow:0 8px 15px #0b7d8530}.brand b{display:block;line-height:1.2;font-size:16px}.brand span:last-child{font-size:11px;color:var(--muted)}.side-title{margin:22px 11px 8px;color:#8498a1;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.nav-link{border-radius:11px;color:#38525e;display:flex;gap:9px;align-items:center;padding:10px 12px;text-decoration:none;font-weight:570;font-size:13px}.nav-link:hover,.nav-link.active{background:#dcefed;color:var(--teal)}.nav-link .num{margin-left:auto;font-size:11px;font-weight:800;color:#68868c;background:#ecf3f4;border-radius:7px;padding:1px 7px}.side-foot{margin:30px 11px;color:var(--muted);font-size:12px}.side-progress{height:7px;border-radius:20px;background:#d5e5e7;overflow:hidden;margin:9px 0}.side-progress i{display:block;background:linear-gradient(90deg,#00a6a0,#5dba8d);height:100%;width:0%;transition:width .3s}main{min-width:0}.hero{background:radial-gradient(circle at 84% 18%,#19798377,transparent 30%),radial-gradient(circle at 45% 120%,#059b9850,transparent 35%),linear-gradient(115deg,#102d37,#0b4a53);color:#fff;border-radius:26px;padding:clamp(28px,4.5vw,67px);position:relative;overflow:hidden}.hero:before{content:"{  }";position:absolute;right:3%;bottom:-85px;font-size:320px;color:#ffffff08;font-weight:800;line-height:1}.hero p{color:#cde4e5;max-width:680px;font-size:16px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#92dad4}.hero h1{max-width:800px}.hero-tags{display:flex;flex-wrap:wrap;gap:9px;margin-top:29px}.hero-tags span{background:#ffffff18;border:1px solid #ffffff27;border-radius:30px;padding:6px 12px;font-size:12px;color:#dcf8f4}.hero-stats{display:flex;gap:30px;flex-wrap:wrap;margin-top:33px}.hero-stats strong{font-size:25px;display:block;line-height:1.1}.hero-stats span{color:#afd4d5;font-size:12px}.section{margin:56px 0;scroll-margin-top:32px}.section-head{display:flex;justify-content:space-between;gap:14px;align-items:end;flex-wrap:wrap;margin-bottom:22px}.section-head p{max-width:800px;color:var(--muted);margin:0}.kicker{font-size:11px;text-transform:uppercase;letter-spacing:.17em;font-weight:800;color:var(--teal);margin-bottom:9px}.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}.panel p:last-child{margin-bottom:0}.panel-blue{background:linear-gradient(140deg,#e9f5f7,#fdfefe);border-color:#bfe2e4}.panel h3{font-size:18px}.concept-icon{width:40px;height:40px;border-radius:12px;background:#e0f3f0;display:grid;place-items:center;color:#066b6c;font-size:20px;margin-bottom:14px}.concept{min-height:200px}.concept pre{background:#f1f7f8;padding:13px;border-radius:10px;margin-top:12px;font-size:12px}.data-table{width:100%;border-collapse:collapse;font-size:13px}.data-table th,.data-table td{padding:11px 13px;border-bottom:1px solid var(--line);text-align:left}.data-table th{background:#eaf4f4;font-weight:750}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}.flow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:18px}.flow-cell{border:1px solid #afd9d8;border-radius:13px;padding:18px 12px;text-align:center;flex:1 1 135px;background:#f4fcfb}.flow-cell strong{display:block;font-size:15px}.flow-cell span{font-size:12px;color:var(--muted)}.flow-arrow{font-size:26px;color:var(--teal)}.callout{border-left:4px solid #2e9b9a;background:#eaf6f5;border-radius:0 12px 12px 0;padding:14px 17px;margin:16px 0}.callout.warn{background:#fff7ed;border-color:var(--orange)}.callout p{margin:0}.svg-stage{border:1px solid var(--line);background:linear-gradient(135deg,#fcfefe,#eff8f9);border-radius:17px;padding:18px;overflow:hidden}.svg-stage svg{max-width:100%;height:auto}.pulse-dot{transform-origin:center;animation:pulse 2.2s ease-in-out infinite}.pulse-dot:nth-child(2){animation-delay:.4s}.pulse-dot:nth-child(3){animation-delay:.8s}@keyframes pulse{0%,100%{opacity:.6;transform:scale(.92)}50%{opacity:1;transform:scale(1.06)}}.animated-arrow{animation:drift 2.5s linear infinite}@keyframes drift{from{stroke-dashoffset:35}to{stroke-dashoffset:0}}.code-inline{background:#17363f;color:#e4f2f4;border-radius:13px;padding:16px;overflow:auto;font:12px/1.85 ui-monospace,monospace}.pill{font-size:11px;color:#116c71;background:#e0f6f3;border-radius:18px;padding:5px 11px;font-weight:750;white-space:nowrap}.task{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;overflow:hidden;margin:16px 0}.task[open]{border-color:#b8d8d9}.task summary{list-style:none;cursor:pointer;padding:21px 23px;display:flex;align-items:center;gap:16px}.task summary::-webkit-details-marker{display:none}.task summary:hover{background:#f8fbfb}.task-index{background:#e1f3f2;color:#0d7579;width:42px;height:42px;flex-shrink:0;border-radius:13px;display:grid;place-items:center;font-weight:840;font-size:12px}.task-sum-title{font-size:17px;line-height:1.3;font-weight:750;flex:1}.task summary small{display:block;font-size:12px;margin-top:3px}.chev{font-size:20px;color:#60878e;transition:transform .2s}.task[open] .chev{transform:rotate(180deg)}.task-body{padding:0 24px 27px}.task-divider{height:1px;background:var(--line);margin:0 0 20px}.task-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.task-grid .panel{padding:18px;box-shadow:none}.task .label{font-weight:780;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#60818a;display:block;margin:0 0 9px}.sample{background:#f1f6f7;border-radius:11px;padding:13px 15px;font:12px/1.75 ui-monospace,monospace;white-space:pre-wrap;min-height:75px;overflow:auto;color:#1b3d4b}.sample.expected{background:#eaf7f1;color:#0d5d4d}.solution-header{background:#173a43;color:#e8ffff;border-radius:11px 11px 0 0;padding:12px 15px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px}.solution-header div{display:flex;align-items:center;gap:8px}.solution-header button{color:#cbf4f0;border:1px solid #5c8e92;background:#ffffff0e}.solution-code{background:#112c35;color:#d6eef0;padding:18px 20px;border-radius:0 0 11px 11px;overflow:auto;white-space:pre;font:12px/1.7 ui-monospace,Consolas,monospace;tab-size:4;max-height:420px}.solution-code code{color:inherit;background:transparent;padding:0}.btn{border-radius:10px;background:#e6f2f2;color:#11666d;border:1px solid #b7dada;padding:10px 13px;font-weight:730;font-size:12px;transition:transform .12s,background .12s}.btn:hover{background:#d4eeeb;transform:translateY(-1px)}.btn.primary{background:#166f70;color:#fff;border-color:#166f70}.btn.primary:hover{background:#0e5f62}.btn.small{padding:6px 10px;font-size:11px}.btn.quiet{border-color:#d3e4e6;background:#fff}.control-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.walkthrough{margin-top:19px;padding:20px;border:1px solid #c8e2e3;background:#f5fafb;border-radius:15px}.walkthrough h4{margin:0 0 12px}.example-input{width:100%;min-height:120px;background:#fff;color:#172f3a;border:1px solid #bfd8db;border-radius:9px;padding:11px 12px;resize:vertical;font-size:12px;line-height:1.7}.live-output{white-space:pre-wrap;background:#fff;border:1px solid #e0ecec;padding:14px;border-radius:10px;font:12px/1.6 ui-monospace,monospace;min-height:58px;color:#0e5c53;overflow:auto}.trace-stage{background:#fff;border:1px solid #d6e8e8;border-radius:11px;padding:14px;min-height:102px}.trace-chips{display:flex;flex-wrap:wrap;gap:7px}.trace-chip{background:#e9f5f6;border:1px solid #d5e6e9;border-radius:8px;padding:7px 10px;font:12px/1.4 ui-monospace,monospace}.trace-chip.key{color:#086c72}.trace-matrix{border-collapse:separate;border-spacing:6px;margin:-6px}.trace-matrix td{min-width:40px;text-align:center;padding:9px;background:#e9f5f6;border-radius:8px;font:13px ui-monospace,monospace;border:1px solid #e2eeee}.trace-matrix tr.row-highlight td{background:#c8eae7;border-color:#86cac8}.trace-matrix td.cell-highlight{background:#116d72!important;color:white}.steps-list{counter-reset:instruction;margin:10px 0 0;padding-left:0;list-style:none;display:grid;gap:9px}.steps-list li{position:relative;padding:10px 13px 10px 39px;background:#f7fafb;border:1px solid #e2ebec;border-radius:9px;font-size:13px}.steps-list li:before{counter-increment:instruction;content:counter(instruction);position:absolute;left:13px;top:10px;font-weight:800;color:var(--teal)}.steps-list li.active{border-color:#74bfb9;background:#e5f7f3}.muted-label{font-size:12px;color:#5c7c82;margin-top:8px}.trace-title{font-weight:740;margin:8px 0}.progress-line{height:5px;border-radius:12px;background:#dce9e9;overflow:hidden;flex:1 1 90px}.progress-line span{display:block;background:#0b9e9a;height:100%;width:0%;transition:width .2s}.task-note{margin:18px 0 0;padding:15px;border-left:3px solid #dda25e;background:#fff8ef;border-radius:0 9px 9px 0;font-size:13px}.task-footer{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:17px;flex-wrap:wrap}.done-label{font-size:12px;font-weight:800;color:var(--good);display:none}.task.completed .done-label{display:inline}.quiz{background:white;border:1px solid var(--line);border-radius:18px;padding:25px;margin-bottom:20px}.quiz-item{padding:17px 0;border-bottom:1px solid #e8eeee}.quiz-item:last-child{border-bottom:0}.quiz-question{font-weight:710;margin-bottom:13px}.quiz-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.quiz-options label{border:1px solid #d7e6e7;background:#f7fafb;border-radius:10px;padding:11px;display:flex;gap:9px;align-items:flex-start;cursor:pointer;font-size:13px}.quiz-options label:hover{background:#edf7f7}.quiz-options label.correct{border-color:#50a98b;background:#e3f6ed}.quiz-options label.wrong{border-color:#dc9090;background:#fff0f0}.quiz-options input{accent-color:#147d7e;flex-shrink:0;margin-top:4px}.quiz-feedback{display:none;font-size:12px;margin:10px 0 2px;padding:11px 14px;border-left:3px solid #18a18c;background:#f0f9f5}.quiz-feedback.show{display:block}.quiz-text{padding:10px;background:#f9fcfd;border:1px solid #d4e6e8;border-radius:8px;width:140px}.quiz-result{font-size:15px;font-weight:740;color:#16746c;margin-top:13px}.ref-grid a{display:block;text-decoration:none;padding:14px 16px;border-radius:12px;background:#fff;border:1px solid var(--line);margin-bottom:9px;font-weight:730}.ref-grid a span{display:block;font-weight:400;font-size:12px;color:var(--muted)}.tag-row{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0 15px}.tag{font-size:11px;border:1px solid #cce0e2;background:#f5fafb;padding:4px 9px;border-radius:8px;color:#42727a}.compact-row{display:flex;align-items:center;justify-content:space-between;gap:10px}.footer{border-top:1px solid var(--line);padding-top:25px;font-size:12px;color:#65818a;margin-bottom:30px}.mobile-nav{display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:1100px){.shell{grid-template-columns:205px minmax(0,1fr);gap:20px;padding:18px 20px 40px}.side{top:12px}.grid-3{grid-template-columns:repeat(2,1fr)}.task-grid{grid-template-columns:1fr}.hero{padding:35px}}
+@media(max-width:760px){.shell{display:block;padding:10px 13px 36px}.side{display:none}.mobile-nav{display:flex;position:sticky;top:0;z-index:9;gap:7px;overflow:auto;padding:10px 2px;background:#f5f8faed;backdrop-filter:blur(10px)}.mobile-nav a{white-space:nowrap;font-size:12px;text-decoration:none;padding:7px 12px;background:#e4f2f2;color:#16666d;border-radius:30px}.hero{border-radius:18px;padding:28px 23px}.hero h1{font-size:36px}.hero-stats{gap:19px}.section{margin:39px 0}.grid-2,.grid-3{grid-template-columns:1fr}.panel{padding:18px}.task summary{padding:16px 14px}.task-body{padding:0 14px 17px}.task-sum-title{font-size:15px}.quiz-options{grid-template-columns:1fr}.quiz{padding:16px}.flow-arrow{display:none}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{.side,.mobile-nav,.control-row,.btn,.walkthrough{display:none!important}.shell{display:block}body{background:#fff}.hero{background:#173a43;color:white!important}.task{break-inside:avoid}.task:not([open]) .task-body{display:block}.section{margin:22px 0}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="side" aria-label="Навигация по занятию">
+ <a class="brand" href="#top"><span class="brandmark">{ }</span><span><b>Код будущего</b><span>Python · Кибербезопасность</span></span></a>
+ <div class="side-title">Материал занятия</div>
+ <a class="nav-link" href="#top">◈ &nbsp; Обзор занятия</a>
+ <a class="nav-link" href="#theory">◎ &nbsp; Теория и схемы</a>
+ <a class="nav-link" href="#comparison">▤ &nbsp; Сравнение структур</a>
+ <div class="side-title">Решаем задачи</div>
+ <a class="nav-link" href="#trainers">⌘ &nbsp; Тренажёры <span class="num">5</span></a>
+ <a class="nav-link" href="#practice">▣ &nbsp; Задачи из ноутбука <span class="num">5</span></a>
+ <a class="nav-link" href="#independent">◉ &nbsp; Самостоятельная <span class="num">1</span></a>
+ <div class="side-title">Закрепление</div>
+ <a class="nav-link" href="#quizzes">✓ &nbsp; Интерактивные тесты <span class="num">15</span></a>
+ <a class="nav-link" href="#resources">↗ &nbsp; Полезные ссылки</a>
+ <div class="side-foot">Отмечено выполненными: <strong id="done-count">0 / 11</strong><div class="side-progress"><i id="side-fill"></i></div>Все решения и примеры доступны без интернета. Ссылки ведут к документации.</div>
+</aside>
+<main id="top">
+<nav class="mobile-nav" aria-label="Мобильная навигация"><a href="#theory">Теория</a><a href="#trainers">5 тренажёров</a><a href="#practice">5 задач</a><a href="#independent">Самостоятельная</a><a href="#quizzes">Тесты</a></nav>
+<header class="hero">
+ <div class="eyebrow">Кибербезопасность · 10–11 класс · Занятие 06</div>
+ <h1>Структуры данных Python в задачах кибербезопасности</h1>
+ <p>От журналов входа до сетевых чёрных списков: научимся выбирать коллекцию, считать события, находить совпадения и анализировать матрицы — с пошаговым разбором каждого алгоритма.</p>
+ <div class="hero-tags"><span>list / tuple / dict / set</span><span>Хеш-таблицы</span><span>Журналы безопасности</span><span>Множества и матрицы</span><span>Python 3</span></div>
+ <div class="hero-stats"><div><strong>11</strong><span>программных заданий</span></div><div><strong>15</strong><span>вопросов в тестах</span></div><div><strong>100%</strong><span>копируемых решений</span></div><div><strong>∞</strong><span>пробных запусков примеров</span></div></div>
+</header>
+<section id="theory" class="section">
+ <div class="section-head"><div><div class="kicker">01 / Основы</div><h2>Как Python хранит данные</h2><p>Выбор структуры влияет не только на синтаксис, но и на скорость анализа больших объёмов событий.</p></div></div>
+ <div class="grid-2">
+  <article class="panel concept"><div class="concept-icon">[ ]</div><h3>Список · <code>list</code></h3><p>Упорядоченная изменяемая последовательность. Удобен для последовательного хранения журналов и матриц. Доступ по индексу обычно O(1), поиск значения по всему списку O(n).</p><pre>events = ['LOGIN', 'FAIL', 'LOGIN']
+print(events[0])  # LOGIN</pre></article>
+  <article class="panel concept"><div class="concept-icon">( )</div><h3>Кортеж · <code>tuple</code></h3><p>Упорядоченная неизменяемая последовательность. Хорошо описывает запись фиксированного формата: источник, серьёзность, сообщение.</p><pre>event = ('firewall', 'HIGH', 'blocked')
+print(event[1])   # HIGH</pre></article>
+  <article class="panel concept"><div class="concept-icon">{ : }</div><h3>Словарь · <code>dict</code></h3><p>Отображение «ключ → значение». Например, IP → количество блокировок. Доступ по ключу в среднем O(1).</p><pre>blocks = {'10.0.0.5': 2}
+blocks['10.0.0.5'] += 1</pre></article>
+  <article class="panel concept"><div class="concept-icon">{ }</div><h3>Множество · <code>set</code></h3><p>Хранит только уникальные значения, порядок элементов не гарантирован. Проверка принадлежности обычно O(1). Подходит для чёрных списков и баз индикаторов.</p><pre>blacklist = {'10.0.0.5', '8.8.8.8'}
+print('8.8.8.8' in blacklist)  # True</pre></article>
+ </div>
+ <div class="panel panel-blue" style="margin-top:18px"><h3>Сквозной алгоритм анализа событий</h3>
+  <div class="flow"><div class="flow-cell"><strong>Строка журнала</strong><span>ivan FAIL</span></div><span class="flow-arrow">→</span><div class="flow-cell"><strong>Разбор строки</strong><span>input().split()</span></div><span class="flow-arrow">→</span><div class="flow-cell"><strong>Проверка</strong><span>status == 'FAIL'</span></div><span class="flow-arrow">→</span><div class="flow-cell"><strong>Словарь</strong><span>{'ivan': 2}</span></div></div>
+  <p style="margin-top:16px">Фундаментальный паттерн: <strong>прочитать → разобрать → проверить условие → обновить структуру → вывести результат</strong>. Он повторяется почти во всех упражнениях занятия.</p>
+ </div>
+ <div class="grid-2" style="margin-top:18px">
+  <article class="panel"><h3><code>get()</code> против отсутствующего ключа</h3><p>Выражение <code>counts[user]</code> вызовет <code>KeyError</code>, если пользователя ещё нет. Метод <code>get(user, 0)</code> берёт текущее значение, а если ключ отсутствует — возвращает ноль.</p><div class="code-inline">counts = {}<br>counts['ivan'] = counts.get('ivan', 0) + 1<br>counts['ivan'] = counts.get('ivan', 0) + 1<br>print(counts)  # {'ivan': 2}</div></article>
+  <article class="panel"><h3>Почему важен <code>split(maxsplit=2)</code></h3><p>Строка <code>firewall HIGH blocked external connection</code> содержит три логических поля, последнее — из нескольких слов. Обычный <code>split()</code> создаст четыре элемента, а ограничение числа разбиений сохранит всё сообщение целиком.</p><div class="code-inline">line = 'firewall HIGH blocked external connection'<br>source, level, msg = line.split(maxsplit=2)<br># msg == 'blocked external connection'</div></article>
+ </div>
+ <div class="grid-2" style="margin-top:18px">
+  <article class="panel"><h3>Хеш-таблица и коллизии</h3><p>В <code>dict</code> и <code>set</code> хеш помогает быстро найти место хранения объекта. Если разные ключи приводят к одинаковому хешу, возникает <strong>коллизия</strong>. Python дополнительно сравнивает ключи, чтобы их различить.</p><div class="svg-stage">
+   <svg viewBox="0 0 440 135" role="img" aria-label="Схема коллизии: два разных ключа могут попасть в одну ячейку хеш-таблицы"><rect x="2" y="12" width="113" height="37" rx="8" fill="#d5efeb"/><rect x="2" y="88" width="113" height="37" rx="8" fill="#d5efeb"/><text x="58" y="35" text-anchor="middle" font-size="13" fill="#12575e">ключ A</text><text x="58" y="111" text-anchor="middle" font-size="13" fill="#12575e">ключ B</text><path d="M115 30 Q165 30 195 63 M115 107 Q165 107 195 69" fill="none" stroke="#1d8282" stroke-width="3" stroke-dasharray="7 5" class="animated-arrow"/><rect x="197" y="45" width="106" height="42" rx="11" fill="#0f6f72"/><text x="250" y="70" text-anchor="middle" font-size="13" fill="#fff">hash → слот</text><path d="M303 66 H335" stroke="#1d8282" stroke-width="3"/><rect x="336" y="46" width="102" height="41" rx="9" fill="#f9deae"/><text x="387" y="70" text-anchor="middle" font-size="12" fill="#6e4b17">коллизия</text></svg>
+  </div><p class="muted-label">Худший случай при множестве коллизий может быть значительно медленнее среднего O(1).</p></article>
+  <article class="panel"><h3>Bloom filter · фильтр Блума</h3><p>Вероятностная структура, позволяющая очень компактно проверять, мог ли элемент встречаться. «Точно не было» — надёжный отрицательный ответ при обычной модели без удаления; «возможно, было» потребует точной проверки.</p><div class="svg-stage">
+   <svg viewBox="0 0 440 135" role="img" aria-label="Схема фильтра Блума с заполненными битами"><text x="8" y="24" font-size="12" fill="#30646b">IP → несколько хеш-функций → битовая маска</text><g transform="translate(9,50)"><rect x="0" y="0" width="420" height="62" rx="10" fill="#e4f1f1"/><g fill="#8dcac7"><rect x="10" y="10" width="43" height="43" rx="6"/><rect x="61" y="10" width="43" height="43" rx="6"/><rect x="112" y="10" width="43" height="43" rx="6"/><rect x="163" y="10" width="43" height="43" rx="6"/><rect x="214" y="10" width="43" height="43" rx="6"/><rect x="265" y="10" width="43" height="43" rx="6"/><rect x="316" y="10" width="43" height="43" rx="6"/><rect x="367" y="10" width="43" height="43" rx="6"/></g><g fill="#0e7072" class="pulse-dot"><rect x="61" y="10" width="43" height="43" rx="6"/><rect x="163" y="10" width="43" height="43" rx="6"/><rect x="316" y="10" width="43" height="43" rx="6"/></g><g fill="#fff" text-anchor="middle" font-size="19" font-weight="700"><text x="31" y="39">0</text><text x="82" y="39">1</text><text x="133" y="39">0</text><text x="184" y="39">1</text><text x="235" y="39">0</text><text x="286" y="39">0</text><text x="337" y="39">1</text><text x="388" y="39">0</text></g></g></svg>
+  </div><p class="muted-label">Это не шифрование и не хранилище исходных адресов: возможны ложноположительные срабатывания.</p></article>
+ </div>
+ <div class="panel" style="margin-top:18px"><h3>Отдельно: триада CIA</h3><div class="grid-3"><div class="flow-cell"><strong>Confidentiality</strong><span>Конфиденциальность: данные видят только уполномоченные лица</span></div><div class="flow-cell"><strong>Integrity</strong><span>Целостность: данные не подменены незаметно</span></div><div class="flow-cell"><strong>Availability</strong><span>Доступность: системы и данные доступны вовремя</span></div></div><p class="muted-label">Количество основных свойств — <strong>3</strong>; они встречаются во втором тесте.</p></div>
+</section>
+<section id="comparison" class="section">
+ <div class="section-head"><div><div class="kicker">02 / Сложность</div><h2>Что выбрать для задачи?</h2><p>Приведённые оценки — типичные для Python; для хеш-таблиц указано ожидаемое время, а не гарантия для любого входа.</p></div></div>
+ <div class="table-wrap"><table class="data-table"><thead><tr><th>Коллекция</th><th>Типичная операция</th><th>Время</th><th>Пример применения</th></tr></thead><tbody><tr><td><code>list</code></td><td>Доступ по индексу <code>a[i]</code></td><td><strong>O(1)</strong></td><td>i-я запись журнала</td></tr><tr><td><code>list</code></td><td>Поиск значения <code>x in a</code></td><td>O(n)</td><td>Последовательная проверка</td></tr><tr><td><code>dict</code></td><td>Доступ по ключу <code>d[key]</code></td><td><strong>O(1)</strong> ожидаемо</td><td>Счётчик событий по IP</td></tr><tr><td><code>set</code></td><td>Принадлежность <code>x in s</code></td><td><strong>O(1)</strong> ожидаемо</td><td>Проверка по чёрному списку</td></tr><tr><td>Сбалансированное BST</td><td>Поиск значения</td><td>O(log₂ n)</td><td>Упорядоченный индекс</td></tr><tr><td>Матрица <code>list[list]</code></td><td>Просмотр каждого элемента</td><td>O(n·m)</td><td>Поиск глобального максимума</td></tr></tbody></table></div>
+ <div class="callout warn"><p><strong>Два разных критерия для матрицы:</strong> в тренажёре 5 ищем строку с <strong>наибольшим отдельным элементом</strong>, в задаче из ноутбука 5 — строку с <strong>наибольшей суммой элементов</strong>. На одних и тех же данных ответы могут отличаться.</p></div>
+ <div class="panel"><h3>Наглядная разница: максимум элемента и сумма строки</h3><div class="grid-2"><div><div class="label">Строки</div><div class="sample">5 5<br>9 0</div></div><div><div class="label">Два результата</div><p><strong>Максимальный элемент:</strong> 9 → вторая строка.</p><p><strong>Максимальная сумма:</strong> 10 → первая строка, потому что 5+5 > 9+0.</p></div></div></div>
+</section>
+<section id="trainers" class="section"><div class="section-head"><div><div class="kicker">03 / Пять тренажёров</div><h2>Решения с подробным разбором</h2><p>Откройте задание, изучите код, меняйте входные данные и переключайте шаги работы алгоритма. Под примерами приведены ошибки, которые часто допускают при решении.</p></div><span class="pill">5 заданий</span></div><div id="tasks-trainer"></div></section>
+<section id="practice" class="section"><div class="section-head"><div><div class="kicker">04 / Ноутбук</div><h2>Дополнительные задания по анализу журналов</h2><p>Пять заданий из среды разработки: счётчики блокировок, подозрительные порты, сигнатуры, события и суммарная нагрузка сетевых узлов.</p></div><span class="pill">5 заданий</span></div><div id="tasks-practice"></div></section>
+<section id="independent" class="section"><div class="section-head"><div><div class="kicker">05 / Самостоятельная работа</div><h2>Отбор критических инцидентов</h2><p>Соединяем <code>list</code>, <code>tuple</code> и аккуратный разбор строки с сообщением из нескольких слов.</p></div></div><div id="tasks-solo"></div><div class="callout"><p><strong>Как работать с программой:</strong> скопируйте Python-код в IDLE, VS Code, Thonny или онлайн-интерпретатор. Кнопка «Проверить пример» ниже выполняет <em>обучающую JavaScript-модель алгоритма</em> на введённых данных и показывает промежуточное состояние. Это не запуск Python в браузере.</p></div></section>
+<section id="quizzes" class="section"><div class="section-head"><div><div class="kicker">06 / Самопроверка</div><h2>Проверьте понимание</h2><p>Два теста по материалам занятия: 5 вопросов и 10 вопросов. После проверки показываются объяснения, а не только количество правильных ответов.</p></div></div><div id="quizzes-root"></div></section>
+<section id="resources" class="section"><div class="section-head"><div><div class="kicker">07 / Справочник</div><h2>Документация и продолжение</h2><p>Все ресурсы открываются в новой вкладке. Ссылки ведут на исходные материалы и официальную документацию Python.</p></div></div>
+<div class="grid-2 ref-grid">
+<div><a href="https://docs.python.org/3/tutorial/datastructures.html" target="_blank" rel="noopener noreferrer">Python: структуры данных <span>Списки, множества, словари; базовый учебник</span></a><a href="https://docs.python.org/3/library/stdtypes.html#mapping-types-dict" target="_blank" rel="noopener noreferrer">Словарь dict <span>get(), ключи, значение, представление словаря</span></a><a href="https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset" target="_blank" rel="noopener noreferrer">Множества set / frozenset <span>Операции add, membership и свойства множества</span></a><a href="https://docs.python.org/3/library/collections.html#collections.Counter" target="_blank" rel="noopener noreferrer">collections.Counter <span>Готовый инструмент для частотного анализа</span></a></div>
+<div><a href="https://docs.python.org/3/library/ipaddress.html" target="_blank" rel="noopener noreferrer">Модуль ipaddress <span>Правильная работа с IPv4 / IPv6 и сетями</span></a><a href="https://docs.python.org/3/library/hashlib.html" target="_blank" rel="noopener noreferrer">Модуль hashlib <span>Криптографические хеш-функции и дайджесты</span></a><a href="https://en.wikipedia.org/wiki/Bloom_filter" target="_blank" rel="noopener noreferrer">Bloom filter <span>Битовые массивы, хеш-функции и ложноположительные ответы</span></a><a href="https://csrc.nist.gov/glossary" target="_blank" rel="noopener noreferrer">Глоссарий NIST <span>Базовая терминология кибербезопасности и CIA</span></a></div>
+</div>
+<div class="panel" style="margin-top:18px"><h3>Чек-лист усвоения</h3><div class="grid-2"><div><p>✓ Могу объяснить разницу между списком, кортежем, словарём и множеством.</p><p>✓ Понимаю, когда нужен <code>dict.get(key, 0)</code> и чем он полезен.</p><p>✓ Использую <code>set</code> для уникальности и проверки принадлежности.</p></div><div><p>✓ Различаю сортировку ключей и подсчёт частот.</p><p>✓ Не путаю максимальный элемент и максимальную сумму строки.</p><p>✓ Считываю сложное сообщение через <code>split(maxsplit=2)</code>.</p></div></div></div>
+</section>
+<footer class="footer">Занятие 6 · Кибербезопасность · Структуры данных и модули Python. Материал составлен по предоставленным учебным скриншотам и дополнен интерактивными демонстрациями. Автономный HTML-файл, предназначенный в том числе для размещения на GitHub Pages. Для работы демонстраций необходим включённый JavaScript.</footer>
+</main></div>
+<script type="application/json" id="lesson-data">{
+  "tasks": [
+    {
+      "id": "t1",
+      "category": "Тренажёры",
+      "title": "Подсчёт неудачных попыток входа",
+      "tag": "dict · get()",
+      "condition": "Считать n и затем n строк вида «имя_пользователя статус». Статус — SUCCESS или FAIL. Создать словарь, в который попадут только пользователи со статусом FAIL. Вывести число неудачных попыток каждого пользователя в формате словаря Python.",
+      "input": "5\nivan FAIL\nanna SUCCESS\nivan FAIL\noleg FAIL\nanna FAIL",
+      "expected": "{'ivan': 2, 'oleg': 1, 'anna': 1}",
+      "code": "n = int(input())\nfails = {}\n\nfor _ in range(n):\n    username, status = input().split()\n    if status == 'FAIL':\n        fails[username] = fails.get(username, 0) + 1\n\nprint(fails)",
+      "steps": [
+        "Считываем n — количество записей журнала.",
+        "Создаём пустой словарь fails. Ключ — пользователь, значение — число ошибок.",
+        "Разбиваем каждую строку на username и status методом split().",
+        "При FAIL увеличиваем значение: get(username, 0) возвращает прежний счётчик или ноль.",
+        "При SUCCESS ничего не делаем; выводим итоговый словарь."
+      ],
+      "notes": "Ошибки: забыть значение по умолчанию у get(), считать SUCCESS как ошибку, изменить порядок печати. Для этой задачи порядок вывода ключей соответствует порядку первого появления FAIL.",
+      "complexity": "O(n) ожидаемо по времени; O(u) по памяти, где u — число пользователей с FAIL.",
+      "links": [
+        "dict",
+        "get"
+      ]
+    },
+    {
+      "id": "t2",
+      "category": "Тренажёры",
+      "title": "Анализ чёрного списка IP-адресов",
+      "tag": "set · in · len()",
+      "condition": "Считать n и n строк IP-адресов чёрного списка; затем m и m строк IP-адресов в журнале. Вывести число УНИКАЛЬНЫХ IP из журнала, которые присутствуют в чёрном списке. Повторы в журнале учитывать только один раз.",
+      "input": "3\n10.0.0.1\n8.8.8.8\n1.1.1.1\n5\n8.8.8.8\n2.2.2.2\n10.0.0.1\n10.0.0.1\n3.3.3.3",
+      "expected": "2",
+      "code": "n = int(input())\nblacklist = set()\nfor _ in range(n):\n    blacklist.add(input())\n\nm = int(input())\nfound = set()\nfor _ in range(m):\n    ip = input()\n    if ip in blacklist:\n        found.add(ip)\n\nprint(len(found))",
+      "steps": [
+        "Загружаем чёрный список в множество blacklist.",
+        "Создаём отдельное множество found для совпадений.",
+        "По очереди проверяем каждый IP журнала оператором in.",
+        "Если IP находится в чёрном списке, добавляем его в found; повторы автоматически игнорируются.",
+        "Выводим размер found. В примере 10.0.0.1 встречается дважды, но считается один раз."
+      ],
+      "notes": "Не используйте счётчик совпавших строк: он посчитает повторные подключения одного IP несколько раз. IP здесь сравниваются как строки; в реальном приложении нужна нормализация через ipaddress.",
+      "complexity": "O(n + m) ожидаемо по времени; O(n + k) памяти.",
+      "links": [
+        "set",
+        "ipaddress"
+      ]
+    },
+    {
+      "id": "t3",
+      "category": "Тренажёры",
+      "title": "Поиск числа в наборе",
+      "tag": "set · in",
+      "condition": "На вход поступает число n, затем n целых чисел (каждое с новой строки), затем число x. Вывести FOUND, если x присутствует среди введённых значений, иначе NOT FOUND. Выбрать подходящую структуру для быстрой проверки принадлежности.",
+      "input": "6\n5\n8\n13\n21\n34\n55\n21",
+      "expected": "FOUND",
+      "code": "n = int(input())\nnumbers = set()\nfor _ in range(n):\n    numbers.add(int(input()))\n\nx = int(input())\nif x in numbers:\n    print('FOUND')\nelse:\n    print('NOT FOUND')",
+      "steps": [
+        "Считываем n — число элементов.",
+        "Создаём множество set(), чтобы проверять наличие элементов эффективно.",
+        "Добавляем каждое введённое число методом add().",
+        "Читаем искомое x и вычисляем условие x in numbers.",
+        "Выводим строго FOUND или NOT FOUND."
+      ],
+      "notes": "set() — пустое множество, {} — пустой словарь. Повторные числа не мешают проверке наличия. Метод add() изменяет множество на месте.",
+      "complexity": "O(n) на построение + O(1) ожидаемо на одну проверку; O(u) памяти.",
+      "links": [
+        "set"
+      ]
+    },
+    {
+      "id": "t4",
+      "category": "Тренажёры",
+      "title": "Частотный анализ текста журнала",
+      "tag": "dict · sorted()",
+      "condition": "Считать одну строку произвольного текста. Построить частоты ТОЛЬКО английских букв a–z, не различая регистр. Не учитывать пробелы, цифры и остальные символы. Вывести строки «буква пробел количество» в алфавитном порядке.",
+      "input": "Hello, World! 2026",
+      "expected": "d 1\ne 1\nh 1\nl 3\no 2\nr 1\nw 1",
+      "code": "text = input().lower()\nfreq = {}\n\nfor ch in text:\n    if 'a' \u003c= ch \u003c= 'z':\n        freq[ch] = freq.get(ch, 0) + 1\n\nfor ch in sorted(freq):\n    print(ch, freq[ch])",
+      "steps": [
+        "Приводим всю строку к нижнему регистру методом lower().",
+        "Просматриваем каждый символ, в том числе пробелы и пунктуацию.",
+        "Отбираем только латинские буквы от a до z.",
+        "В словаре freq увеличиваем частоту каждого подходящего символа.",
+        "Сортируем ключи функцией sorted() и выводим букву и счётчик."
+      ],
+      "notes": "isalpha() в этой задаче НЕ подходит без дополнительной проверки: он пропускает также русские и другие буквы. Для фиксированного английского алфавита достаточно сравнения a \u003c= ch \u003c= z.",
+      "complexity": "O(L + k log k), где k ≤ 26, практически O(L); O(26) памяти.",
+      "links": [
+        "dict",
+        "sorted"
+      ]
+    },
+    {
+      "id": "t5",
+      "category": "Тренажёры",
+      "title": "Анализ матрицы: наибольший элемент",
+      "tag": "matrix · max",
+      "condition": "Считать n, затем m (разные строки), после чего n строк по m целых чисел. Найти глобальный максимальный ЭЛЕМЕНТ матрицы и строку, в которой он впервые встречается при просмотре сверху вниз, слева направо. Поменять эту строку с первой и вывести матрицу построчно через пробел.",
+      "input": "3\n3\n1 2 3\n4 9 6\n7 8 5",
+      "expected": "4 9 6\n1 2 3\n7 8 5",
+      "code": "n = int(input())\nm = int(input())\nmatrix = []\nfor _ in range(n):\n    row = list(map(int, input().split()))\n    matrix.append(row)\n\nmax_value = matrix[0][0]\nmax_row = 0\nfor i in range(n):\n    for j in range(m):\n        if matrix[i][j] > max_value:\n            max_value = matrix[i][j]\n            max_row = i\n\nmatrix[0], matrix[max_row] = matrix[max_row], matrix[0]\nfor row in matrix:\n    print(*row)",
+      "steps": [
+        "Считываем размеры n×m и сохраняем строки как вложенные списки.",
+        "Полагаем, что первый элемент пока максимален; запоминаем max_row = 0.",
+        "Обходим все элементы: когда элемент СТРОГО больше максимума, обновляем максимум и индекс строки.",
+        "Строгое > сохраняет первое вхождение при равных максимумах.",
+        "Обмениваем найденную строку с первой, затем печатаем через print(*row)."
+      ],
+      "notes": "В этом тренажёре критерий — максимальный ЭЛЕМЕНТ, а НЕ максимальная сумма. При равенстве максимумов строку менять повторно нельзя. Предполагаются n ≥ 1 и m ≥ 1.",
+      "complexity": "O(n·m) времени, O(n·m) памяти для хранения матрицы.",
+      "links": [
+        "list"
+      ]
+    },
+    {
+      "id": "p1",
+      "category": "Практика",
+      "title": "Блокировки межсетевого экрана по адресам",
+      "tag": "dict · BLOCK",
+      "condition": "Журнал межсетевого экрана содержит n строк «IP_АДРЕС СТАТУС», где статус ALLOW или BLOCK. Сформировать словарь, в котором для каждого IP подсчитано количество записей со статусом BLOCK. IP, для которых BLOCK не встретился, в словарь не добавлять. Вывести словарь через print().",
+      "input": "6\n10.0.0.5 BLOCK\n10.0.0.8 ALLOW\n10.0.0.5 BLOCK\n192.168.1.7 BLOCK\n10.0.0.8 ALLOW\n192.168.1.7 BLOCK",
+      "expected": "{'10.0.0.5': 2, '192.168.1.7': 2}",
+      "code": "n = int(input())\nblocks = {}\nfor _ in range(n):\n    ip, status = input().split()\n    if status == 'BLOCK':\n        blocks[ip] = blocks.get(ip, 0) + 1\nprint(blocks)",
+      "steps": [
+        "Сначала считываем количество событий n.",
+        "Для каждой строки отделяем IP и статус.",
+        "Если статус BLOCK, читаем старый счётчик по ключу IP (по умолчанию 0).",
+        "Увеличиваем счётчик на 1 и сохраняем в словаре.",
+        "После всех событий выводим блокировки; ALLOW игнорируем."
+      ],
+      "notes": "Это отдельная задача из ноутбука. В одном из скриншотов под условием про IP ошибочно вставлен код с username/FAIL: под условиями приведено исправленное решение для IP/BLOCK.",
+      "complexity": "O(n) ожидаемо; O(k) памяти.",
+      "links": [
+        "dict"
+      ]
+    },
+    {
+      "id": "p2",
+      "category": "Практика",
+      "title": "Уникальные устройства с подозрительными портами",
+      "tag": "set · ports",
+      "condition": "Считать n и n строк «ИМЯ_УСТРОЙСТВА ПОРТ». Подозрительными ДЛЯ УСЛОВИЯ ЭТОЙ ЗАДАЧИ считать порты 22, 23 и 3389. Вывести количество различных устройств, встретившихся хотя бы один раз с одним из указанных портов.",
+      "input": "6\npc-01 22\npc-02 80\npc-01 3389\nserver-01 443\npc-03 23\npc-03 23",
+      "expected": "2",
+      "code": "n = int(input())\nsuspicious = {22, 23, 3389}\ndevices = set()\nfor _ in range(n):\n    device, port = input().split()\n    if int(port) in suspicious:\n        devices.add(device)\nprint(len(devices))",
+      "steps": [
+        "Создаём множество подозрительных портов по условию задачи.",
+        "Считываем пары device, port; порт преобразуем из строки в число.",
+        "При совпадении порта добавляем устройство в множество devices.",
+        "Повторные события от одного устройства не создают дубликатов.",
+        "Число уникальных подозрительных устройств равно len(devices)."
+      ],
+      "notes": "Порты 22 (SSH), 23 (Telnet) и 3389 (RDP) не являются автоматически вредоносными. В реальной сети их использование оценивают в контексте политики доступа.",
+      "complexity": "O(n) ожидаемо; O(k) памяти.",
+      "links": [
+        "set"
+      ]
+    },
+    {
+      "id": "p3",
+      "category": "Практика",
+      "title": "Проверка сигнатуры в базе индикаторов",
+      "tag": "set · signatures",
+      "condition": "Считать n и n строк — известные сигнатуры. Затем считать target — сигнатуру проверяемого файла. Вывести KNOWN, если она есть в базе, иначе UNKNOWN. Для быстрых проверок использовать множество.",
+      "input": "4\na91f\nb7c2\nd002\nff31\nd002",
+      "expected": "KNOWN",
+      "code": "n = int(input())\nknown = set()\nfor _ in range(n):\n    known.add(input())\n\ntarget = input()\nprint('KNOWN' if target in known else 'UNKNOWN')",
+      "steps": [
+        "Загружаем строки с известными сигнатурами в set().",
+        "Считываем одну проверяемую сигнатуру target.",
+        "Оператор in проверяет, есть ли такое значение в множестве.",
+        "Выводим одно из двух фиксированных слов.",
+        "Если нужно обработать много файлов, множество можно использовать многократно без повторного построения."
+      ],
+      "notes": "Сигнатуры из примера — условные короткие строки, а не реальные безопасные криптографические хеши. Сравнение здесь точное, с учётом регистра.",
+      "complexity": "O(n) на базу + O(1) ожидаемо на проверку; O(n) памяти.",
+      "links": [
+        "set",
+        "hashlib"
+      ]
+    },
+    {
+      "id": "p4",
+      "category": "Практика",
+      "title": "Частота типов событий в одной строке",
+      "tag": "dict · split · sorted",
+      "condition": "В одной строке записаны типы событий безопасности через пробел. Разделить на слова, не учитывать регистр, подсчитать частоту каждого типа. Вывести в алфавитном порядке строки «событие количество». Здесь считаются слова целиком, а не отдельные буквы.",
+      "input": "LOGIN FAIL login ALERT fail LOGIN",
+      "expected": "alert 1\nfail 2\nlogin 3",
+      "code": "events = input().lower().split()\nfreq = {}\nfor event in events:\n    freq[event] = freq.get(event, 0) + 1\n\nfor event in sorted(freq):\n    print(event, freq[event])",
+      "steps": [
+        "Читаем полную строку.",
+        "С помощью lower() приводим слова к одному регистру, split() разбивает по пробельным символам.",
+        "Накапливаем частоту каждого события в словаре.",
+        "Функция sorted(freq) сортирует ключи по алфавиту.",
+        "Печатаем каждую пару «событие количество»."
+      ],
+      "notes": "Не путайте с тренажёром 4: там подсчитываются буквы a–z, а здесь — целые токены LOGIN, FAIL, ALERT.",
+      "complexity": "O(n + k log k) для n токенов и k разных событий.",
+      "links": [
+        "dict",
+        "sorted"
+      ]
+    },
+    {
+      "id": "p5",
+      "category": "Практика",
+      "title": "Приоритет узла по СУММАРНОЙ нагрузке",
+      "tag": "matrix · sum",
+      "condition": "Прочитать n и m, затем n строк по m целых чисел. Для КАЖДОЙ строки найти сумму элементов; выбрать строку с НАИБОЛЬШЕЙ суммой, при равенстве — первую по исходному порядку. Поменять её с первой строкой и вывести матрицу через пробел.",
+      "input": "3\n3\n2 1 2\n4 3 5\n6 1 1",
+      "expected": "4 3 5\n2 1 2\n6 1 1",
+      "code": "n = int(input())\nm = int(input())\nmatrix = []\nfor _ in range(n):\n    matrix.append(list(map(int, input().split())))\n\nbest_row = 0\nbest_sum = sum(matrix[0])\nfor i in range(1, n):\n    current_sum = sum(matrix[i])\n    if current_sum > best_sum:\n        best_sum = current_sum\n        best_row = i\n\nmatrix[0], matrix[best_row] = matrix[best_row], matrix[0]\nfor row in matrix:\n    print(*row)",
+      "steps": [
+        "Для каждой строки вычисляем сумму через sum(row).",
+        "Ведём best_sum и best_row, начиная с первой строки.",
+        "Просматриваем следующие строки и обновляем победителя только при строгом >.",
+        "При равенстве сумм сохраняем первую из встретившихся строк.",
+        "Меняем найденную строку с первой и печатаем матрицу."
+      ],
+      "notes": "В отличие от тренажёра 5, здесь сравниваются СУММЫ строк, а не отдельные числа. Например, строка [5, 5] выигрывает у [9, 0] по сумме (10 > 9), хотя её максимальный элемент меньше.",
+      "complexity": "O(n·m) времени, O(n·m) памяти.",
+      "links": [
+        "list"
+      ]
+    },
+    {
+      "id": "s1",
+      "category": "Самостоятельная",
+      "title": "Отбор критических инцидентов",
+      "tag": "list · tuple · split(maxsplit=2)",
+      "condition": "Прочитать N, затем N строк формата «source severity message», где message может содержать пробелы. Сохранить каждое событие как кортеж (source, severity, message) в списке events. Затем прочитать critical_level (например HIGH). Для совпадающих по severity событий вывести «[CRITICAL] source: message» в исходном порядке. Если совпадений нет, вывести «Нет критичных событий».",
+      "input": "3\nfirewall HIGH blocked external connection\nauth LOW user login\ndb MEDIUM slow query detected\nHIGH",
+      "expected": "[CRITICAL] firewall: blocked external connection",
+      "code": "n = int(input())\nevents = []\nfor _ in range(n):\n    source, severity, message = input().split(maxsplit=2)\n    events.append((source, severity, message))\n\ncritical_level = input()\nfound = False\nfor source, severity, message in events:\n    if severity == critical_level:\n        print(f'[CRITICAL] {source}: {message}')\n        found = True\n\nif not found:\n    print('Нет критичных событий')",
+      "steps": [
+        "Каждая запись имеет три логические части, но сообщение может состоять из нескольких слов.",
+        "split(maxsplit=2) разрезает строку не более чем два раза и сохраняет весь хвост message.",
+        "Сохраняем отдельные записи в виде кортежей, а набор записей — в списке.",
+        "После чтения порога сравниваем severity каждой записи с critical_level.",
+        "Сначала печатаем совпадения; если их не было, печатаем текст отсутствия критичных событий."
+      ],
+      "notes": "Обычное split() без ограничения разрушит многострочное содержание сообщения при распаковке в три переменные. По условию HIGH сравнивается на точное равенство, а не как «HIGH или выше».",
+      "complexity": "O(n) по времени и O(n) по памяти.",
+      "links": [
+        "list",
+        "tuple"
+      ]
+    }
+  ],
+  "quiz1": [
+    {
+      "q": "Какая структура данных обеспечивает O(1) среднее время поиска элемента по ключу?",
+      "options": [
+        "Список (list)",
+        "Словарь (dict)",
+        "Дерево (tree)",
+        "Стек (stack)"
+      ],
+      "answer": 1,
+      "why": "Словарь Python устроен как хеш-таблица: доступ по ключу обычно O(1). Худший случай может быть медленнее."
+    },
+    {
+      "q": "Для чего используется Bloom filter в задачах информационной безопасности?",
+      "options": [
+        "Шифрование паролей",
+        "Сортировка журналов событий",
+        "Быстрая вероятностная проверка принадлежности",
+        "Хранение приватных ключей"
+      ],
+      "answer": 2,
+      "why": "Фильтр Блума экономно хранит информацию о принадлежности. Возможны ложноположительные срабатывания."
+    },
+    {
+      "q": "Что такое хеш-коллизия?",
+      "options": [
+        "Одинаковый хеш для разных данных",
+        "Ошибка переполнения памяти",
+        "Попытка расшифровки без ключа",
+        "Конфликт версий библиотек"
+      ],
+      "answer": 0,
+      "why": "Разные значения могут давать один хеш. Для криптографии устойчивость к коллизиям — важное свойство алгоритма."
+    },
+    {
+      "q": "Какая структура данных наиболее эффективна для хранения IP-адресов в чёрном списке при проверке точного совпадения?",
+      "options": [
+        "Очередь (queue)",
+        "Связный список",
+        "Массив",
+        "Множество (set)"
+      ],
+      "answer": 3,
+      "why": "set обеспечивает ожидаемо O(1) на проверку ip in blacklist и исключает дубли."
+    },
+    {
+      "q": "Средняя сложность поиска в сбалансированном бинарном дереве поиска — O(log₂ n). Чему равно основание логарифма?",
+      "options": [
+        "2"
+      ],
+      "answer": 0,
+      "text": true,
+      "why": "В записи log₂ n основание 2. Для несбалансированного BST худший поиск может быть O(n)."
+    }
+  ],
+  "quiz2": [
+    {
+      "q": "Какой тип коллекции в Python позволяет хранить пары ключ—значение?",
+      "options": [
+        "list",
+        "tuple",
+        "dict",
+        "set"
+      ],
+      "answer": 2,
+      "why": "dict сопоставляет каждому ключу значение."
+    },
+    {
+      "q": "Какой тип коллекции в Python гарантирует уникальность элементов?",
+      "options": [
+        "list",
+        "tuple",
+        "set",
+        "dict"
+      ],
+      "answer": 2,
+      "why": "set не хранит повторяющиеся элементы; у dict уникальны ключи."
+    },
+    {
+      "q": "Какой тип коллекции удобен для хранения отсортированного списка попыток входа?",
+      "options": [
+        "list",
+        "set",
+        "dict",
+        "str"
+      ],
+      "answer": 0,
+      "why": "list сохраняет порядок элементов и поддерживает индексацию."
+    },
+    {
+      "q": "Какое свойство словаря важно при хранении журналов событий по ключу IP-адреса?",
+      "options": [
+        "Упорядоченность по времени",
+        "Быстрый доступ по ключу",
+        "Уникальность значений",
+        "Наличие только строк"
+      ],
+      "answer": 1,
+      "why": "Словарь обеспечивает быстрый поиск информации по IP-ключу."
+    },
+    {
+      "q": "Какова асимптотическая сложность доступа к элементу по индексу в списке?",
+      "options": [
+        "O(n)",
+        "O(log n)",
+        "O(1)",
+        "O(n²)"
+      ],
+      "answer": 2,
+      "why": "Произвольный доступ по действительному индексу списка выполняется за постоянное время."
+    },
+    {
+      "q": "Какова ожидаемая асимптотическая сложность доступа по ключу в словаре?",
+      "options": [
+        "O(n)",
+        "O(log n)",
+        "O(1)",
+        "O(n²)"
+      ],
+      "answer": 2,
+      "why": "Обычно O(1) благодаря хеш-таблице; при неблагоприятных коллизиях возможна деградация."
+    },
+    {
+      "q": "Что может ускорить проверку IP-адреса в чёрном списке?",
+      "options": [
+        "Использование списка вместо множества",
+        "Использование множества для быстрых проверок принадлежности",
+        "Увеличение размера логов",
+        "Удаление журналов"
+      ],
+      "answer": 1,
+      "why": "В множестве проверка in обычно O(1); для списка поиск линейный O(n)."
+    },
+    {
+      "q": "Какую коллекцию удобно использовать для хранения чёрного списка IP-адресов?",
+      "options": [
+        "list",
+        "set",
+        "dict",
+        "tuple"
+      ],
+      "answer": 1,
+      "why": "set обеспечивает уникальность и быстрый поиск."
+    },
+    {
+      "q": "Сколько основных свойств включает триада CIA?",
+      "options": [
+        "3"
+      ],
+      "answer": 0,
+      "text": true,
+      "why": "Confidentiality, Integrity, Availability — конфиденциальность, целостность, доступность."
+    },
+    {
+      "q": "Какой оператор Python выполняет проверку принадлежности?",
+      "options": [
+        "in"
+      ],
+      "answer": 0,
+      "text": true,
+      "why": "Запись item in collection возвращает логическое True/False."
+    }
+  ]
+}</script>
+<script>
+'use strict';
+const DB=JSON.parse(document.getElementById('lesson-data').textContent);
+const STORE='kod_future_lesson6_completed_v1';
+const state={completed:new Set(), simulations:{}, quizSubmitted:{}};
+try{state.completed=new Set(JSON.parse(localStorage.getItem(STORE)||'[]'));}catch(e){}
+const H=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const stripCR=s=>s.replace(/\r/g,'');
+const taskLinkLabels={dict:['Словарь dict','https://docs.python.org/3/library/stdtypes.html#mapping-types-dict'],get:['Метод dict.get()','https://docs.python.org/3/library/stdtypes.html#dict.get'],set:['Множество set','https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset'],sorted:['Функция sorted()','https://docs.python.org/3/library/functions.html#sorted'],list:['Списки list','https://docs.python.org/3/tutorial/datastructures.html'],tuple:['Кортежи tuple','https://docs.python.org/3/library/stdtypes.html#tuple'],ipaddress:['Модуль ipaddress','https://docs.python.org/3/library/ipaddress.html'],hashlib:['Модуль hashlib','https://docs.python.org/3/library/hashlib.html']};
+function renderTask(t,idx){const completed=state.completed.has(t.id);return `<details class="task ${completed?'completed':''}" id="${t.id}" ${idx===0?'open':''}>
+<summary><span class="task-index">${t.category==='Тренажёры'?'Т':t.category==='Практика'?'П':'С'}${t.id.replace(/\D/g,'')}</span><span class="task-sum-title">${H(t.title)}<small>${H(t.tag)}</small></span><span class="pill">${t.category==='Тренажёры'?'Тренажёр':t.category==='Практика'?'Задача из ноутбука':'Самостоятельная'}</span><span class="chev" aria-hidden="true">⌄</span></summary>
+<div class="task-body"><div class="task-divider"></div><div class="label">Условие задачи</div><p>${H(t.condition)}</p>
+<div class="task-grid" style="margin:17px 0"><div class="panel"><span class="label">Пример входных данных</span><div class="sample">${H(t.input)}</div><button class="btn small quiet" type="button" data-copy="input" data-task="${t.id}" style="margin-top:10px">Копировать ввод</button></div><div class="panel"><span class="label">Правильный вывод</span><div class="sample expected">${H(t.expected)}</div><button class="btn small quiet" type="button" data-copy="output" data-task="${t.id}" style="margin-top:10px">Копировать ответ</button></div></div>
+<div class="solution-header"><div><span>⌘</span><strong>Готовое решение · Python 3</strong></div><button type="button" class="btn small" data-copy="code" data-task="${t.id}">⧉ Копировать код</button></div><pre class="solution-code"><code>${H(t.code)}</code></pre>
+<div class="grid-2" style="margin-top:18px"><div><h4>Алгоритм по шагам</h4><ol class="steps-list">${t.steps.map(s=>`<li>${H(s)}</li>`).join('')}</ol></div><div><h4>Почему решение корректно</h4><div class="callout"><p>${H(t.complexity)}</p></div><div class="task-note"><strong>На что обратить внимание.</strong><br>${H(t.notes)}</div><div class="tag-row">${t.links.map(x=>taskLinkLabels[x]?`<a class="tag" href="${taskLinkLabels[x][1]}" target="_blank" rel="noopener noreferrer">↗ ${H(taskLinkLabels[x][0])}</a>`:'').join('')}</div></div></div>
+<div class="walkthrough"><div class="compact-row"><div><h4>Интерактивная трассировка</h4><p class="muted" style="font-size:12px">Измените данные, нажмите «Проверить пример» и проследите, как меняется структура данных.</p></div><span class="pill">JavaScript-модель</span></div>
+<div class="grid-2"><div><label for="input-${t.id}" class="label">Входные данные (как для input())</label><textarea id="input-${t.id}" spellcheck="false" class="example-input">${H(t.input)}</textarea><div class="control-row" style="margin-top:10px"><button type="button" class="btn primary" data-run="${t.id}">▶ Проверить пример</button><button type="button" class="btn quiet" data-reset="${t.id}">↺ Исходный ввод</button></div></div><div><span class="label">Результат обработки</span><div class="live-output" id="result-${t.id}" aria-live="polite">Нажмите «Проверить пример».</div><div class="muted-label" id="result-note-${t.id}">Ниже появится состояние на каждом шаге.</div></div></div>
+<div style="margin:18px 0 10px" class="compact-row"><div><span class="label">Движение по алгоритму</span><div id="trace-title-${t.id}" class="trace-title">Пока нет шагов</div></div><span id="trace-counter-${t.id}" class="pill">0 / 0</span></div>
+<div class="trace-stage" id="trace-stage-${t.id}" aria-live="polite">Нажмите «Проверить пример», чтобы увидеть данные.</div>
+<p class="muted-label" id="trace-desc-${t.id}"></p>
+<div class="control-row" style="margin-top:11px"><button type="button" class="btn small" data-prev="${t.id}">← Назад</button><button type="button" class="btn small primary" data-next="${t.id}">Вперёд →</button><div class="progress-line"><span id="trace-fill-${t.id}"></span></div></div>
+</div><div class="task-footer"><button class="btn ${completed?'quiet':'primary'}" type="button" data-complete="${t.id}">${completed?'✓ Выполнено — снять отметку':'✓ Отметить как выполненное'}</button><span class="done-label">Отмечено выполненным</span></div>
+</div></details>`;}
+function renderAll(){const where={'Тренажёры':'tasks-trainer','Практика':'tasks-practice','Самостоятельная':'tasks-solo'};for(const [cat,dest] of Object.entries(where)){const group=DB.tasks.filter(t=>t.category===cat);document.getElementById(dest).innerHTML=group.map((t,i)=>renderTask(t,i)).join('');}updateDone();}
+function updateDone(){let n=state.completed.size;document.getElementById('done-count').textContent=`${n} / ${DB.tasks.length}`;document.getElementById('side-fill').style.width=(n/DB.tasks.length*100)+'%';}
+function copyText(s){if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(s).catch(()=>fallbackCopy(s));}return fallbackCopy(s);}
+function fallbackCopy(s){const el=document.createElement('textarea');el.value=s;el.style.position='fixed';el.style.opacity='0';document.body.appendChild(el);el.select();let ok=false;try{ok=document.execCommand('copy');}finally{el.remove();}if(!ok)throw new Error('Копирование недоступно в этом браузере');return Promise.resolve();}
+function pyString(s){return "'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+"'";}
+function pyDict(m){return '{'+[...m].map(([key,value])=>`${pyString(key)}: ${value}`).join(', ')+'}';}
+function textLines(x){return stripCR(x).replace(/\n+$/,'').split('\n');}
+function algorithm(id,source){const lines=textLines(source);let pos=0;const frames=[];function get(){if(pos>=lines.length)throw Error(`Не хватает строк ввода: ожидалась строка № ${pos+1}.`);return lines[pos++].trim();}function number(){let str=get();if(!/^-?\d+$/.test(str))throw Error(`Ожидалось целое число, получено: «${str}».`);return Number(str);}function count(){let n=number();if(n<0||n>10000)throw Error('Количество записей должно быть от 0 до 10000.');return n;}function frame(title,description,extra={}){if(frames.length<150)frames.push({title,description,...extra});}function pairs(m){return [...m.entries()];}function linesOutput(str){return str.length?str:'(пустой вывод)';}let output='';
+if(id==='t1'||id==='p1'){let n=count(),m=new Map(),needle=id==='t1'?'FAIL':'BLOCK';frame('Начало',`Записей: ${n}. Создали пустой словарь.`,{map:pairs(m)});for(let i=0;i<n;i++){let tok=get().split(/\s+/);if(tok.length!==2)throw Error(`Строка ${i+1}: нужны ровно два поля.`);let [key,status]=tok;if(status===needle)m.set(key,(m.get(key)||0)+1);frame(`Запись ${i+1}: ${key} ${status}`,status===needle?`Увеличили счётчик «${key}» до ${m.get(key)}.`:`Статус ${status} пропускаем: нужен ${needle}.`,{map:pairs(m),focus:key});}output=pyDict(m);}
+else if(id==='t2'){let n=count(),b=new Set();frame('Создание чёрного списка',`Добавляем ${n} IP в множество.`,{items:[]});for(let i=0;i<n;i++){b.add(get());frame(`IP чёрного списка ${i+1}`,'В множестве сохранены уникальные адреса.',{items:[...b]});}let m=count(),found=new Set();frame('Начало анализа журнала',`Будем проверять ${m} записей.`,{items:[...found],subItems:[...b]});for(let i=0;i<m;i++){let ip=get(),hit=b.has(ip);if(hit)found.add(ip);frame(`Соединение ${i+1}: ${ip}`,hit?'Адрес запрещён; добавили в found, если его ещё не было.':'Адрес не найден в blacklist; пропускаем.',{items:[...found],subItems:[...b]});}output=String(found.size);}
+else if(id==='t3'||id==='p3'){let n=count(),m=new Set();for(let i=0;i<n;i++){let v=get();if(id==='t3'){if(!/^-?\d+$/.test(v))throw Error('Ожидалось целое число в наборе.');v=Number(v);}m.add(v);frame(`Добавление элемента ${i+1}`,`Уникальных элементов: ${m.size}.`,{items:[...m]});}let query=get();if(id==='t3'){if(!/^-?\d+$/.test(query))throw Error('Искомый элемент должен быть числом.');query=Number(query);}let yes=m.has(query);frame('Проверка принадлежности',`Проверка ${query} in set → ${yes}.`,{items:[...m],focus:String(query)});output=id==='t3'?(yes?'FOUND':'NOT FOUND'):(yes?'KNOWN':'UNKNOWN');}
+else if(id==='t4'){let s=get().toLowerCase(),freq=new Map();frame('Начало анализа текста','Проверяем только символы a–z.',{map:[]});for(let i=0;i<s.length;i++){let ch=s[i];if(ch>='a'&&ch<='z'){freq.set(ch,(freq.get(ch)||0)+1);}if(s.length<=100||i%Math.ceil(s.length/70)===0)frame(`Символ ${i+1}: ${JSON.stringify(ch)}`,ch>='a'&&ch<='z'?'Увеличили частоту буквы.':'Игнорируем не-латинскую букву или знак.',{map:pairs(freq),focus:ch});}output=[...freq].sort((a,b)=>a[0].localeCompare(b[0],'en')).map(([k,v])=>`${k} ${v}`).join('\n');}
+else if(id==='p4'){let words=get().toLowerCase().split(/\s+/).filter(Boolean),freq=new Map();frame('Начало','Отдельные слова — ключи словаря.',{map:[]});for(let i=0;i<words.length;i++){freq.set(words[i],(freq.get(words[i])||0)+1);frame(`Событие ${i+1}: ${words[i]}`,'Добавили или увеличили счётчик типа события.',{map:pairs(freq),focus:words[i]});}output=[...freq].sort((a,b)=>a[0].localeCompare(b[0],'en')).map(([k,v])=>`${k} ${v}`).join('\n');}
+else if(id==='p2'){let n=count(),devices=new Set(),ports=new Set([22,23,3389]);frame('Начало','Подозрительные по условию порты: 22, 23, 3389.',{items:[]});for(let i=0;i<n;i++){let tok=get().split(/\s+/);if(tok.length!==2||!/^-?\d+$/.test(tok[1]))throw Error(`Запись ${i+1}: нужен формат «устройство целый_порт».`);let [device,p]=tok,hit=ports.has(Number(p));if(hit)devices.add(device);frame(`Событие ${i+1}: ${device}:${p}`,hit?'Порт из условия → добавляем имя устройства.':'Неинтересующий порт → пропускаем.',{items:[...devices],focus:device});}output=String(devices.size);}
+else if(id==='t5'||id==='p5'){let n=count(),m=count();if(n<1||m<1||n*m>2500)throw Error('Для матрицы нужны размеры n,m ≥ 1 и не более 2500 элементов.');let matrix=[];for(let i=0;i<n;i++){let r=get().split(/\s+/).map(x=>Number(x));if(r.length!==m||r.some(x=>!Number.isInteger(x)))throw Error(`Строка матрицы ${i+1}: ожидалось ${m} целых чисел.`);matrix.push(r);}let clone=()=>matrix.map(row=>[...row]);let bestRow=0;
+ if(id==='t5'){let max=matrix[0][0];frame('Исходная матрица',`Начальный максимум: ${max}.`,{matrix:clone(),row:0,col:0});for(let i=0;i<n;i++){for(let j=0;j<m;j++){const v=matrix[i][j];if(v>max){max=v;bestRow=i;}frame(`Ячейка (${i+1}, ${j+1}): ${v}`,`Текущий максимум: ${max}, запомнили строку ${bestRow+1}.`,{matrix:clone(),row:i,col:j,bestRow});}}}
+ else{let best=sum(matrix[0]);frame('Исходная матрица',`Начальная сумма первой строки: ${best}.`,{matrix:clone(),bestRow:0});for(let i=1;i<n;i++){let s=sum(matrix[i]);if(s>best){best=s;bestRow=i;}frame(`Строка ${i+1}: сумма ${s}`,`Максимальная сумма: ${best}. Победитель — строка ${bestRow+1}.`,{matrix:clone(),row:i,bestRow});}}[matrix[0],matrix[bestRow]]=[matrix[bestRow],matrix[0]];frame('Перестановка строк',`Исходную строку ${bestRow+1} поменяли с первой.`,{matrix:clone(),row:0});output=matrix.map(row=>row.join(' ')).join('\n');}
+else if(id==='s1'){let n=count(),events=[],out=[];for(let i=0;i<n;i++){let line=get(),parts=line.match(/^(\S+)\s+(\S+)\s+(.+)$/);if(!parts)throw Error(`Событие ${i+1}: нужны источник, уровень и текст сообщения.`);events.push([parts[1],parts[2],parts[3]]);frame(`Событие ${i+1}: ${parts[1]}`,`Сохранили (${parts[1]}, ${parts[2]}, «${parts[3]}»).`,{items:events.map(x=>x[0]+' / '+x[1])});}let lvl=get(),seen=[];frame('Чтение порога',`Критический уровень: ${lvl}.`,{items:events.map(x=>x[0]+' / '+x[1])});for(let i=0;i<events.length;i++){let [source,severity,message]=events[i],hit=severity===lvl;if(hit){out.push(`[CRITICAL] ${source}: ${message}`);seen.push(source);}frame(`Проверка ${source}`,hit?'Уровень совпал, выводим сообщение.':'Уровень не совпал, пропускаем.',{items:seen,focus:source});}output=out.length?out.join('\n'):'Нет критичных событий';}
+else{throw Error('Неизвестный алгоритм');}
+frame('Готово',`Итоговый результат: ${linesOutput(output)}`);return{output,frames};}
+function sum(arr){return arr.reduce((a,b)=>a+b,0);}
+function renderTrace(id){let sim=state.simulations[id],title=document.getElementById(`trace-title-${id}`),counter=document.getElementById(`trace-counter-${id}`),stage=document.getElementById(`trace-stage-${id}`),desc=document.getElementById(`trace-desc-${id}`),fill=document.getElementById(`trace-fill-${id}`);if(!sim)return;let k=sim.index,f=sim.frames[k];title.textContent=f.title;counter.textContent=`${k+1} / ${sim.frames.length}`;desc.textContent=f.description||'';fill.style.width=((k+1)/sim.frames.length*100)+'%';let parts=[];if(f.map){parts.push(`<div class="label">Текущее состояние словаря</div>`);parts.push(f.map.length?`<div class="trace-chips">${f.map.map(([key,v])=>`<span class="trace-chip ${String(key)===String(f.focus)?'key':''}">${H(key)} → <strong>${H(v)}</strong></span>`).join('')}</div>`:'<div class="muted">Словарь пока пуст.</div>');}if(f.items){parts.push(`<div class="label">Элементы множества / списка</div>`);parts.push(f.items.length?`<div class="trace-chips">${f.items.map(x=>`<span class="trace-chip ${String(x)===String(f.focus)?'key':''}">${H(x)}</span>`).join('')}</div>`:'<div class="muted">Пока нет подходящих элементов.</div>');}if(f.matrix){parts.push(`<div class="label">Матрица · строка и столбец отмечены в процессе просмотра</div><div style="overflow:auto"><table class="trace-matrix"><tbody>${f.matrix.map((row,i)=>`<tr class="${i===f.row||i===f.bestRow?'row-highlight':''}">${row.map((v,j)=>`<td class="${i===f.row&&j===f.col?'cell-highlight':''}">${H(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`);}if(!parts.length)parts.push('<span class="muted">Результат рассчитан, трассировка завершена.</span>');stage.innerHTML=parts.join('');}
+function runTask(id){let t=DB.tasks.find(t=>t.id===id),input=document.getElementById(`input-${id}`).value,result=document.getElementById(`result-${id}`),note=document.getElementById(`result-note-${id}`);try{let sim=algorithm(id,input);state.simulations[id]={frames:sim.frames,index:0};result.textContent=sim.output||'(пустой вывод)';const isDefault=stripCR(input).trim()===stripCR(t.input).trim();const match=stripCR(sim.output).trim()===stripCR(t.expected).trim();note.textContent=isDefault?(match?'✓ Результат совпадает с эталоном.':'Обнаружено несовпадение с эталоном, проверьте входные данные.'):'Результат для вашего собственного ввода. Эталон рядом относится к исходному примеру.';note.style.color=isDefault&&!match?'#b44b4f':'#147e70';renderTrace(id);}catch(e){result.textContent='Ошибка во входных данных: '+e.message;note.textContent='Проверьте количество строк, формат полей и целые числа.';note.style.color='#b44b4f';state.simulations[id]=null;document.getElementById(`trace-stage-${id}`).textContent='Исправьте данные и повторите проверку.';}}
+function renderQuizItem(q,i,qid){return `<div class="quiz-item" id="qi-${qid}-${i}"><div class="quiz-question">${i+1}. ${H(q.q)}</div>${q.text?`<input class="quiz-text" aria-label="Ответ на вопрос ${i+1}" id="qa-${qid}-${i}" autocomplete="off" placeholder="Введите ответ">`:`<div class="quiz-options">${q.options.map((o,j)=>`<label id="opt-${qid}-${i}-${j}"><input type="radio" name="${qid}-q${i}" value="${j}"><span>${H(o)}</span></label>`).join('')}</div>`}<div class="quiz-feedback" id="feedback-${qid}-${i}"></div></div>`;}
+function renderQuizzes(){const parts=[['q1','Повторим главное',DB.quiz1],['q2','Задание для самостоятельной работы 2',DB.quiz2]];document.getElementById('quizzes-root').innerHTML=parts.map(([id,name,qs],i)=>`<div class="quiz"><div class="compact-row"><div><h3>${i+1}. ${H(name)}</h3><p class="muted">${qs.length} вопросов · ответьте на всё или проверьте частичный результат</p></div><span class="pill">${qs.length} вопросов</span></div>${qs.map((q,j)=>renderQuizItem(q,j,id)).join('')}<div class="control-row" style="margin-top:18px"><button type="button" class="btn primary" data-check="${id}">Проверить ответы</button><button type="button" class="btn quiet" data-quiz-reset="${id}">Попробовать снова</button></div><div class="quiz-result" id="qr-${id}" aria-live="polite"></div></div>`).join('');}
+function checkQuiz(id){const quiz=id==='q1'?DB.quiz1:DB.quiz2;let count=0,answered=0;quiz.forEach((q,i)=>{let user;if(q.text){user=document.getElementById(`qa-${id}-${i}`).value.trim().toLowerCase();}else{const selected=document.querySelector(`input[name="${id}-q${i}"]:checked`);user=selected?Number(selected.value):null;}const right=q.text?user===String(q.options[0]).toLowerCase():user===q.answer;if(user!==null&&user!=='')answered++;if(right)count++;const feedback=document.getElementById(`feedback-${id}-${i}`);feedback.classList.add('show');feedback.textContent=(right?'✓ Верно. ':'✕ Не совсем. ')+q.why;if(!q.text){q.options.forEach((_,j)=>{const label=document.getElementById(`opt-${id}-${i}-${j}`);label.classList.toggle('correct',j===q.answer);label.classList.toggle('wrong',j===user&&j!==q.answer);});}});document.getElementById(`qr-${id}`).textContent=`Результат: ${count} из ${quiz.length} (${Math.round(count/quiz.length*100)}%). Заполнено: ${answered} из ${quiz.length}.`}
+function resetQuiz(id){const quiz=id==='q1'?DB.quiz1:DB.quiz2;quiz.forEach((q,i)=>{if(q.text){document.getElementById(`qa-${id}-${i}`).value='';}else{document.querySelectorAll(`input[name="${id}-q${i}"]`).forEach(el=>el.checked=false);q.options.forEach((_,j)=>document.getElementById(`opt-${id}-${i}-${j}`).classList.remove('correct','wrong'));}let f=document.getElementById(`feedback-${id}-${i}`);f.classList.remove('show');f.textContent='';});document.getElementById(`qr-${id}`).textContent='';}
+document.addEventListener('click',ev=>{const b=ev.target.closest('button');if(!b)return;const d=b.dataset;if(d.copy){const task=DB.tasks.find(t=>t.id===d.task);const val=d.copy==='code'?task.code:d.copy==='input'?task.input:task.expected;copyText(val).then(()=>{const old=b.textContent;b.textContent='✓ Скопировано';setTimeout(()=>b.textContent=old,1400)}).catch(()=>{b.textContent='Не удалось скопировать';});}if(d.run)runTask(d.run);if(d.reset){const task=DB.tasks.find(t=>t.id===d.reset);document.getElementById(`input-${d.reset}`).value=task.input;runTask(d.reset);}if(d.prev||d.next){const id=d.prev||d.next,sim=state.simulations[id];if(!sim){runTask(id);return;}sim.index=Math.max(0,Math.min(sim.frames.length-1,sim.index+(d.prev?-1:1)));renderTrace(id);}if(d.complete){if(state.completed.has(d.complete))state.completed.delete(d.complete);else state.completed.add(d.complete);const container=document.getElementById(d.complete);container.classList.toggle('completed',state.completed.has(d.complete));b.textContent=state.completed.has(d.complete)?'✓ Выполнено — снять отметку':'✓ Отметить как выполненное';b.classList.toggle('primary',!state.completed.has(d.complete));b.classList.toggle('quiet',state.completed.has(d.complete));try{localStorage.setItem(STORE,JSON.stringify([...state.completed]));}catch(e){}updateDone();}if(d.check)checkQuiz(d.check);if(d.quizReset)resetQuiz(d.quizReset);});
+renderAll();renderQuizzes();
+for(const t of DB.tasks){runTask(t.id);} // Показать исходные примеры и трассы без действий пользователя.
+const nav=document.querySelectorAll('.nav-link');const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){nav.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}})},{rootMargin:'-10% 0px -78% 0px'});document.querySelectorAll('main [id="top"],main section[id],main header[id]').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
