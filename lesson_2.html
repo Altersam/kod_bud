@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#eef6f8">
+<meta name="description" content="Интерактивный урок 2: ответственное использование ИТ, персональные данные, законодательство РФ и GDPR, этика ИИ и Bug Bounty. Теория, схемы, Python и тест с ответами.">
+<title>Урок 2 · Ответственное использование ИТ | Код будущего</title>
+<style>
+:root{--ink:#172e46;--ink2:#456178;--muted:#688296;--navy:#233f77;--blue:#327b9b;--teal:#298b95;--turq:#63a8b4;--bg:#f3f8f9;--surface:#fff;--line:#d6e5ea;--soft:#edf6f8;--good:#217e70;--warn:#a06c1f;--bad:#ab4f54;--shadow:0 14px 44px rgba(31,69,95,.07);--r:21px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:28px}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.68 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:-.005em}button,input,textarea{font:inherit}a{color:#166f91;text-underline-offset:3px}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #55b2c4;outline-offset:3px}::selection{background:#c7edf0;color:#163649}
+.app{display:grid;grid-template-columns:266px minmax(0,1fr);max-width:1800px;margin:auto;min-height:100vh}.sidebar{position:sticky;top:0;align-self:start;height:100vh;padding:27px 20px;background:#fff;border-right:1px solid var(--line);overflow:auto}.brand{display:flex;align-items:center;gap:12px;margin-bottom:32px}.brand-symbol{width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,#254781,#48a5ae);display:grid;place-items:center;color:#fff;font-size:23px;font-weight:800}.brand b{display:block;font-size:15px;line-height:1.25}.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:.12em;text-transform:uppercase}.nav-label{font-size:11px;text-transform:uppercase;letter-spacing:.13em;color:#8aa0ac;font-weight:800;margin:16px 13px 8px}.nav-item{display:flex;gap:11px;align-items:center;padding:9px 11px;border-radius:11px;color:#496274;text-decoration:none;font-size:13px;font-weight:610;line-height:1.35;margin:2px 0;transition:.2s}.nav-item:hover,.nav-item.active{background:#e8f3f6;color:#176f8b}.nav-num{display:grid;place-items:center;flex:0 0 23px;width:23px;height:23px;border:1px solid #ccdfe5;border-radius:8px;color:#6a95a0;font-size:11px}.nav-item.active .nav-num{background:#2e8291;color:white;border-color:#2e8291}.side-bottom{border-top:1px solid var(--line);margin-top:19px;padding:20px 10px 0}.tiny{font-size:12px;color:var(--muted)}.progress{background:#e3edf0;height:7px;overflow:hidden;border-radius:20px;margin:10px 0 4px}.progress>span{display:block;background:linear-gradient(90deg,#397f9d,#68b5ab);height:100%;width:0%;transition:width .4s}
+.content{min-width:0;max-width:1260px;width:100%;margin:auto;padding:24px clamp(21px,3.3vw,54px) 70px}.topline{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:20px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.055em;text-transform:uppercase}.top-actions{display:flex;gap:9px;flex-wrap:wrap}.btn{display:inline-flex;justify-content:center;align-items:center;gap:8px;border:1px solid #c8dfe4;border-radius:11px;padding:9px 15px;background:#fff;color:#31576c;font-size:13px;font-weight:750;line-height:1.3;text-decoration:none;transition:transform .15s,background .15s,border .15s}.btn:hover{background:#e9f5f8;transform:translateY(-1px)}.btn.primary{border-color:var(--navy);color:#fff;background:var(--navy)}.btn.primary:hover{background:#315a97}.btn.small{font-size:12px;padding:7px 11px}.btn:disabled{cursor:not-allowed;opacity:.5}
+.hero{position:relative;isolation:isolate;overflow:hidden;border-radius:27px;background:linear-gradient(116deg,#223b75 0%,#284d83 66%,#307f97 100%);color:white;padding:clamp(26px,5vw,62px);min-height:400px;box-shadow:0 20px 60px #23496b1a}.hero:before{content:"";position:absolute;z-index:-1;width:650px;height:650px;border:1px solid #a2e4ec55;border-radius:45%;right:-150px;top:-240px;box-shadow:0 0 0 34px #b0faff08,0 0 0 70px #d8f4ff0c,0 0 0 108px #d8f4ff08;transform:rotate(23deg);animation:slowspin 20s linear infinite}.hero:after{content:"";position:absolute;z-index:-1;width:500px;height:380px;right:0;bottom:-170px;background:radial-gradient(ellipse,#70cadb38 0,transparent 68%)}.eyebrow{font-size:12px;font-weight:820;text-transform:uppercase;letter-spacing:.17em;color:#76ced8}.hero h1{font-size:clamp(34px,4.5vw,64px);font-weight:790;line-height:1.1;letter-spacing:-.055em;margin:17px 0 20px;max-width:820px}.hero h1 em{font-style:normal;color:#8ad4db}.hero p{max-width:710px;color:#e0edf6;font-size:clamp(15px,1.5vw,19px);line-height:1.6}.hero-stats{display:flex;gap:12px;flex-wrap:wrap;margin:35px 0 0}.stat{padding:13px 20px;background:#ffffff17;border:1px solid #ffffff32;border-radius:13px;backdrop-filter:blur(10px)}.stat b{font-size:23px;display:block;line-height:1.2}.stat span{color:#c8e3ed;font-size:12px}.quicklinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}.quicklinks a{font-size:13px;background:#e6f0f3;padding:7px 12px;text-decoration:none;color:#367083;border-radius:100px;font-weight:680}
+.section{padding-top:72px;scroll-margin-top:0}.section-head{margin-bottom:24px}.section-head small{font-size:12px;text-transform:uppercase;letter-spacing:.16em;font-weight:800;color:#5c9daa}.section-head h2{margin:6px 0 10px;font-size:clamp(29px,3.1vw,44px);line-height:1.17;letter-spacing:-.039em}.section-head p{margin:0;max-width:890px;color:var(--ink2);font-size:16px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}.panel{min-width:0;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--r);padding:25px}.panel h3{font-size:20px;letter-spacing:-.025em;line-height:1.3;margin:0 0 11px}.panel h4{margin:0 0 9px;font-size:15px;color:var(--blue)}.panel p{margin:8px 0 13px}.panel p:last-child{margin-bottom:0}.panel ul,.panel ol{padding-left:22px;margin:8px 0}.panel li{margin:5px 0}.kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#5c9fac;margin-bottom:7px}.icon-chip{display:inline-flex;width:43px;height:43px;border-radius:13px;background:#e6f3f6;color:#348e9a;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px}.wide{grid-column:1/-1}.soft{background:linear-gradient(145deg,#e7f4f6,#f6fbfa)}.navy-panel{background:#27467d;border-color:#27467d;color:#f4fbff}.navy-panel p,.navy-panel li{color:#e6f0fb}.callout{border-left:4px solid #65aebb;border-radius:0 13px 13px 0;background:#edf7f8;padding:17px 20px;margin:20px 0;color:#36586b}.callout.warning{border-color:#d2a252;background:#fff9ec}.callout.danger{border-color:#cb7c80;background:#fff4f4}.callout b{color:var(--ink)}.label-pill{display:inline-block;border:1px solid #b7d8de;border-radius:30px;padding:4px 10px;background:#edf8f8;color:#347d88;font-weight:760;font-size:11px;letter-spacing:.08em;text-transform:uppercase}.explain{color:var(--ink2)}.no-margin{margin:0}.arrowflow{display:flex;align-items:stretch;flex-wrap:wrap;gap:8px;margin:18px 0}.step{flex:1 1 140px;border:1px solid #bad7dc;background:#f3fafb;border-radius:13px;padding:16px;position:relative}.step .n{font-size:11px;font-weight:800;color:#438b97;letter-spacing:.12em}.step b{display:block;margin:6px 0;font-size:14px}.step p{font-size:12px;color:var(--ink2);margin:0}.step-arrow{display:grid;place-items:center;color:#5ea6ad;font-size:23px}.svg-wrap{padding:14px;border-radius:17px;background:linear-gradient(150deg,#f7fcfd,#ebf4f7);overflow:hidden;border:1px solid #d7e9ec}.svg-wrap svg{width:100%;height:auto;display:block}.line-animate{stroke-dasharray:8 8;animation:dash 18s linear infinite}.float{animation:float 5s ease-in-out infinite}.pulse{animation:pulse 3s ease-in-out infinite;transform-origin:center}.demo-controls{display:flex;gap:9px;flex-wrap:wrap;margin:15px 0}.choice-btn{border:1px solid #c1dbe0;border-radius:12px;background:#fff;padding:11px 15px;font-size:13px;color:var(--ink2);font-weight:700}.choice-btn:hover,.choice-btn.selected{color:#146a83;border-color:#4ea7ae;background:#e7f6f6}.feedback{padding:15px 17px;border-radius:13px;border:1px solid #c8dde2;background:#f7fbfc;margin-top:12px;min-height:54px;font-size:14px;line-height:1.6}.feedback.good{border-color:#8fcebc;background:#eefaf5;color:#24665d}.feedback.bad{border-color:#edb3b3;background:#fff5f4;color:#8c4049}.feedback.warning{border-color:#e3c491;background:#fffbf1;color:#7e5a2b}.a-table{border-collapse:collapse;width:100%;font-size:14px;table-layout:fixed}.a-table th{text-align:left;background:#eaf3f7;color:#31546b;font-size:12px;text-transform:uppercase;letter-spacing:.04em}.a-table td,.a-table th{border-bottom:1px solid #dfebee;padding:13px 14px;vertical-align:top;overflow-wrap:anywhere}.a-table tr:last-child td{border-bottom:0}.a-table td:first-child{font-weight:760}.scroll-table{overflow-x:auto}.timebar{display:grid;grid-template-columns:1fr 1fr;gap:18px}.timebox{border-radius:17px;border:1px solid #c4dfe4;background:#fff;overflow:hidden}.timebox header{padding:14px 19px;font-weight:780;background:#ebf5f8;color:#267b91}.timebox .ticks{padding:20px}.timebox .tick{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid #e6eff1}.tick:last-child{border:0}.clock{flex:0 0 auto;border-radius:11px;background:#2b6484;color:#fff;padding:4px 9px;font-size:14px;font-weight:840}.hint{font-size:12px;color:var(--muted);margin:9px 0}.checklist{list-style:none!important;padding-left:0!important}.checklist li{padding:9px 0;border-bottom:1px dashed #d7e3e6;display:flex;align-items:flex-start;gap:11px}.checklist li:before{content:'✓';flex:0 0 25px;height:25px;display:grid;place-items:center;border-radius:8px;background:#e5f5f1;color:#348b75;font-weight:900}
+.law{display:flex;gap:15px;align-items:flex-start;border:1px solid #d2e5e9;padding:18px 20px;border-radius:14px;background:#fff}.law strong{min-width:64px;font-size:25px;color:#2f8190;line-height:1.15}.law b{display:block;line-height:1.4}.law p{margin:4px 0;font-size:13px;color:#506c7c}.case{background:#fff;border:1px solid var(--line);border-radius:17px;padding:21px;margin:12px 0}.case h3{margin:4px 0 9px;font-size:18px}.case p{margin:7px 0}.case details{border-top:1px solid #e1ecee;margin-top:15px;padding-top:12px}.case summary,.quiz details summary{cursor:pointer;color:#267989;font-weight:770}.cases-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.scenario-btn{display:block;border:1px solid #cfdee2;background:#fff;border-radius:14px;text-align:left;padding:16px;min-height:110px;color:#37596c;font-weight:680;transition:.2s}.scenario-btn:hover,.scenario-btn.selected{background:#e8f5f6;border-color:#63abb4}.scenario-btn small{font-size:11px;color:#5a98a1;display:block;margin-bottom:6px}.risk{font-weight:760}.risk.ok{color:var(--good)}.risk.no{color:var(--bad)}.risk.mid{color:var(--warn)}
+.code-panel{border-radius:19px;overflow:hidden;background:#13283b;border:1px solid #315069;box-shadow:0 16px 30px #25456017}.code-head{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 16px;background:#1b344a;color:#c7e2ea;font-weight:760;font-size:13px}.code-head .btn{border-color:#3b677b;background:#29485a;color:#d4f1fa}.code-panel pre{margin:0;padding:18px 22px;overflow-x:auto;white-space:pre;tab-size:4;color:#e7f7ff;font:13px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace}.code-panel .code-bottom{font-size:12px;background:#183147;color:#b8d4df;padding:12px 18px;border-top:1px solid #315064}.code-block-wrap{margin:15px 0 22px}.code-intro{padding:8px 0 4px;color:var(--ink2);font-size:14px}.mono{font-family:ui-monospace,Consolas,monospace}.field{display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:720;color:#47687c}.field input,.field textarea{border:1px solid #bdd8dd;border-radius:11px;padding:11px 13px;background:#fff;color:#203e50;width:100%}.field textarea{min-height:84px;resize:vertical}.field-group{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}.scope-visual{border-radius:12px;padding:12px;background:#edf6f8;font:12px/1.5 ui-monospace,Consolas,monospace;overflow-wrap:anywhere}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.quiz-grid{display:grid;gap:15px}.question{background:#fff;border:1px solid var(--line);border-radius:19px;padding:22px;box-shadow:var(--shadow)}.question.answered-correct{border-color:#91cbbd}.question.answered-wrong{border-color:#dfb0ac}.qnum{font-weight:850;color:#3c95a2;font-size:11px;letter-spacing:.12em;text-transform:uppercase}.question h3{font-size:16px;line-height:1.45;margin:6px 0 16px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:9px}.option{display:flex;gap:10px;align-items:flex-start;border:1px solid #d6e4e6;background:#f7fafb;border-radius:12px;padding:12px 13px;cursor:pointer;font-size:13px;line-height:1.45;transition:.16s}.option:hover{background:#edf6f7;border-color:#82bdc4}.option input{margin-top:3px;accent-color:#31838b;flex:none}.option:has(input:checked){background:#e6f4f6;border-color:#489aa9}.question.checked .option.correct{background:#e7f7ee;border-color:#7bbea9}.question.checked .option.wrong-selected{background:#fff0ee;border-color:#d79a99}.question .q-explanation{display:none;background:#f1f8f8;border-left:3px solid #5fa3ad;padding:14px 16px;margin-top:14px;border-radius:0 10px 10px 0;font-size:13px;line-height:1.65}.question.checked .q-explanation{display:block}.q-explanation b{color:#2b7883}.short-answer{max-width:330px;padding:10px 12px;border:1px solid #c6dce1;border-radius:10px;background:#fff}.short-answer:focus{outline:3px solid #c0e5ed}.quiz-results{padding:24px;border-radius:20px;background:#284a7e;color:#f8fcff;margin-top:17px;display:none}.quiz-results.visible{display:block}.quiz-results strong{font-size:35px;display:block;line-height:1.2}.quiz-results p{color:#dbeef5;margin:7px 0 16px}.quiz-results .btn{background:white;color:#284a7e}.quiz-results .btn:hover{background:#e7f2f5}
+.source-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.source{padding:15px 18px;background:#fff;border:1px solid var(--line);border-radius:13px;text-decoration:none;display:flex;flex-direction:column;gap:5px}.source b{font-size:13px;color:#287489}.source span{font-size:12px;color:#657c8d}.source:hover{border-color:#63a6ae;background:#f7fcfc}.footer{text-align:center;padding:54px 10px 18px;font-size:12px;color:var(--muted)}.footer b{color:#467c8c}.toc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}.toc-card{padding:17px;border-radius:15px;border:1px solid #cfdee3;background:#fff;text-decoration:none;color:#2b526b;transition:.2s}.toc-card:hover{transform:translateY(-2px);border-color:#8dc0c7;box-shadow:var(--shadow)}.toc-card b{display:block;font-size:14px}.toc-card span{font-size:11px;color:#6c95a2}.sticky-up{position:fixed;bottom:20px;right:20px;z-index:10;display:grid;place-items:center;width:45px;height:45px;border:1px solid #bedadf;border-radius:14px;background:#fff;box-shadow:var(--shadow);color:#347d90;text-decoration:none;font-weight:900}
+@keyframes dash{to{stroke-dashoffset:-320}}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}@keyframes slowspin{to{transform:rotate(383deg)}}@keyframes pulse{0%,100%{opacity:.65}50%{opacity:1}}
+@media(max-width:1100px){.app{grid-template-columns:220px minmax(0,1fr)}.sidebar{padding:25px 11px}.grid.three,.grid.four{grid-template-columns:repeat(2,minmax(0,1fr))}.cases-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:790px){.app{display:block}.sidebar{height:auto;position:relative;border-right:0;border-bottom:1px solid var(--line);padding:12px 17px}.brand{margin:0}.sidebar nav,.side-bottom,.nav-label{display:none}.content{padding:17px 14px 55px}.hero{min-height:0;border-radius:19px;padding:28px 25px}.section{padding-top:51px}.grid,.grid.three,.grid.four,.cases-grid,.timebar,.field-group,.source-list{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.topline{margin:0 0 11px}.toc-cards{grid-template-columns:1fr 1fr}.panel{padding:20px}.stat{padding:10px 14px}.section-head h2{font-size:30px}.a-table{min-width:620px}.sticky-up{right:10px;bottom:10px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+@media print{.sidebar,.top-actions,.sticky-up,.demo-controls,.quiz-top>.btn,.code-head button{display:none!important}.app{display:block}.content{max-width:none;padding:0}.section{break-before:page;padding-top:10px}.hero{color:white!important;print-color-adjust:exact}.panel,.question{box-shadow:none;break-inside:avoid}.source-list,.grid{break-inside:avoid}.quiz-results{display:none!important}a{color:#175f80!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" aria-label="Навигация по уроку">
+  <div class="brand"><div class="brand-symbol" aria-hidden="true">&lt;/&gt;</div><div><b>КОД БУДУЩЕГО</b><small>Python · кибербезопасность</small></div></div>
+  <nav id="sidebarNav">
+    <div class="nav-label">Урок 2 / тема 1.2</div>
+    <a class="nav-item" href="#intro"><span class="nav-num">00</span>Введение и маршрут</a>
+    <a class="nav-item" href="#policy"><span class="nav-num">01</span>Политика ИБ РФ</a>
+    <a class="nav-item" href="#pd"><span class="nav-num">02</span>152-ФЗ и персональные данные</a>
+    <a class="nav-item" href="#criminal"><span class="nav-num">03</span>УК РФ: 272–274.1</a>
+    <a class="nav-item" href="#gdpr"><span class="nav-num">04</span>GDPR и сравнение</a>
+    <a class="nav-item" href="#ethics"><span class="nav-num">05</span>Этика, ИИ, решения</a>
+    <a class="nav-item" href="#disclosure"><span class="nav-num">06</span>Responsible Disclosure</a>
+    <a class="nav-item" href="#bounty"><span class="nav-num">07</span>Bug Bounty и scope</a>
+    <a class="nav-item" href="#python"><span class="nav-num">08</span>Практика Python</a>
+    <a class="nav-item" href="#cases"><span class="nav-num">09</span>Разбор ситуаций</a>
+    <a class="nav-item" href="#quiz"><span class="nav-num">10</span>Тест: 10 вопросов</a>
+    <a class="nav-item" href="#sources"><span class="nav-num">↗</span>Первоисточники</a>
+  </nav>
+  <div class="side-bottom"><div class="tiny">Изучено разделов <strong id="progressCount">0 из 11</strong></div><div class="progress"><span id="progressBar"></span></div><button class="btn small" id="resetProgress" style="margin-top:12px">Сбросить прогресс</button><p class="tiny">Прогресс хранится только в браузере.</p></div>
+</aside>
+<main class="content">
+  <div class="topline"><span>Модуль 1 · урок 02 · редакция 13.11.2026</span><div class="top-actions"><button class="btn small" id="printBtn">⎙ Печать / PDF</button><a class="btn small" href="#quiz">Проверить знания ↗</a></div></div>
+  <section class="hero" id="intro">
+    <div class="eyebrow">Обучающий интерактив · Python и кибербезопасность</div>
+    <h1>Ответственное использование <em>ИТ</em></h1>
+    <p>Государственная политика информационной безопасности, персональные данные, уголовно-правовые риски, GDPR, этика искусственного интеллекта и легальное исследование уязвимостей.</p>
+    <div class="hero-stats"><div class="stat"><b>6</b><span>тематических блоков</span></div><div class="stat"><b>3</b><span>примера Python</span></div><div class="stat"><b>10</b><span>вопросов с разбором</span></div><div class="stat"><b>∞</b><span>практики на стендах</span></div></div>
+  </section>
+  <div class="quicklinks"><a href="#policy">Государство</a><a href="#pd">152-ФЗ</a><a href="#criminal">Уголовное право</a><a href="#gdpr">GDPR</a><a href="#ethics">Этика ИИ</a><a href="#disclosure">CVD</a><a href="#bounty">Bug Bounty</a><a href="#python">Python</a><a href="#quiz">Тест</a></div>
+  <div class="callout warning"><b>Важный принцип.</b> Возможность получить технический доступ к данным не означает наличие законного права их просматривать, копировать или публиковать. В примерах используются только вымышленные данные и локальная обработка. Материал носит учебный характер, а не заменяет юридическую консультацию.</div>
+  <div class="toc-cards">
+    <a class="toc-card" href="#pd"><span>ПРАВО</span><b>Что можно делать с данными?</b></a>
+    <a class="toc-card" href="#disclosure"><span>ПРОЦЕСС</span><b>Как сообщить об уязвимости?</b></a>
+    <a class="toc-card" href="#quiz"><span>ПРОВЕРКА</span><b>Сдать тест с объяснениями</b></a>
+  </div>
+
+  <section class="section" id="policy">
+    <header class="section-head"><small>Блок 01 / контекст</small><h2>Государственная политика в области ИБ</h2><p>Информационная безопасность — это не только антивирусы и пароли. Государству важно обеспечить устойчивость критических сервисов, защиту информации, прав граждан и инфраструктуры.</p></header>
+    <div class="grid three">
+      <article class="panel"><div class="icon-chip">⚙</div><h3>ФСТЭК России</h3><p>В сфере компетенции службы — техническая защита информации, противодействие техническим разведкам, нормативные требования, отдельные виды лицензирования и сертификации.</p><p class="tiny">Не вся сертификация программ и шифров относится к ФСТЭК.</p></article>
+      <article class="panel"><div class="icon-chip">⌁</div><h3>ФСБ России</h3><p>В пределах полномочий занимается вопросами безопасности, в том числе криптографической защиты и лицензирования соответствующих видов деятельности.</p><p class="tiny">Разграничивайте криптографические и некриптографические средства защиты.</p></article>
+      <article class="panel"><div class="icon-chip">◎</div><h3>Роскомнадзор</h3><p>Уполномоченный орган по защите прав субъектов персональных данных: контроль соблюдения 152-ФЗ, уведомления операторов, реагирование на инциденты.</p><p class="tiny">Ведёт реестр операторов персональных данных.</p></article>
+    </div>
+    <div class="grid" style="margin-top:17px">
+      <article class="panel"><span class="label-pill">Нормативная основа</span><h3 style="margin-top:12px">Стратегия национальной безопасности РФ</h3><p>Указ Президента РФ от <b>02.07.2021 № 400</b> закрепляет стратегические национальные приоритеты, включая информационную безопасность. Инциденты с информацией способны затрагивать не только отдельного пользователя, но и экономику, государственное управление и общественную безопасность.</p><p><a href="https://www.consultant.ru/document/cons_doc_LAW_389271/" target="_blank" rel="noopener noreferrer">Открыть текст стратегии ↗</a></p></article>
+      <article class="panel"><span class="label-pill">Критическая инфраструктура</span><h3 style="margin-top:12px">КИИ и закон № 187-ФЗ</h3><p>Критическая информационная инфраструктура включает информационные системы, сети и АСУ в значимых секторах. Примеры отраслей: здравоохранение, транспорт, энергетика, финансовый рынок.</p><p><b>Не каждую информационную систему банка автоматически признают значимым объектом КИИ:</b> статус определяется по специальным критериям и процедурам категорирования.</p><p><a href="https://www.consultant.ru/document/cons_doc_LAW_220885/" target="_blank" rel="noopener noreferrer">187-ФЗ ↗</a></p></article>
+    </div>
+    <div class="panel" style="margin-top:16px"><h3>Как связаны регуляторы, организация и пользователь</h3>
+      <div class="svg-wrap"><svg viewBox="0 0 900 258" role="img" aria-label="Схема: регуляторы формируют требования, организация внедряет контроль доступа и защищает права пользователей">
+        <defs><marker id="arrPolicy" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#61a6b1"/></marker></defs>
+        <rect x="24" y="26" width="245" height="76" rx="18" fill="#d8ecf1" stroke="#77aebc"/><text x="146" y="54" font-size="18" font-weight="800" text-anchor="middle" fill="#274e6b">Государство</text><text x="146" y="77" font-size="13" text-anchor="middle" fill="#466779">законы и стандарты</text>
+        <rect x="328" y="26" width="245" height="76" rx="18" fill="#d0e3f0" stroke="#78a8bb"/><text x="450" y="54" font-size="18" font-weight="800" text-anchor="middle" fill="#274e6b">Организация</text><text x="450" y="77" font-size="13" text-anchor="middle" fill="#466779">меры защиты и процессы</text>
+        <rect x="634" y="26" width="241" height="76" rx="18" fill="#d7f0e8" stroke="#8cbfac"/><text x="754" y="54" font-size="18" font-weight="800" text-anchor="middle" fill="#27565e">Пользователь</text><text x="754" y="77" font-size="13" text-anchor="middle" fill="#4a7474">права и доверие</text>
+        <path d="M269 64H319 M573 64H625" stroke="#61a6b1" stroke-width="3" marker-end="url(#arrPolicy)" class="line-animate" fill="none"/>
+        <rect x="270" y="151" width="358" height="68" rx="17" fill="#fff" stroke="#cbdce4"/><text x="450" y="179" font-size="17" font-weight="750" fill="#23416f" text-anchor="middle">Информационная безопасность</text><text x="450" y="200" font-size="13" fill="#577083" text-anchor="middle">конфиденциальность · целостность · доступность</text>
+        <path d="M145 102C145 142 330 142 330 151 M449 102V151 M753 102C753 142 570 142 570 151" fill="none" stroke="#7aaeba" stroke-width="2" stroke-dasharray="6 7" class="line-animate"/>
+      </svg></div>
+      <p class="hint">Три классические цели ИБ: конфиденциальность (не раскрыть лишним), целостность (не исказить), доступность (обеспечить работу).</p>
+    </div>
+  </section>
+
+  <section class="section" id="pd">
+    <header class="section-head"><small>Блок 02 / данные человека</small><h2>Персональные данные и закон № 152-ФЗ</h2><p>Персональные данные — любая информация, относящаяся к прямо или косвенно определённому или определяемому физическому лицу. Важен <b>контекст</b>, а не только название поля.</p></header>
+    <div class="grid three">
+      <article class="panel"><div class="icon-chip">▣</div><h3>Обычные ПДн</h3><p>ФИО, телефон, e-mail, адрес, пользовательский идентификатор, фотографии, IP-адрес — <b>если информация связана с определяемым человеком</b>.</p><p class="tiny">IP не обязательно во всех обстоятельствах однозначно определяет человека.</p></article>
+      <article class="panel"><div class="icon-chip">♧</div><h3>Специальные категории</h3><p>Сведения о здоровье, расовой или национальной принадлежности, политических взглядах, религиозных или философских убеждениях, интимной жизни.</p><p class="tiny">Специальные категории имеют особый режим (ст. 10 152-ФЗ).</p></article>
+      <article class="panel"><div class="icon-chip">◉</div><h3>Биометрические ПДн</h3><p>Физиологические и биологические характеристики, используемые оператором для установления личности, например лицо или голос <b>при соответствующей обработке</b>.</p><p class="tiny">Обычное фото не во всех случаях юридически является биометрией.</p></article>
+    </div>
+    <div class="panel" style="margin-top:16px"><h3>Интерактивный классификатор: это персональные данные?</h3><p class="explain">Выберите объект. Для многих сведений ответ зависит от того, можно ли соотнести их с человеком.</p>
+      <div class="demo-controls" id="pdButtons"><button class="choice-btn" data-pd="email">Адрес e-mail</button><button class="choice-btn" data-pd="stats">Анонимная статистика</button><button class="choice-btn" data-pd="ip">IP-адрес</button><button class="choice-btn" data-pd="face">Шаблон распознавания лица</button><button class="choice-btn" data-pd="marks">Оценки + ID ученика</button></div>
+      <div class="feedback" id="pdFeedback" aria-live="polite">Нажмите на любой пример выше, чтобы увидеть классификацию и её обоснование.</div>
+    </div>
+    <div class="grid" style="margin-top:16px"><article class="panel"><h3>Законная обработка: не только согласие</h3><p>У оператора должно быть правовое основание, определённая цель обработки и необходимый объём данных. <b>Согласие — одно из оснований, но не единственное</b>: например, закон в определённых случаях допускает обработку для выполнения договора или предусмотренных законом обязанностей.</p><ul><li>Сначала определите цель и основание обработки.</li><li>Собирайте не больше, чем нужно.</li><li>Ограничьте доступ и срок хранения.</li><li>Исполняйте права субъекта и ведите документацию.</li></ul></article>
+      <article class="panel"><h3>Локализация ≠ запрет на передачу</h3><p>С <b>1 июля 2025 года</b> правила локализации при сборе ПД граждан РФ уточнены и ужесточены. При этом последующая трансграничная передача регулируется отдельно <b>статьёй 12</b> — с уведомлением Роскомнадзора и другими условиями.</p><p>Формула «данные граждан РФ никогда нельзя хранить или передавать за рубеж» — некорректное упрощение. Точный режим зависит от обстоятельств обработки и исключений.</p><p><a href="https://www.consultant.ru/document/cons_doc_LAW_511584/" target="_blank" rel="noopener noreferrer">Разъяснение Минцифры 2025 ↗</a></p></article></div>
+    <div class="panel" style="margin-top:16px"><h3>Модель жизненного цикла персональных данных</h3>
+      <div class="arrowflow"><div class="step"><span class="n">ШАГ 01</span><b>Законно собрать</b><p>цель · основание · уведомления</p></div><div class="step-arrow">→</div><div class="step"><span class="n">ШАГ 02</span><b>Защитить</b><p>минимизация · доступ · шифрование</p></div><div class="step-arrow">→</div><div class="step"><span class="n">ШАГ 03</span><b>Использовать</b><p>только в рамках заявленной цели</p></div><div class="step-arrow">→</div><div class="step"><span class="n">ШАГ 04</span><b>Удалить / обезличить</b><p>когда отсутствует основание хранить</p></div></div>
+      <div class="callout"><b>Пример для ИИ-сервиса школы.</b> Если алгоритм анализирует учебные работы, следует заранее определить основание и цели обработки, категории данных, доступ работников, сроки хранения и меры защиты. Не отправляйте идентифицирующие сведения обучающихся во внешние сервисы без проверки применимых требований и условий.</div>
+    </div>
+    <div class="panel" style="margin-top:16px"><h3>Что делать, если обнаружена утечка?</h3><p class="explain">Инцидент нужно локализовать и оценить. При наличии условий, указанных в ст. 21 ч. 3.1 152-ФЗ, оператор уведомляет Роскомнадзор в установленные сроки.</p>
+      <div class="timebar"><article class="timebox"><header>Россия · 152-ФЗ, статья 21</header><div class="ticks"><div class="tick"><span class="clock">0 ч</span><span>Выявить и зафиксировать инцидент, ограничить распространение, подключить ответственных.</span></div><div class="tick"><span class="clock">24 ч</span><span>Первичное уведомление Роскомнадзора о подпадающем под требование инциденте.</span></div><div class="tick"><span class="clock">72 ч</span><span>Сведения о результатах внутреннего расследования, в том числе о виновных лицах при наличии информации.</span></div></div></article><article class="timebox"><header>ЕС · GDPR, статья 33</header><div class="ticks"><div class="tick"><span class="clock">0 ч</span><span>Установить факт нарушения безопасности персональных данных и оценить риск для прав и свобод.</span></div><div class="tick"><span class="clock">≤72 ч</span><span>Если нарушение может представлять риск, уведомить надзорный орган без неоправданной задержки, по возможности не позднее 72 часов.</span></div><div class="tick"><span class="clock">Без задержки</span><span>При <b>высоком</b> риске информировать затронутых людей по ст. 34, с учётом исключений.</span></div></div></article></div>
+      <p class="hint">Сроки и критерии уведомлений в двух режимах отличаются; простое «всегда уведомить за 24/72 часа» упускает условия применения.</p>
+    </div>
+  </section>
+
+  <section class="section" id="criminal">
+    <header class="section-head"><small>Блок 03 / правовые границы</small><h2>Уголовный кодекс РФ: статьи 272–274.1</h2><p>Чтобы понять правовой риск, недостаточно спросить «был ли взлом». Важны права доступа, характер действий, последствия, форма вины и конкретная редакция уголовно-правовой нормы.</p></header>
+    <div class="grid"><div class="law"><strong>272</strong><div><b>Неправомерный доступ к компьютерной информации</b><p>Статья 272 предусматривает ответственность за неправомерный доступ к охраняемой законом компьютерной информации <b>при наступлении перечисленных в законе последствий</b> — уничтожения, блокирования, модификации или копирования, с учётом специальных исключений. Само открытие страницы без этих последствий не автоматически образует состав ч. 1 ст. 272.</p><a href="https://www.consultant.ru/document/cons_doc_LAW_10699/5c337673c261a026c476d578035ce68a0ae86da0/" target="_blank" rel="noopener noreferrer">Текст статьи ↗</a></div></div>
+    <div class="law"><strong>272.1</strong><div><b>Незаконные действия с компьютерной информацией, содержащей персональные данные</b><p>Введена в 2024 году. Охватывает предусмотренные законом случаи незаконных сбора, хранения, использования и передачи персональных данных, полученных неправомерным или иным незаконным путём.</p><a href="https://www.consultant.ru/document/cons_doc_LAW_10699/deefead19003ba8266e85fbf42fc31f60ed3c698/" target="_blank" rel="noopener noreferrer">Текст статьи ↗</a></div></div>
+    <div class="law"><strong>273</strong><div><b>Вредоносные компьютерные программы</b><p>Создание, распространение или использование программ либо иной информации, <b>заведомо предназначенных</b> для несанкционированного уничтожения, блокирования, изменения, копирования данных или нейтрализации защиты. Нельзя утверждать, что любое учебное хранение образца автоматически подпадает под статью: важны все признаки состава.</p><a href="https://www.consultant.ru/document/cons_doc_LAW_10699/a4d58c1af8677d94b4fc8987c71b131f10476a76/" target="_blank" rel="noopener noreferrer">Текст статьи ↗</a></div></div>
+    <div class="law"><strong>274</strong><div><b>Нарушение правил эксплуатации</b><p>Речь о нарушении специальных правил эксплуатации и доступа, повлёкшем определённые последствия, включая <b>крупный ущерб</b> в составе ч. 1. Нарушение внутренней инструкции само по себе не равно уголовной ответственности.</p><a href="https://pravida.ru/uk/274" target="_blank" rel="noopener noreferrer">Текст статьи ↗</a></div></div>
+    <div class="law wide"><strong>274.1</strong><div><b>Неправомерное воздействие на критическую информационную инфраструктуру РФ</b><p>Отдельная норма для предусмотренных законом посягательств на КИИ. Имеются специальные составы и квалифицирующие признаки. Для корректной оценки нужно установить, относится ли объект к КИИ, какие действия совершены и какие последствия наступили.</p><a href="https://www.consultant.ru/document/cons_doc_LAW_10699/34672bc8c82c4b6f4b7c8cd4e77a9f414fed6cb1/" target="_blank" rel="noopener noreferrer">Текст статьи ↗</a></div></div></div>
+    <div class="callout danger"><b>Корректировка слайдов.</b> Утверждения «любой доступ без письменного разрешения = статья 272», «любой образец вируса на диске = статья 273», «любое нарушение регламента = статья 274» не являются точными юридическими формулировками. Правила разрешённого тестирования соблюдаются независимо от того, образуют ли действия конкретный уголовный состав.</div>
+    <div class="panel" style="margin-top:16px"><h3>Интерактивный разбор: право на исследование</h3><p>Выберите ситуацию. Учебный тренажёр даёт практический ответ о допустимости действия, а не судебную квалификацию.</p>
+    <div class="demo-controls" id="lawButtons"><button class="choice-btn" data-law="lab">Локальный учебный стенд</button><button class="choice-btn" data-law="public">Публичный сайт без разрешения</button><button class="choice-btn" data-law="scope">Bug Bounty, строго в scope</button><button class="choice-btn" data-law="extra">Вышел за scope программы</button></div>
+    <div id="lawFeedback" class="feedback" aria-live="polite">Выберите ситуацию, чтобы оценить границы допустимого тестирования.</div>
+    <div class="svg-wrap" style="margin-top:15px"><svg viewBox="0 0 840 206" role="img" aria-label="Схема проверки разрешения перед тестированием">
+       <defs><marker id="arrLaw" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#64abb3"/></marker></defs>
+       <rect x="12" y="65" width="194" height="76" rx="14" fill="#d9eaf2"/><text x="109" y="92" text-anchor="middle" font-size="15" font-weight="750" fill="#284b72">Есть цель?</text><text x="109" y="113" text-anchor="middle" font-size="12" fill="#557185">Система для проверки</text>
+       <path d="M206 103H292" stroke="#64abb3" stroke-width="2.5" class="line-animate" marker-end="url(#arrLaw)"/>
+       <polygon points="396,24 501,103 396,181 291,103" fill="#e8f5f6" stroke="#6ca8b4" stroke-width="2"/><text x="396" y="98" font-size="15" font-weight="800" text-anchor="middle" fill="#246a80">Есть явное</text><text x="396" y="117" font-size="15" font-weight="800" text-anchor="middle" fill="#246a80">разрешение?</text>
+       <path d="M501 103H601" stroke="#64abb3" stroke-width="2.5" marker-end="url(#arrLaw)"/><text x="550" y="92" text-anchor="middle" font-size="12" fill="#26896e">да</text><rect x="602" y="61" width="224" height="81" rx="14" fill="#d7efe6"/><text x="714" y="91" font-size="16" font-weight="790" text-anchor="middle" fill="#287563">Проверь scope</text><text x="714" y="112" font-size="12" text-anchor="middle" fill="#56786c">и методы до запуска</text>
+       <path d="M396 181V194H602" stroke="#d58e89" stroke-width="2.5" stroke-dasharray="5 6" fill="none"/><text x="517" y="188" text-anchor="middle" font-size="12" fill="#a04e55">нет → не тестировать</text>
+       </svg></div></div>
+  </section>
+
+  <section class="section" id="gdpr">
+    <header class="section-head"><small>Блок 04 / международный контекст</small><h2>GDPR: европейский стандарт защиты данных</h2><p>GDPR — Регламент ЕС 2016/679. Его логика: законное и прозрачное использование данных, защита прав человека и ответственность организации за каждую операцию обработки.</p></header>
+    <div class="grid three"><article class="panel"><span class="label-pill">Статья 5</span><h3 style="margin-top:12px">Принципы обработки</h3><ul><li>законность, справедливость, прозрачность;</li><li>ограничение цели;</li><li>минимизация данных;</li><li>точность;</li><li>ограничение хранения;</li><li>целостность и конфиденциальность;</li><li>подотчётность (accountability).</li></ul></article>
+      <article class="panel"><span class="label-pill">Статьи 12–22</span><h3 style="margin-top:12px">Права человека</h3><ul><li>получать информацию и доступ;</li><li>исправлять неточности;</li><li>требовать удаления при условиях ст. 17;</li><li>ограничивать обработку;</li><li>получать и переносить данные при условиях ст. 20;</li><li>возражать против обработки в предусмотренных случаях.</li></ul></article>
+      <article class="panel"><span class="label-pill">Организационные меры</span><h3 style="margin-top:12px">Обязанности</h3><ul><li>Privacy by Design / by Default — ст. 25;</li><li>DPIA при высоких рисках — ст. 35;</li><li>DPO при наличии установленных условий — ст. 37;</li><li>документирование обработки — ст. 30, с исключениями;</li><li>реагирование на утечки — ст. 33–34.</li></ul></article>
+    </div>
+    <div class="grid" style="margin-top:16px"><article class="panel"><h3>Две ступени административных штрафов</h3><div class="grid" style="gap:10px"><div class="panel soft" style="box-shadow:none;padding:18px"><div class="kicker">Уровень 1</div><b style="font-size:25px;color:#2e7d91">10 млн €</b><p>или до 2% мирового годового оборота компании — применяется большая величина, для соответствующих нарушений.</p></div><div class="panel soft" style="box-shadow:none;padding:18px"><div class="kicker">Уровень 2</div><b style="font-size:25px;color:#2e7d91">20 млн €</b><p>или до 4% мирового годового оборота компании — применяется большая величина, для более серьёзных категорий нарушений.</p></div></div><p class="tiny">Это максимальные пределы по ст. 83 GDPR, а не автоматический штраф за любой инцидент.</p></article>
+    <article class="panel"><h3>Кому применяется GDPR?</h3><p><b>В ЕС:</b> к обработке в рамках деятельности организации, имеющей соответствующее присутствие в ЕС.</p><p><b>За пределами ЕС:</b> при предложении товаров/услуг людям, находящимся в ЕС, или мониторинге их поведения в ЕС (ст. 3), а также в иных специально указанных случаях.</p><p>Следовательно, правило <b>не</b> формулируется как «любые данные граждан ЕС всегда подпадают под GDPR».</p><a href="https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/application-gdpr_en" target="_blank" rel="noopener noreferrer">Пояснение Еврокомиссии ↗</a></article></div>
+    <div class="panel" style="margin-top:16px"><h3>Сравнение 152-ФЗ и GDPR</h3><div class="scroll-table"><table class="a-table"><thead><tr><th style="width:24%">Тема</th><th style="width:38%">Россия · 152-ФЗ</th><th style="width:38%">ЕС · GDPR</th></tr></thead><tbody>
+      <tr><td>Основание обработки</td><td>Согласие или иное законное основание, предусмотренное законом</td><td>Шесть основных оснований в ст. 6, включая согласие, договор, законную обязанность и другие</td></tr>
+      <tr><td>Локализация</td><td>Особые требования к базам при сборе ПД граждан РФ; есть предусмотренные законом исключения</td><td>Нет общего правила хранить все ПД только в ЕС; для передачи за пределы ЕЭЗ действуют гарантии главы V</td></tr>
+      <tr><td>Трансграничная передача</td><td>Отдельный режим ст. 12, включая уведомление РКН и ограничения</td><td>Режим главы V: адекватность, надлежащие гарантии или специальные основания</td></tr>
+      <tr><td>Инцидент и сроки</td><td>При условиях ч. 3.1 ст. 21: первичное уведомление 24 ч, итоги расследования 72 ч</td><td>Если нарушение может создавать риск: надзорному органу без неоправданной задержки, по возможности ≤72 ч</td></tr>
+      <tr><td>Права субъекта</td><td>Доступ, уточнение, блокирование, уничтожение в случаях, предусмотренных законом</td><td>Доступ, исправление, удаление в установленных случаях, переносимость, возражение и др.</td></tr>
+      <tr><td>Ответственность</td><td>КоАП ст. 13.11: разные составы, крупные штрафы за утечки; за повторные нарушения возможны оборотные санкции</td><td>Максимальные пороги ст. 83: 10/20 млн € или 2/4% оборота — в зависимости от нарушения</td></tr>
+      </tbody></table></div><p class="hint">Для реального продукта всегда анализируйте конкретный вид данных, географию, модель обработки и роль организации.</p></div>
+    <div class="panel soft" style="margin-top:16px"><h3>Визуальная модель Privacy by Design</h3>
+      <div class="svg-wrap"><svg viewBox="0 0 860 226" role="img" aria-label="Privacy by Design: на этапе разработки закладываются минимизация данных, безопасность по умолчанию, контроль доступа, удаление">
+       <defs><marker id="arrG" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#5ca5b2"/></marker></defs>
+       <circle cx="430" cy="112" r="81" fill="#d7f0ef" stroke="#72b5b2" stroke-width="2" class="pulse"/><circle cx="430" cy="112" r="54" fill="#264a7d"/><text x="430" y="108" fill="white" font-size="15" font-weight="800" text-anchor="middle">Privacy</text><text x="430" y="130" fill="white" font-size="15" font-weight="800" text-anchor="middle">by Design</text>
+       <rect x="20" y="29" width="232" height="54" rx="14" fill="#fff" stroke="#bedde1"/><text x="136" y="53" font-size="15" fill="#355775" text-anchor="middle" font-weight="750">Минимизация</text><text x="136" y="70" font-size="12" fill="#638494" text-anchor="middle">без лишних полей</text>
+       <rect x="20" y="144" width="232" height="54" rx="14" fill="#fff" stroke="#bedde1"/><text x="136" y="168" font-size="15" fill="#355775" text-anchor="middle" font-weight="750">Удаление</text><text x="136" y="184" font-size="12" fill="#638494" text-anchor="middle">по срокам хранения</text>
+       <rect x="608" y="29" width="232" height="54" rx="14" fill="#fff" stroke="#bedde1"/><text x="724" y="53" font-size="15" fill="#355775" text-anchor="middle" font-weight="750">Доступ по роли</text><text x="724" y="70" font-size="12" fill="#638494" text-anchor="middle">least privilege</text>
+       <rect x="608" y="144" width="232" height="54" rx="14" fill="#fff" stroke="#bedde1"/><text x="724" y="168" font-size="15" fill="#355775" text-anchor="middle" font-weight="750">Безопасность</text><text x="724" y="184" font-size="12" fill="#638494" text-anchor="middle">by default</text>
+       <path d="M252 56L361 92M252 170L361 133M608 56L501 92M608 170L501 133" stroke="#77b1bd" stroke-width="2" stroke-dasharray="5 5" class="line-animate"/>
+       </svg></div>
+      <p class="hint">Защита проектируется заранее, а не добавляется после первой утечки.</p></div>
+  </section>
+
+  <section class="section" id="ethics">
+    <header class="section-head"><small>Блок 05 / профессиональное решение</small><h2>Этика ИБ и искусственного интеллекта</h2><p>Закон отвечает на вопрос «что запрещено и обязательно», а этика помогает решить, как поступать ответственно даже в ситуациях, где нормы допускают несколько интерпретаций.</p></header>
+    <div class="grid"><article class="panel navy-panel"><span class="label-pill">Кодекс ISC2</span><h3 style="margin-top:12px">Четыре профессиональных ориентира</h3><ol><li>Защищать общество, доверие и инфраструктуру.</li><li>Действовать честно, справедливо, ответственно и законно.</li><li>Компетентно и добросовестно выполнять обязанности.</li><li>Развивать и защищать профессию.</li></ol><p class="tiny" style="color:#daebf3"><a href="https://www.isc2.org/Ethics" target="_blank" rel="noopener noreferrer" style="color:#a0e7ed">Кодекс ISC2 ↗</a></p></article>
+      <article class="panel"><h3>Двойное назначение инструментов</h3><p>Сканер, отладчик, генератор кода и языковая модель могут помогать защите или причинять вред. Разница проявляется в <b>намерении, разрешении, пределах исследования, способе применения и последствиях</b>.</p><div class="callout"><b>Базовое правило исследователя:</b> я технически могу выполнить действие, но выполняю его только при наличии права, допустимой цели и минимального риска.</div></article></div>
+    <div class="grid three" style="margin-top:15px"><article class="panel"><h3>Правомерность</h3><p>Есть ли полномочия? Разрешён ли объект и метод? Не нарушаются ли права других лиц?</p></article><article class="panel"><h3>Минимизация вреда</h3><p>Нужно ли извлекать реальные данные, если достаточно синтетического примера? Можно ли показать риск без эксплуатации?</p></article><article class="panel"><h3>Прозрачность и аудит</h3><p>Можно ли объяснить, почему ИИ предложил решение? Кто проверяет результат и отвечает за последствия?</p></article></div>
+    <div class="panel" style="margin-top:16px"><h3>Развилка: этическое решение</h3><p>Ситуация: ИИ-сервис обнаружил в документе набор имён, оценок и адресов учащихся. Что правильно сделать до передачи материала внешней модели?</p>
+      <div class="grid" id="ethicButtons"><button class="scenario-btn" data-ethic="raw"><small>ВАРИАНТ A</small>Отправить документ целиком: ИИ сам разберётся</button><button class="scenario-btn" data-ethic="mask"><small>ВАРИАНТ B</small>Проверить правовое основание, необходимость и защиту; использовать обезличенные/синтетические данные, если возможно</button><button class="scenario-btn" data-ethic="public"><small>ВАРИАНТ C</small>Опубликовать документ на сайте для «прозрачности»</button><button class="scenario-btn" data-ethic="ignore"><small>ВАРИАНТ D</small>Проигнорировать проблему и продолжить работу</button></div>
+      <div class="feedback" id="ethicFeedback" aria-live="polite">Выберите подход и посмотрите его последствия.</div>
+    </div>
+    <div class="panel soft" style="margin-top:16px"><h3>Шесть вопросов перед применением ИИ</h3><ul class="checklist"><li><span><b>Данные:</b> что именно получает модель и можно ли уменьшить объём?</span></li><li><span><b>Основание:</b> есть ли право на обработку и передачу данных?</span></li><li><span><b>Безопасность:</b> где сохраняются запросы, ответы и журналы?</span></li><li><span><b>Точность:</b> кто проверяет сгенерированный код, факты и выводы?</span></li><li><span><b>Справедливость:</b> не приводит ли решение к дискриминации или необоснованным санкциям?</span></li><li><span><b>Ответственность:</b> кто примет решение при ошибке алгоритма?</span></li></ul>
+      <p class="hint">У модели нет собственного юридического разрешения использовать данные. Ответственность остаётся у людей и организаций, применяющих систему.</p></div>
+  </section>
+
+  <section class="section" id="disclosure">
+    <header class="section-head"><small>Блок 06 / ответственное сообщение</small><h2>Coordinated Vulnerability Disclosure (CVD)</h2><p>Когда обнаружена уязвимость, цель исследователя — уменьшить риск для пользователей. Для этого согласуют обмен информацией с владельцем продукта, меры исправления и сроки публичного раскрытия.</p></header>
+    <div class="panel"><h3>От наблюдения до исправления</h3><div class="arrowflow"><div class="step"><span class="n">01</span><b>Проверить рамки</b><p>право, scope, запреты</p></div><div class="step-arrow">→</div><div class="step"><span class="n">02</span><b>Зафиксировать</b><p>минимальный факт, версия, время</p></div><div class="step-arrow">→</div><div class="step"><span class="n">03</span><b>Сообщить</b><p>security@, PSIRT, платформа</p></div><div class="step-arrow">→</div><div class="step"><span class="n">04</span><b>Координировать</b><p>уточнения, исправление, тест</p></div><div class="step-arrow">→</div><div class="step"><span class="n">05</span><b>Раскрыть</b><p>по политике и согласованию</p></div></div>
+      <div class="callout warning"><b>90 дней — не универсальный закон.</b> У Google Project Zero действует собственная модель 90+30 с дополнительными условиями. Для конкретной программы Bug Bounty применяются <b>её собственные правила раскрытия</b>. Нет общего права публиковать технические детали через 90 дней без учёта закона и рисков.</div>
+      <div class="grid"><article class="panel soft" style="box-shadow:none"><h3>Что включить в отчёт?</h3><ul class="checklist"><li>Продукт, версия, разрешённый объект</li><li>Краткое описание и потенциальное влияние</li><li>Точные шаги воспроизведения в безопасной среде</li><li>Минимальный PoC без реальных чужих данных</li><li>Ожидаемое и фактическое поведение</li><li>Предложения по снижению риска</li><li>Контакт и предпочтительный защищённый канал</li></ul></article>
+      <article class="panel soft" style="box-shadow:none"><h3>Чего избегать?</h3><ul class="checklist"><li>Выгрузки баз или личных сведений «для доказательства»</li><li>Перегрузки сервиса, разрушения данных или закрепления доступа</li><li>Требования денег за нераскрытие</li><li>Публикации рабочих эксплойтов до оценки последствий</li><li>Проверки других доменов «по аналогии» вне scope</li><li>Игнорирования требований NDA и программы</li></ul></article></div>
+    </div>
+    <div class="panel" style="margin-top:16px"><h3>Интерактивная модель согласованного раскрытия</h3><p class="explain">Выбирайте этап процесса. На схеме показывается действие исследователя и владельца системы.</p>
+      <div class="demo-controls" id="disclosureButtons"><button class="choice-btn selected" data-disc="0">1. Обнаружение</button><button class="choice-btn" data-disc="1">2. Отчёт</button><button class="choice-btn" data-disc="2">3. Исправление</button><button class="choice-btn" data-disc="3">4. Раскрытие</button></div>
+      <div class="svg-wrap"><svg viewBox="0 0 850 160" role="img" aria-label="Линия этапов раскрытия уязвимости">
+       <path d="M95 70H758" stroke="#c9dfe4" stroke-width="10" stroke-linecap="round"/><path id="discLine" d="M95 70H95" stroke="#5aa9b3" stroke-width="10" stroke-linecap="round" style="transition:all .4s"/>
+       <g id="discDots"><circle cx="95" cy="70" r="23" fill="#348e9c" stroke="#fff" stroke-width="6"/><circle cx="316" cy="70" r="23" fill="#c2dce2" stroke="#fff" stroke-width="6"/><circle cx="537" cy="70" r="23" fill="#c2dce2" stroke="#fff" stroke-width="6"/><circle cx="758" cy="70" r="23" fill="#c2dce2" stroke="#fff" stroke-width="6"/></g>
+       <g font-family="system-ui" fill="#405d70" text-anchor="middle" font-size="14" font-weight="700"><text x="95" y="118">Исследование</text><text x="316" y="118">Контакт</text><text x="537" y="118">Исправление</text><text x="758" y="118">Публикация</text></g>
+       <text x="95" y="76" fill="#fff" text-anchor="middle" font-size="16" font-weight="800">1</text><text x="316" y="76" fill="#fff" text-anchor="middle" font-size="16" font-weight="800">2</text><text x="537" y="76" fill="#fff" text-anchor="middle" font-size="16" font-weight="800">3</text><text x="758" y="76" fill="#fff" text-anchor="middle" font-size="16" font-weight="800">4</text>
+      </svg></div>
+      <div id="discFeedback" class="feedback">Этап 1. Документируйте только разрешённое наблюдение. Не расширяйте объём доступа ради «более убедительных» доказательств.</div>
+    </div>
+    <div class="panel" style="margin-top:16px"><h3>Образец отчёта: без эксплуатации реальных систем</h3><p class="explain">Шаблон можно копировать в письмо команде безопасности. Заполняйте только достоверными сведениями, полученными в рамках разрешённой проверки.</p>
+      <div class="code-panel code-block-wrap"><div class="code-head"><span>report.md · шаблон</span><button class="btn small copy-code" data-copy="reportTpl">Скопировать</button></div><pre id="reportTpl"># Отчёт об уязвимости (учебный пример)
+Продукт: Demo App / локальный стенд
+Версия: 1.2
+Разрешение на проверку: учебный стенд, согласованная область
+Категория риска: ненадлежащая проверка авторизации
+
+## Что обнаружено
+В тестовом сценарии роль «читатель» видит кнопку,
+предназначенную для роли «администратор».
+
+## Как воспроизвести безопасно
+1. Использовать синтетические тестовые учётные записи.
+2. Войти как читатель.
+3. Открыть заранее согласованный учебный маршрут.
+4. Зафиксировать появление элемента интерфейса.
+
+## Влияние
+Возможна путаница прав. Само наличие кнопки ещё не
+доказывает возможность несанкционированного действия.
+
+## Рекомендация
+Проверить права на сервере, применить least privilege.
+
+## Данные
+Реальные персональные данные не собирались.
+Нагрузочные испытания и получение доступа не проводились.</pre><div class="code-bottom">Это макет документирования. Для настоящих находок нужен согласованный канал связи и политика владельца.</div></div>
+    </div>
+  </section>
+
+  <section class="section" id="bounty">
+    <header class="section-head"><small>Блок 07 / легальная практика</small><h2>Bug Bounty: исследование по правилам</h2><p>Bug Bounty — программа, по которой владелец системы предлагает вознаграждение за определённые подтверждённые уязвимости. Участник должен соблюдать правила программы и применимое законодательство.</p></header>
+    <div class="grid three"><article class="panel"><h3>HackerOne</h3><p>Платформа для взаимодействия исследователей и команд безопасности. У каждой программы собственные правила, scope, процедура отчётности и раскрытия.</p><a href="https://www.hackerone.com/terms/disclosure-guidelines" target="_blank" rel="noopener noreferrer">Правила раскрытия ↗</a></article>
+      <article class="panel"><h3>Bugcrowd</h3><p>Платформа для программ поиска уязвимостей. Наличие программы у организации не даёт права проверять все её приложения и подрядчиков.</p><a href="https://www.bugcrowd.com/" target="_blank" rel="noopener noreferrer">О платформе ↗</a></article>
+      <article class="panel"><h3>Учебные лаборатории</h3><p>DVWA, OWASP Juice Shop, TryHackMe, Hack The Box — способы тренироваться в предназначенной для этого среде при соблюдении правил площадки.</p><a href="https://vwad.owasp.org/" target="_blank" rel="noopener noreferrer">Реестр OWASP ↗</a></article></div>
+    <div class="callout warning"><b>Вознаграждение не гарантировано.</b> Выплата зависит от правил конкретной программы, уникальности и значимости находки, качества отчёта и других условий. Диапазоны выплат из презентаций — иллюстративные, не обещание заработка.</div>
+    <div class="grid"><article class="panel"><h3>Scope — границы разрешённого исследования</h3><p><b>In-scope</b> — разрешённые системы, домены, типы тестов. <b>Out-of-scope</b> — всё, что не включено или явно исключено. Даже на разрешённом домене отдельные методы могут быть запрещены.</p><ul><li>Проверяйте точное совпадение домена, а не сходство названия.</li><li>IP и CIDR считайте по адресам, а не по строковому префиксу.</li><li>Прочитайте ограничения на автоматизацию, DoS, социальную инженерию, доступ к ПД и публикацию.</li></ul></article>
+    <article class="panel"><h3>Тренажёр scope: разрешён ли адрес?</h3><p class="explain">Вымышленная учебная программа разрешила только <span class="mono">app.demo.test</span>, <span class="mono">api.demo.test</span> и адреса <span class="mono">192.0.2.0/28</span>. Сама проверка <b>ничего не отправляет по сети</b>.</p>
+    <label class="field">Домен или IPv4<input id="scopeInput" type="text" spellcheck="false" value="api.demo.test" placeholder="app.demo.test"></label>
+    <div class="demo-controls"><button class="btn primary" id="scopeCheck">Проверить границы</button><button class="btn" id="scopeExample">Подставить пример</button></div><div class="scope-visual">in-scope: app.demo.test · api.demo.test · 192.0.2.0/28<br>out-of-scope: все остальные адреса и запрещённые методы</div><div class="feedback" id="scopeFeedback" aria-live="polite">Введите объект и нажмите «Проверить границы».</div>
+    </article></div>
+    <div class="panel" style="margin-top:16px"><h3>Безопасная последовательность действий исследователя</h3><div class="arrowflow"><div class="step"><span class="n">ПРАВИЛА</span><b>Прочитать policy</b><p>включая запреты</p></div><div class="step-arrow">→</div><div class="step"><span class="n">РАЗРЕШЕНИЕ</span><b>Проверить scope</b><p>и конкретный метод</p></div><div class="step-arrow">→</div><div class="step"><span class="n">МИНИМУМ</span><b>Не затронуть людей</b><p>без извлечения данных</p></div><div class="step-arrow">→</div><div class="step"><span class="n">ОТЧЁТ</span><b>Сообщить о риске</b><p>защищённым каналом</p></div></div></div>
+  </section>
+
+  <section class="section" id="python">
+    <header class="section-head"><small>Блок 08 / код, который можно копировать</small><h2>Python для ответственной работы с данными</h2><p>Три примера на стандартной библиотеке Python. Они не сканируют чужие ресурсы и не требуют установки пакетов. Каждая программа выполняется локально, на учебных или синтетических данных.</p></header>
+    <div class="panel"><span class="label-pill">Практика 1</span><h3 style="margin-top:12px">Редактирование логов перед передачей эксперту или ИИ</h3><p><b>Условие:</b> в локальном журнале есть адреса электронной почты и номера телефонов. Нужно создать копию для обсуждения ошибки, скрыв эти поля. Исходник не изменять.</p><p><b>Разбор:</b> регулярные выражения находят похожие на e-mail и телефон фрагменты. Функция <span class="mono">re.sub()</span> заменяет их фиксированными маркерами. Это лишь <b>маскирование типовых шаблонов, не гарантированное обезличивание</b> — свободный текст и другие идентификаторы требуют отдельной проверки.</p>
+      <div class="code-panel code-block-wrap"><div class="code-head"><span>privacy_logs.py · Python 3</span><button class="btn small copy-code" data-copy="codePrivacy">Скопировать код</button></div><pre id="codePrivacy">import re
+from pathlib import Path
+
+# Только вымышленные тестовые сведения.
+log = (
+    "2026-11-13 user=student42 "
+    "email=student@example.test "
+    "phone=+7-900-123-45-67 "
+    "event=login_ok"
+)
+
+EMAIL = re.compile(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}")
+PHONE = re.compile(r"\+?7[- (]?\d{3}[- )]?\d{3}[- ]?\d{2}[- ]?\d{2}")
+
+masked = EMAIL.sub("[EMAIL]", log)
+masked = PHONE.sub("[PHONE]", masked)
+
+# Отдельный файл. Оригинальный журнал не меняем.
+Path("log_masked.txt").write_text(masked, encoding="utf-8")
+print(masked)
+
+# ВНИМАНИЕ: user=student42 также может идентифицировать
+# человека. Проведите дополнительную проверку перед передачей.</pre><div class="code-bottom">Ожидается: <span class="mono">email=[EMAIL] phone=[PHONE]</span>. Даже после этого остаётся идентификатор student42 — его тоже нужно оценить.</div></div>
+      <details><summary>Ответ на практическое задание: почему простой regex недостаточен?</summary><p>Внутри сообщения могут оставаться ФИО, номер ученика, адрес, cookie, токен, идентификатор в URL и редкие форматы телефонов. Некоторые сведения связаны с человеком только в сочетании с другими. Для реального обезличивания применяют анализ полей и контекста, контроль обратной идентификации и проверки результата. Маскирование нельзя автоматически считать полной анонимизацией.</p></details>
+    </div>
+    <div class="panel" style="margin-top:18px"><span class="label-pill">Практика 2</span><h3 style="margin-top:12px">Проверка IPv4 на принадлежность к разрешённой сети</h3><p><b>Условие:</b> для синтетической учебной программы определена сеть <span class="mono">192.0.2.0/28</span>. Нужно проверить список введённых IP и не разрешить адреса за пределами диапазона.</p><p><b>Разбор:</b> библиотека <span class="mono">ipaddress</span> правильно сравнивает числовые адреса. Проверка через <span class="mono">startswith('192.0.2.')</span> ошибочна: она пропустит <span class="mono">192.0.2.250</span>, хотя тот вне указанной подсети /28.</p>
+      <div class="code-panel code-block-wrap"><div class="code-head"><span>scope_check.py · Python 3</span><button class="btn small copy-code" data-copy="codeScope">Скопировать код</button></div><pre id="codeScope">from ipaddress import ip_address, ip_network
+
+# 192.0.2.0/24 зарезервирована для документации.
+# Для демонстрации разрешена только часть /28.
+allowed = ip_network("192.0.2.0/28", strict=True)
+addresses = ["192.0.2.3", "192.0.2.15", "192.0.2.16",
+             "192.0.2.250", "198.51.100.5"]
+
+for raw in addresses:
+    try:
+        ip = ip_address(raw)
+        if ip.version != allowed.version:
+            permitted = False
+        else:
+            permitted = ip in allowed
+        status = "IN SCOPE" if permitted else "OUT OF SCOPE"
+        print(f"{raw:16} → {status}")
+    except ValueError:
+        print(f"{raw!r}: неверный формат адреса")
+
+# Юридический смысл: даже IN SCOPE не разрешает
+# автоматически любой метод исследования.
+</pre><div class="code-bottom">Результат: <span class="mono">192.0.2.3</span> и <span class="mono">192.0.2.15</span> — IN SCOPE; остальные — OUT OF SCOPE. Никаких сетевых запросов нет.</div></div>
+      <details><summary>Ответ: почему 192.0.2.16 уже не входит в /28?</summary><p>В сети IPv4 /28 первые 28 бит задают сеть, а последние 4 бита — адреса внутри неё. В сети <span class="mono">192.0.2.0/28</span> находятся 16 адресов от <span class="mono">192.0.2.0</span> до <span class="mono">192.0.2.15</span> включительно. <span class="mono">192.0.2.16</span> — первый адрес следующего /28-блока.</p></details>
+    </div>
+    <div class="panel" style="margin-top:18px"><span class="label-pill">Практика 3</span><h3 style="margin-top:12px">Создание структурированного отчёта о находке</h3><p><b>Условие:</b> описать замечание в локальном приложении и сформировать JSON, пригодный для передачи разработчику. Не включать секреты и чужие персональные данные.</p><p><b>Разбор:</b> словарь Python хранит версию, описание, риск и рекомендуемое действие. <span class="mono">json.dumps()</span> создаёт читаемый JSON, а <span class="mono">ensure_ascii=False</span> сохраняет русские буквы.</p>
+      <div class="code-panel code-block-wrap"><div class="code-head"><span>finding_report.py · Python 3</span><button class="btn small copy-code" data-copy="codeReport">Скопировать код</button></div><pre id="codeReport">import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+finding = {
+    "title": "Некорректное скрытие элемента интерфейса",
+    "target": "LOCAL-DEMO-ONLY",
+    "version": "1.2",
+    "authorization": "Учебный локальный стенд",
+    "observed_at": datetime.now(timezone.utc).isoformat(),
+    "observation": (
+        "Пользователю с ролью viewer показана кнопка "
+        "для роли admin. Выполнение действия не проверялось."
+    ),
+    "impact": "Возможное несоответствие интерфейса ролям",
+    "recommendation": (
+        "Проверить права на стороне сервера и UI."
+    ),
+    "personal_data_collected": False,
+    "real_system_tested": False
+}
+
+content = json.dumps(finding, ensure_ascii=False, indent=2)
+Path("finding.json").write_text(content, encoding="utf-8")
+print("Отчёт сохранён локально в finding.json")
+</pre><div class="code-bottom">Результат: файл <span class="mono">finding.json</span> с воспроизводимым описанием наблюдения и без лишних персональных данных.</div></div>
+      <details><summary>Ответ: почему в отчёте нельзя писать «критическая уязвимость», если показана только кнопка?</summary><p>Сам по себе видимый элемент UI ещё не подтверждает обход контроля доступа. Сервер может корректно запретить действие. Оценка влияния должна опираться на доказанный факт в рамках разрешённой проверки — не на предположение или громкий термин. Завышение severity мешает приоритизации и снижает доверие к отчёту.</p></details>
+    </div>
+    <div class="callout"><b>Правила практики.</b> Сохраняйте учебный код в файлы <span class="mono">.py</span>, запускайте через <span class="mono">python имя_файла.py</span> или <span class="mono">python3 имя_файла.py</span>. Эти скрипты не требуют сети. Для неизвестного кода из интернета сначала изучите его содержимое и не запускайте его с повышенными правами.</div>
+  </section>
+
+  <section class="section" id="cases">
+    <header class="section-head"><small>Блок 09 / анализ ситуаций</small><h2>Три кейса: право, безопасность, этика</h2><p>Сюжеты основаны на учебных примерах презентации и специально переработаны так, чтобы не выдавать неоднозначные обстоятельства за установленный юридический факт.</p></header>
+    <div class="cases-grid">
+      <article class="case"><div class="kicker">Кейс 01 · облачное хранилище</div><h3>Открытая корзина с данными</h3><p><b>Условие:</b> исследователь замечает, что по общедоступной ссылке может открываться хранилище с персональными данными клиентов. Он хочет скачать 1 000 файлов «для доказательства».</p><div class="label-pill">Вопрос: как поступить?</div><details><summary>Показать решение и обоснование</summary><p><b>Правильно:</b> не скачивать массив данных, прекратить потенциально опасные действия, зафиксировать минимальное техническое наблюдение без раскрытия ПД и сообщить владельцу по официальному каналу. Если доступа нет в scope — не продолжать тестирование.</p><p><b>Почему:</b> техническая доступность не означает законность обработки. Риски оцениваются с учётом 152-ФЗ, ст. 272.1 и иных норм; квалификация зависит от фактов, а не от одного скачивания как слова.</p></details></article>
+      <article class="case"><div class="kicker">Кейс 02 · уязвимость авторизации</div><h3>Лишняя запись в отчёте</h3><p><b>Условие:</b> участник программы Bug Bounty обнаружил потенциальную ошибку доступа. Он думает прочитать одну реальную чужую запись как подтверждение.</p><div class="label-pill">Вопрос: допустимо ли это?</div><details><summary>Показать решение и обоснование</summary><p><b>Правильно:</b> сначала проверить политику программы. Использовать только выделенные тестовые аккаунты, синтетические данные и разрешённый PoC. Если условия запрещают доступ к чужим данным, не открывать даже одну запись.</p><p><b>Почему:</b> «всего одна запись» может содержать ПД и нарушить условия программы. Безопасное доказательство — описание ошибки на своих тестовых данных или согласованный с владельцем вариант.</p></details></article>
+      <article class="case"><div class="kicker">Кейс 03 · массовая уязвимость</div><h3>Известная критическая проблема</h3><p><b>Условие:</b> команда узнаёт о критической уязвимости в широко используемом компоненте (исторический пример — Log4Shell, CVE-2021-44228). Один из участников предлагает подождать «стандартные 14 дней».</p><div class="label-pill">Вопрос: какой приоритет?</div><details><summary>Показать решение и обоснование</summary><p><b>Правильно:</b> оперативно оценить затронутые версии, ограничить поверхность атаки, применить рекомендации поставщика и исправление, проверить следы компрометации. Если находка новая — координировать раскрытие с владельцем.</p><p><b>Почему:</b> универсального срока «всегда ждать 14 дней» нет. При активной эксплуатации и высоком риске скорость защиты может быть критична. История Log4Shell относится к 2021 году, а не к новому 0-day 2026 года.</p></details></article>
+    </div>
+    <div class="panel" style="margin-top:16px"><h3>Шесть условий безопасного исследования — контрольный список</h3><div class="grid"><ul class="checklist"><li>Разрешение владельца или доступный учебный стенд</li><li>Перечень разрешённых доменов / IP / продуктов</li><li>Согласованные методы и временные рамки</li></ul><ul class="checklist"><li>Запрет на разрушение и избыточное извлечение данных</li><li>Контакт и защищённый канал передачи отчёта</li><li>Порядок исправления, NDA и публикации</li></ul></div>
+      <p class="hint">Письменное разрешение и границы теста — практический стандарт снижения рисков. Юридическая квалификация конкретных действий в споре требует анализа применимого права и фактических обстоятельств.</p></div>
+  </section>
+
+  <section class="section" id="quiz">
+    <header class="section-head"><small>Блок 10 / итоговая проверка</small><h2>Тест по занятию: 10 вопросов</h2><p>Все вопросы перенесены из приложенного тестирования. Выберите ответ или введите номер закона / статьи. После проверки получите балл, правильный вариант и подробное обоснование к каждому вопросу.</p></header>
+    <div class="panel soft" style="margin-bottom:15px"><div class="quiz-top"><div><b>Режим тренировки</b><p class="no-margin tiny">Проходной ориентир исходного теста: 8 из 10 (80%). Проверку можно повторять без ограничений.</p></div><div class="top-actions"><button id="showAnswers" class="btn">Открыть все ответы</button><button id="resetQuiz" class="btn">Начать заново</button></div></div></div>
+    <form id="quizForm" class="quiz-grid" autocomplete="off"><div id="quizQuestions"></div><button class="btn primary" type="submit" style="justify-self:start;padding:12px 25px">Проверить все ответы →</button></form>
+    <div id="quizResults" class="quiz-results" role="status" aria-live="polite"></div>
+    <div class="callout"><b>Как интерпретировать результат:</b> вопросы проверяют базовые понятия. Знание номера статьи не заменяет понимания условий её применения — именно поэтому после каждого ответа приведено пояснение и ссылки на соответствующие разделы.</div>
+  </section>
+
+  <section class="section" id="sources">
+    <header class="section-head"><small>Справка / проверяемые материалы</small><h2>Первоисточники и дополнительные ресурсы</h2><p>Ссылки ведут на законодательные тексты, официальные разъяснения и правила организаций. Нормы могут изменяться: для реальной работы проверяйте действующую редакцию и даты вступления изменений в силу.</p></header>
+    <div class="source-list">
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_389271/" target="_blank" rel="noopener noreferrer"><b>Стратегия национальной безопасности РФ, Указ № 400</b><span>Государственные приоритеты и информационная безопасность</span></a>
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_61801/" target="_blank" rel="noopener noreferrer"><b>152-ФЗ «О персональных данных»</b><span>Определения, основания, права субъекта, обязанности оператора</span></a>
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_61801/d3fe43a7c415353b17faab255bc0de92bea127da/" target="_blank" rel="noopener noreferrer"><b>152-ФЗ, статья 21</b><span>24 часа и 72 часа при предусмотренном законом инциденте</span></a>
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_61801/e4ebbe1780de623c7cf32a59ca82a7bb523a25dd/" target="_blank" rel="noopener noreferrer"><b>152-ФЗ, статья 12</b><span>Условия трансграничной передачи персональных данных</span></a>
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_511584/" target="_blank" rel="noopener noreferrer"><b>Разъяснение Минцифры от 12.05.2025</b><span>Локализация персональных данных с 1 июля 2025 года</span></a>
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_34661/1f421640c6775ff67079ebde06a7d2f6d17b96db/" target="_blank" rel="noopener noreferrer"><b>КоАП РФ, статья 13.11</b><span>Ответственность за нарушения законодательства о персональных данных</span></a>
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_10699/5c337673c261a026c476d578035ce68a0ae86da0/" target="_blank" rel="noopener noreferrer"><b>УК РФ, статья 272</b><span>Неправомерный доступ и признаки состава</span></a>
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_10699/deefead19003ba8266e85fbf42fc31f60ed3c698/" target="_blank" rel="noopener noreferrer"><b>УК РФ, статья 272.1</b><span>Незаконные действия с персональными данными, введена в 2024 году</span></a>
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_10699/a4d58c1af8677d94b4fc8987c71b131f10476a76/" target="_blank" rel="noopener noreferrer"><b>УК РФ, статья 273</b><span>Вредоносные компьютерные программы</span></a>
+      <a class="source" href="https://pravida.ru/uk/274" target="_blank" rel="noopener noreferrer"><b>УК РФ, статья 274</b><span>Нарушение правил эксплуатации</span></a>
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_10699/34672bc8c82c4b6f4b7c8cd4e77a9f414fed6cb1/" target="_blank" rel="noopener noreferrer"><b>УК РФ, статья 274.1</b><span>Неправомерное воздействие на КИИ</span></a>
+      <a class="source" href="https://www.consultant.ru/document/cons_doc_LAW_220885/" target="_blank" rel="noopener noreferrer"><b>187-ФЗ «О безопасности КИИ РФ»</b><span>Защита критической информационной инфраструктуры</span></a>
+      <a class="source" href="https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng" target="_blank" rel="noopener noreferrer"><b>GDPR, Regulation (EU) 2016/679</b><span>Статьи 3, 5, 6, 17, 25, 33, 34, 83 — первичный текст</span></a>
+      <a class="source" href="https://www.edpb.europa.eu/sme/assess-the-risks/data-breaches_en" target="_blank" rel="noopener noreferrer"><b>EDPB: Personal Data Breaches</b><span>Когда и кого требуется уведомлять при утечке</span></a>
+      <a class="source" href="https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/application-gdpr_en" target="_blank" rel="noopener noreferrer"><b>Еврокомиссия: применение GDPR</b><span>Территориальная сфера действия, в том числе вне ЕС</span></a>
+      <a class="source" href="https://www.isc2.org/Ethics" target="_blank" rel="noopener noreferrer"><b>ISC2 Code of Ethics</b><span>Этические принципы специалистов по кибербезопасности</span></a>
+      <a class="source" href="https://projectzero.google/vulnerability-disclosure-policy.html" target="_blank" rel="noopener noreferrer"><b>Google Project Zero Disclosure Policy</b><span>Реальная политика 90+30 и исключения</span></a>
+      <a class="source" href="https://www.hackerone.com/terms/disclosure-guidelines" target="_blank" rel="noopener noreferrer"><b>HackerOne Vulnerability Disclosure Guidelines</b><span>Требования к координации, scope и публикации</span></a>
+      <a class="source" href="https://vwad.owasp.org/" target="_blank" rel="noopener noreferrer"><b>OWASP Vulnerable Web Applications Directory</b><span>Разрешённые учебные приложения для практики ИБ</span></a>
+      <a class="source" href="https://github.com/digininja/DVWA" target="_blank" rel="noopener noreferrer"><b>DVWA — локальная учебная среда</b><span>Запускать в изолированной сети, не публиковать открыто</span></a>
+    </div>
+  </section>
+  <footer class="footer"><b>КОД БУДУЩЕГО · урок 2</b><div>Ответственное использование информационных технологий — знания, право и профессиональная этика.</div><div>Материал адаптирован из учебных слайдов. Содержание дополнено пояснениями и проверенными ссылками · 13 ноября 2026.</div></footer>
+</main></div>
+<a class="sticky-up" href="#intro" aria-label="Вернуться к началу">↑</a>
+<noscript><div style="max-width:900px;margin:30px auto;padding:20px;background:#fff;border:1px solid #ddd">Интерактивные проверки и тест требуют JavaScript. Основной конспект, задания, решения и ссылки доступны без него.</div></noscript>
+<script>
+'use strict';
+(() => {
+  const $ = id => document.getElementById(id);
+  const buttons = (container, selector) => Array.from($(container).querySelectorAll(selector));
+  const choose = (container, selector, chosen) => {
+    buttons(container, selector).forEach(b => b.classList.toggle('selected', b === chosen));
+  };
+  const show = (id, html, kind = '') => {
+    const node = $(id);
+    node.innerHTML = html;
+    node.className = 'feedback ' + kind;
+  };
+
+  // Локальный прогресс: только идентификаторы изученных разделов.
+  const trackIds = ['intro','policy','pd','criminal','gdpr','ethics','disclosure','bounty','python','cases','quiz'];
+  const storageKey = 'kod-bud-lesson2-progress-v1';
+  let visited;
+  try { visited = new Set(JSON.parse(localStorage.getItem(storageKey) || '[]').filter(x => trackIds.includes(x))); }
+  catch (e) { visited = new Set(); }
+  const refreshProgress = () => {
+    $('progressCount').textContent = visited.size + ' из ' + trackIds.length;
+    $('progressBar').style.width = (100 * visited.size / trackIds.length) + '%';
+  };
+  const markVisited = id => {
+    if (!trackIds.includes(id) || visited.has(id)) return;
+    visited.add(id);
+    try { localStorage.setItem(storageKey, JSON.stringify([...visited])); } catch (e) { /* режим без хранилища */ }
+    refreshProgress();
+  };
+  refreshProgress();
+  $('resetProgress').addEventListener('click', () => {
+    visited.clear();
+    try { localStorage.removeItem(storageKey); } catch (e) {}
+    refreshProgress();
+  });
+  if ('IntersectionObserver' in window) {
+    const trackObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) markVisited(entry.target.id);
+      });
+    }, {rootMargin: '-15% 0px -68% 0px', threshold: 0});
+    trackIds.forEach(id => trackObserver.observe($(id)));
+    const navObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        document.querySelectorAll('.nav-item').forEach(a => {
+          a.classList.toggle('active', a.hash === '#' + entry.target.id);
+        });
+      });
+    }, {rootMargin:'-5% 0px -65% 0px',threshold:0});
+    document.querySelectorAll('main section[id]').forEach(x => navObserver.observe(x));
+  } else {
+    markVisited('intro');
+  }
+  $('printBtn').addEventListener('click', () => window.print());
+
+  const pdInfo = {
+    email: ['Обычно персональные данные', 'Адрес связан с определяемым человеком, если он идентифицирует физическое лицо. Даже псевдонимный e-mail может быть ПДн, если есть связь с конкретным пользователем.', 'good'],
+    stats: ['Не обязательно персональные данные', 'Невосстановимо агрегированная статистика, по которой нельзя определить человека, не является ПДн. Но маленькие группы и комбинации признаков иногда допускают повторную идентификацию.', 'warning'],
+    ip: ['Зависит от контекста', 'IP-адрес может быть онлайн-идентификатором, относящимся к определяемому лицу. Не следует считать все IP абсолютно анонимными или абсолютно идентифицирующими без проверки контекста.', 'warning'],
+    face: ['Часто биометрические данные', 'Если физиологические характеристики используются для установления личности, для них действует специальный правовой режим. Обычное изображение лица не всегда обрабатывается именно как биометрия.', 'good'],
+    marks: ['Персональные данные', 'Если ID позволяет сопоставить оценки с конкретным обучающимся, сведения становятся относящимися к определяемому человеку, даже без имени в строке.', 'good']
+  };
+  buttons('pdButtons','button').forEach(button => button.addEventListener('click', () => {
+    choose('pdButtons','button',button);
+    const [heading, description, kind] = pdInfo[button.dataset.pd];
+    show('pdFeedback','<b>' + heading + '.</b> ' + description, kind);
+  }));
+  const lawInfo = {
+    lab:['Допустимо в пределах правил лаборатории', 'Используйте собственный локальный стенд или специально разрешённую тренировочную среду. Не подключайте намеренно уязвимый стенд к публичному интернету.', 'good'],
+    public:['Нет подтверждённого разрешения', 'Публичная доступность сайта не равна праву на тестирование. Остановитесь, изучите правила disclosure и свяжитесь с владельцем без несанкционированных действий.', 'bad'],
+    scope:['Потенциально разрешено, но с ограничениями', 'Проверьте программу, перечень объектов, конкретные допустимые действия, ограничения на автоматизацию, обработку ПД и раскрытие. «В scope» не значит «можно всё».', 'good'],
+    extra:['За пределами разрешения — остановитесь', 'Не расширяйте исследование на соседние системы без дополнительного явного разрешения. Сообщите организатору программы о необходимости уточнить scope.', 'bad']
+  };
+  buttons('lawButtons','button').forEach(button => button.addEventListener('click', () => {
+    choose('lawButtons','button',button);
+    const [heading, description, kind] = lawInfo[button.dataset.law];
+    show('lawFeedback','<b>' + heading + '.</b> ' + description, kind);
+  }));
+  const ethics = {
+    raw:['Риск нарушения прав субъектов', 'Без проверки правовых оснований, условий провайдера и состава данных пересылка может быть незаконной и небезопасной. Не полагайтесь на обещания модели «сохранить секрет».', 'bad'],
+    mask:['Наиболее ответственный выбор', 'Сначала проверьте правовые основания и договорные условия. Минимизируйте сведения, используйте синтетические данные, если это возможно, ограничьте доступ и протестируйте защиту. Маскирование само по себе не всегда означает полное обезличивание.', 'good'],
+    public:['Недопустимое раскрытие', 'Публикация информации о частной жизни и образовании людей не становится безопасной от слова «прозрачность». Нужны определённые законом основания.', 'bad'],
+    ignore:['Риск остаётся у организации', 'Игнорирование выявленной проблемы может привести к утечке. Ответственный подход — остановить передачу, уведомить ответственных и организовать корректную обработку.', 'bad']
+  };
+  buttons('ethicButtons','button').forEach(button => button.addEventListener('click', () => {
+    choose('ethicButtons','button',button);
+    const [heading, description, kind] = ethics[button.dataset.ethic];
+    show('ethicFeedback','<b>' + heading + '.</b> ' + description, kind);
+  }));
+
+  const discTexts = [
+    'Этап 1. <b>Исследователь:</b> проверяет разрешение и фиксирует только минимальные безопасные наблюдения. <b>Владелец:</b> публикует контакт и правила приёма сообщений.',
+    'Этап 2. <b>Исследователь:</b> направляет воспроизводимый отчёт через PSIRT, security@ или платформу, не публикует чужие данные. <b>Владелец:</b> подтверждает получение и уточняет детали.',
+    'Этап 3. <b>Владелец:</b> оценивает риск, готовит исправление, согласовывает тестирование и условия публикации. <b>Исследователь:</b> помогает проверить исправление только с разрешения.',
+    'Этап 4. <b>Стороны:</b> по согласованной политике публикуют допустимые детали, рекомендации и идентификаторы, если это уместно. При активной эксплуатации и рисках возможны особые меры.'
+  ];
+  buttons('disclosureButtons','button').forEach(button => button.addEventListener('click', () => {
+    choose('disclosureButtons','button',button);
+    const idx = Number(button.dataset.disc);
+    $('discLine').setAttribute('d', 'M95 70H' + [95,316,537,758][idx]);
+    Array.from($('discDots').querySelectorAll('circle')).forEach((circle,i) => {
+      circle.setAttribute('fill', i <= idx ? '#348e9c' : '#c2dce2');
+    });
+    show('discFeedback',discTexts[idx],'good');
+  }));
+
+  // Локальная демонстрация проверки IPv4/CIDR. Никаких запросов по сети.
+  const parseIpv4 = value => {
+    if (!/^(\d{1,3}\.){3}\d{1,3}$/.test(value)) return null;
+    const parts = value.split('.').map(Number);
+    if (parts.some((n, i) => n > 255 || n < 0 || !/^\d{1,3}$/.test(value.split('.')[i]))) return null;
+    return parts.reduce((acc, n) => ((acc << 8) | n) >>> 0, 0);
+  };
+  const checkScope = () => {
+    const value = $('scopeInput').value.trim().toLowerCase().replace(/\.$/,'');
+    if (!value) return show('scopeFeedback','Введите домен или IPv4-адрес.', 'warning');
+    if (/[^a-z0-9.\-]/.test(value)) return show('scopeFeedback','Введите только имя хоста или IPv4 без протокола, пути, порта и параметров.','warning');
+    const allowedDomain = ['app.demo.test','api.demo.test'].includes(value);
+    const numeric = parseIpv4(value);
+    const network = parseIpv4('192.0.2.0');
+    const allowedIp = numeric !== null && (numeric >>> 4) === (network >>> 4);
+    if (allowedDomain || allowedIp) {
+      return show('scopeFeedback','<b>IN SCOPE</b> по заданному списку объектов. При этом конкретные методы могут оставаться запрещёнными — ознакомьтесь с полными правилами программы.','good');
+    }
+    const note = (numeric === null && /^\d+(?:\.\d+){3}$/.test(value)) ? ' Неверный формат IPv4.' : '';
+    show('scopeFeedback','<b>OUT OF SCOPE.</b> В учебной программе этот объект не разрешён. Не проверяйте его и не отправляйте к нему запросы.'+note,'bad');
+  };
+  $('scopeCheck').addEventListener('click',checkScope);
+  $('scopeInput').addEventListener('keydown', e => { if(e.key==='Enter'){e.preventDefault();checkScope();} });
+  const examples = ['api.demo.test','cdn.demo.test','192.0.2.3','192.0.2.16','192.0.2.250','app.demo.test'];
+  let exampleIndex = 0;
+  $('scopeExample').addEventListener('click', () => {
+    exampleIndex = (exampleIndex + 1) % examples.length;
+    $('scopeInput').value = examples[exampleIndex];
+    checkScope();
+  });
+
+  const copyText = async text => {
+    if (navigator.clipboard && window.isSecureContext) {
+      try { await navigator.clipboard.writeText(text); return; } catch(e) { /* резервный вариант */ }
+    }
+    const temp = document.createElement('textarea');
+    temp.value = text; temp.style.position = 'fixed'; temp.style.left = '-9999px';
+    document.body.appendChild(temp); temp.focus(); temp.select();
+    const ok = document.execCommand('copy'); temp.remove();
+    if (!ok) throw Error('Копирование запрещено браузером');
+  };
+  document.querySelectorAll('.copy-code').forEach(btn => btn.addEventListener('click', async () => {
+    const original = btn.textContent;
+    const source = $(btn.dataset.copy);
+    try {
+      await copyText(source.textContent);
+      btn.textContent='✓ Скопировано';
+      btn.setAttribute('aria-label', 'Код скопирован');
+    } catch (error) {
+      btn.textContent='Выделите текст вручную';
+      source.setAttribute('tabindex','0'); source.focus();
+    }
+    window.setTimeout(() => {btn.textContent=original;},2100);
+  }));
+
+  const quizData = [
+    {
+      q:'Какой федеральный закон регулирует обработку персональных данных в РФ?',
+      opts:['44-ФЗ','152-ФЗ','273-ФЗ','187-ФЗ'], a:1,
+      why:'Правильный ответ — № 152-ФЗ от 27.07.2006 «О персональных данных». № 187-ФЗ относится к безопасности КИИ, а № 44-ФЗ — к контрактной системе закупок.',
+      link:'#pd'
+    },
+    {
+      q:'Что лучше всего описывает термин «персональные данные»?',
+      opts:['Любая публичная информация в интернете','Любая статистика по сайту','Любая информация, относящаяся к определённому или определяемому физическому лицу','Только паспортные данные'], a:2,
+      why:'Персональные данные — это сведения, связанные с прямо или косвенно определённым либо определяемым физическим лицом. Это могут быть не только ФИО или паспорт, но и онлайн-идентификаторы в соответствующем контексте.',
+      link:'#pd'
+    },
+    {
+      q:'Какая статья УК РФ касается неправомерного доступа к компьютерной информации?',
+      opts:['159','187','272','286'], a:2,
+      why:'Название статьи 272 УК РФ — «Неправомерный доступ к компьютерной информации». Для квалификации по её ч. 1 нужны предусмотренные законом признаки и последствия. Отдельно существует статья 272.1, связанная с незаконными действиями с персональными данными.',
+      link:'#criminal'
+    },
+    {
+      q:'Что из перечисленного является примером ответственного поведения специалиста по ИБ?',
+      opts:['Проверка чужого сайта без разрешения','Публикация найденной уязвимости в открытом доступе без уведомления владельца','Сообщение владельцу системы об уязвимости и согласование плана её устранения','Использование найденной уязвимости для личной выгоды'], a:2,
+      why:'Ответственное раскрытие предполагает уведомление владельца и координацию исправления. При этом само обнаружение должно происходить в разрешённых рамках, а публичные детали раскрываются согласно согласованной политике.',
+      link:'#disclosure'
+    },
+    {
+      q:'Что лучше описывает программу Bug Bounty?',
+      opts:['Программа автоматического обновления ПО','Закон, запрещающий тестирование систем','Механизм легального вознаграждения за найденные уязвимости','Тип вредоносного ПО'], a:2,
+      why:'Bug Bounty позволяет заявлять об уязвимостях в рамках опубликованных организатором правил. Программа определяет допустимые активы, способы проверки, отчётность и условия возможного вознаграждения.',
+      link:'#bounty'
+    },
+    {
+      q:'Почему использование ИИ для генерации кода требует осторожности?',
+      opts:['ИИ всегда пишет идеальный код','ИИ может генерировать уязвимый или некорректный код','ИИ нельзя использовать для анализа','ИИ не умеет работать с текстом'], a:1,
+      why:'Модель может предложить небезопасные зависимости, ошибки авторизации, секреты в исходнике, неверные проверки доступа или просто неработающий код. Нужны ревью, тесты, проверка библиотек и ответственное решение человека.',
+      link:'#ethics'
+    },
+    {
+      q:'Какое действие чаще всего является нарушением конфиденциальности персональных данных?',
+      opts:['Хранение данных в зашифрованном виде','Предоставление доступа к данным только авторизованным пользователям','Публикация базы данных с персональными данными в открытом доступе','Удаление устаревших данных'], a:2,
+      why:'Публикация базы с личными сведениями открывает доступ неопределённому кругу лиц и обычно нарушает конфиденциальность, если не существует специального законного основания. Контролируемый доступ и шифрование, напротив, являются мерами защиты.',
+      link:'#pd'
+    },
+    {
+      q:'Какова роль этики ИИ в задачах информационной безопасности?',
+      opts:['Определяет скорость работы алгоритма','Определяет, как ИИ может использоваться без нарушения прав пользователей','Определяет формат логов','Определяет цвет интерфейса'], a:1,
+      why:'Этический анализ оценивает права человека, риски вреда, приватность, справедливость, объяснимость и распределение ответственности. Высокая техническая точность модели сама по себе не доказывает допустимость её применения.',
+      link:'#ethics'
+    },
+    {
+      q:'Какой номер федерального закона регулирует персональные данные? Введите только число.',
+      textAnswer:['152','152-фз','152 фз','№152','№ 152'], display:'152',
+      why:'№ 152-ФЗ — Федеральный закон «О персональных данных». Полное название и актуальные редакции доступны в разделе с источниками.',
+      link:'#pd'
+    },
+    {
+      q:'Какой номер статьи УК РФ связан с неправомерным доступом к компьютерной информации? Введите только число.',
+      textAnswer:['272','ст 272','ст.272','статья 272'], display:'272',
+      why:'Статья 272 УК РФ называется «Неправомерный доступ к компьютерной информации». Для определения ответственности недостаточно самого названия: изучите признаки состава. Не путайте со статьёй 272.1.',
+      link:'#criminal'
+    }
+  ];
+  const container = $('quizQuestions');
+  function renderQuiz() {
+    container.replaceChildren();
+    quizData.forEach((item,index) => {
+      const article = document.createElement('article');
+      article.className='question'; article.id='question'+(index+1);
+      const num = document.createElement('div'); num.className='qnum'; num.textContent='ВОПРОС ' + (index+1) + ' / 10';
+      const title = document.createElement('h3'); title.textContent=item.q;
+      const choices = document.createElement('div'); choices.className='answers';
+      if (item.opts) {
+        item.opts.forEach((option,j) => {
+          const label = document.createElement('label'); label.className='option';
+          const input=document.createElement('input'); input.type='radio'; input.name='q'+index; input.value=String(j);
+          const span=document.createElement('span'); span.textContent=option;
+          label.append(input,span); choices.append(label);
+        });
+      } else {
+        const label=document.createElement('label'); label.className='field';
+        label.textContent='Ответ';
+        const input=document.createElement('input'); input.type='text'; input.name='q'+index; input.className='short-answer';input.placeholder='Введите номер';input.inputMode='numeric';input.autocomplete='off';
+        label.append(input); choices.append(label);
+      }
+      const explanation=document.createElement('div'); explanation.className='q-explanation';
+      const answer = document.createElement('b'); answer.textContent='Правильный ответ: ' + (item.opts ? item.opts[item.a] : item.display) + '. ';
+      const details=document.createElement('span'); details.textContent=item.why+' ';
+      const link=document.createElement('a');link.href=item.link;link.textContent='Вернуться к разбору темы ↗';
+      explanation.append(answer,details,link); article.append(num,title,choices,explanation);container.append(article);
+    });
+  }
+  renderQuiz();
+  const normalizeAnswer = answer => answer.toLowerCase().trim().replace(/\s+/g,' ').replace(/№\s*/g,'№').replace(/\s*[-–—]\s*/g,'-');
+  function evaluateQuiz(revealOnly = false) {
+    let correct=0, filled=0;
+    quizData.forEach((item,index) => {
+      const node=$('question'+(index+1));
+      const input = item.opts ? node.querySelector('input[type="radio"]:checked') : node.querySelector('input[type="text"]');
+      const value = input ? input.value : '';
+      const given = Boolean(value.trim());
+      const right = item.opts ? (input && Number(value)===item.a) : item.textAnswer.map(normalizeAnswer).includes(normalizeAnswer(value));
+      if (given) filled++;
+      if (right && given) correct++;
+      node.classList.remove('answered-correct','answered-wrong');
+      node.classList.add('checked');
+      if (!revealOnly) node.classList.add(right && given ? 'answered-correct' : 'answered-wrong');
+      node.querySelectorAll('.option').forEach((label,j) => {
+        label.classList.toggle('correct',j===item.a);
+        label.classList.toggle('wrong-selected',Boolean(input && Number(input.value)===j && j!==item.a));
+      });
+    });
+    const result=$('quizResults');
+    result.classList.add('visible');
+    if (revealOnly) {
+      result.innerHTML='<strong>Ответы открыты</strong><p>Просмотрите правильные варианты и объяснения под каждым вопросом. Вы можете по-прежнему выбрать ответы и пройти проверку.</p><button type="button" class="btn" id="quizBack">Вернуться к вопросам ↑</button>';
+    } else {
+      const percent=correct*10;
+      const passed=correct>=8;
+      result.innerHTML='<strong>'+correct+' из 10 · '+percent+'%</strong><p>'+(passed?'Зачёт по учебному ориентиру: от 80%.':'Пока ниже учебного ориентира 80%.')+' Заполнено '+filled+' из 10. Ниже каждого вопроса показаны правильный ответ и разбор.</p><button type="button" class="btn" id="quizBack">Посмотреть разборы ↑</button>';
+    }
+    $('quizBack').addEventListener('click',() => $('question1').scrollIntoView({behavior:'smooth',block:'start'}));
+    if (!revealOnly) result.scrollIntoView({behavior:'smooth',block:'center'});
+    markVisited('quiz');
+  }
+  $('quizForm').addEventListener('submit', e => {e.preventDefault();evaluateQuiz(false);});
+  $('showAnswers').addEventListener('click', () => evaluateQuiz(true));
+  $('resetQuiz').addEventListener('click', () => {
+    $('quizForm').reset();
+    document.querySelectorAll('.question').forEach(node => {
+      node.classList.remove('checked','answered-correct','answered-wrong');
+      node.querySelectorAll('.option').forEach(label => label.classList.remove('correct','wrong-selected'));
+    });
+    $('quizResults').classList.remove('visible');
+    $('quizResults').replaceChildren();
+    $('question1').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+})();
+</script>
+</body>
+</html>
